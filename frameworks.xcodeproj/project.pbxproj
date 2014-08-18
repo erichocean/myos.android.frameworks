@@ -1,0 +1,80 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		4C7AEA6118BEA85B007CFB3D /* libs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = libs; sourceTree = "<group>"; };
+		4C7AEA6318BEA85B007CFB3D /* libraries */ = {isa = PBXFileReference; lastKnownFileType = folder; path = libraries; sourceTree = "<group>"; };
+		4C7AEA6418BEA85B007CFB3D /* frameworks */ = {isa = PBXFileReference; lastKnownFileType = folder; path = frameworks; sourceTree = "<group>"; };
+		4C7AEA6518BEA85B007CFB3D /* examples */ = {isa = PBXFileReference; lastKnownFileType = folder; path = examples; sourceTree = "<group>"; };
+		F5B46F2119A2C33F0002681E /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = resources; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		4C7AEA5918BEA828007CFB3D = {
+			isa = PBXGroup;
+			children = (
+				4C7AEA6518BEA85B007CFB3D /* examples */,
+				4C7AEA6418BEA85B007CFB3D /* frameworks */,
+				4C7AEA6318BEA85B007CFB3D /* libraries */,
+				4C7AEA6118BEA85B007CFB3D /* libs */,
+				F5B46F2119A2C33F0002681E /* resources */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		4C7AEA5A18BEA828007CFB3D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+			};
+			buildConfigurationList = 4C7AEA5D18BEA828007CFB3D /* Build configuration list for PBXProject "frameworks" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 4C7AEA5918BEA828007CFB3D;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		4C7AEA5E18BEA828007CFB3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		4C7AEA5F18BEA828007CFB3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4C7AEA5D18BEA828007CFB3D /* Build configuration list for PBXProject "frameworks" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4C7AEA5E18BEA828007CFB3D /* Debug */,
+				4C7AEA5F18BEA828007CFB3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4C7AEA5A18BEA828007CFB3D /* Project object */;
+}

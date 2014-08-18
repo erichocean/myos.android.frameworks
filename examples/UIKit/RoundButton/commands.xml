@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="android_rules" default="debug">
+<target name="run">
+    <exec executable="adb">
+        <arg value="shell"/>
+        <arg value="am"/>
+        <arg value="start"/>
+        <arg value="-a"/>
+        <arg value="android.intent.action.MAIN"/>
+        <arg value="-n"/>
+        <arg value="com.examples.round_button/.RoundButtonNA"/>
+    </exec>
+</target>
+<target name="quit">
+    <exec executable="adb">
+        <arg value="shell"/>
+        <arg value="am"/>
+        <arg value="force-stop"/>
+        <arg value="com.examples.round_button"/>
+    </exec>
+</target>
+<target name="uninstall">
+    <exec executable="adb">
+        <arg value="shell"/>
+        <arg value="am"/>
+        <arg value="uninstall"/>
+        <arg value="com.examples.round_button"/>
+    </exec>
+    <exec executable="adb">
+        <arg value="shell"/>
+        <arg value="rm"/>
+        <arg value="rf"/>
+        <arg value="/data/app/com.examples.round_button-*"/>
+    </exec>
+</target>
+</project>

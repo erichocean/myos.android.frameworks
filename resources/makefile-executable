@@ -1,0 +1,50 @@
+#
+# Copyright 2014 myOS Group. All rights reserved.
+#
+
+OUTPUT=$(APP_NAME)
+CC=$(STANDALONE_PATH)/bin/clang
+CXX=$(STANDALONE_PATH)/bin/clang++
+SYSROOT=$(STANDALONE_PATH)/sysroot
+CFLAGS+= -march=armv5te --sysroot $(SYSROOT) -I$(SYSROOT)/usr/include -I${MY_FRAMEWORKS_PATH}/frameworks -I${MY_FRAMEWORKS_PATH}/libraries -I${MY_FRAMEWORKS_PATH}/resources/include
+
+LD=$(STANDALONE_PATH)/bin/clang++
+#LDFLAGS+= -L${MY_FRAMEWORKS_PATH}/libs -lgcc -gcc-toolchain /Users/amr/develop/adt/ndk/toolchains/arm-linux-androideabi-4.8/prebuilt/darwin-x86_64 -no-canonical-prefixes -target armv5te-none-linux-androideabi -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now
+
+LDFLAGS+= -L${MY_FRAMEWORKS_PATH}/libs -no-canonical-prefixes -Wl,--no-undefined -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now
+LDLIBS+= -lgcc -lc -lm
+
+STRIP=$(STANDALONE_PATH)/bin/arm-linux-androideabi-strip
+
+
+all: $(OUTPUT)
+ODIR=obj
+OBJ = $(patsubst %,$(ODIR)/%,$(OBJECTS))
+
+$(ODIR)/%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(ODIR)/%.o: ${MY_FRAMEWORKS_PATH}/resources/include/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(ODIR)/%.o: %.m
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(ODIR)/%.o: %.S
+	$(CC) $(CFLAGS) -c $< -o $@
+    
+$(ODIR)/%.o: %.cpp
+	$(CXX) $(CFLAGS) -c $< -o $@
+
+$(OUTPUT): $(OBJ)
+	$(LD) -Wl,--gc-sections -Wl,-z,nocopyreloc --sysroot=$(SYSROOT) $^ $(LDFLAGS) $(LDLIBS) -o $@
+	$(STRIP) --strip-unneeded $(OUTPUT)
+
+clean:
+	-rm $(ODIR)/*.o
+	-rm $(OUTPUT)
+
+copy:
+	adb shell mkdir /data/data/com.myos.myapps/apps/$(OUTPUT).app
+	adb push $(OUTPUT) /data/data/com.myos.myapps/apps/$(OUTPUT).app/
+	ls *.png *.json | xargs -I {} adb push {} /data/data/com.myos.myapps/apps/$(OUTPUT).app/
