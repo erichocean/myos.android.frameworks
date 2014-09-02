@@ -4,7 +4,7 @@
 
 APPLICATION_PATH=$(pwd)
 if [ ${TARGET} = "All" ]; then
-    export TARGET=MyOSApplication
+    export TARGET=myOSApplication
     source ${MY_FRAMEWORKS_PATH}/resources/common-make.sh
     export TARGET=NativeActivity
     source ${MY_FRAMEWORKS_PATH}/resources/common-make.sh
