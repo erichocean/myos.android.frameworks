@@ -1082,7 +1082,7 @@ static BOOL _UIViewInstanceImplementsSelector(SEL sel, Class instanceClass)
     //DLog(@"self: %@", self);
     if (![_gestureRecognizers containsObject:gestureRecognizer]) {
         //DLog();
-        [gestureRecognizer.view removeGestureRecognizer:gestureRecognizer];
+        //[gestureRecognizer.view removeGestureRecognizer:gestureRecognizer];
         [_gestureRecognizers addObject:gestureRecognizer];
         //DLog(@"gestureRecognizer.retainCount: %d", gestureRecognizer.retainCount);
         _UIGestureRecognizerSetView(gestureRecognizer, self);
