@@ -18,5 +18,5 @@ else
     PARAM3=$3
 fi
 APPLICATION_PATH=$(pwd)
-cd ${MY_FRAMEWORKS_PATH}
+cd ${MY_FRAMEWORKS_PATH}/resources
 ./install.sh ${PARAM1} ${PARAM2} ${PARAM3} ${APPLICATION_PATH}

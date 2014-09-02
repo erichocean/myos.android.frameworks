@@ -4,7 +4,7 @@
 
 ${MY_FRAMEWORKS_PATH}/resources/home.sh
 
-cd libraries
+cd ../libraries
 source ${MY_FRAMEWORKS_PATH}/libraries/install.sh
 cd ..
 
