@@ -144,7 +144,6 @@ static void _UIApplicationLaunchApplicationWithDefaultWindow(UIWindow *window)
 static void engine_term_display(engine* myEngine)
 {
     DLog(@"engine_term_display");
-    //IOPipeWriteMessage(MAPipeMessageTerminateApp, YES);
     UIMLApplicationTerminateApps();
     [EAGLContext setCurrentContext:nil];
     exit(0);

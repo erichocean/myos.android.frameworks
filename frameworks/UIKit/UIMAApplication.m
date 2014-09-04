@@ -320,7 +320,7 @@ static void mysig(int sig)
 
 - (void)terminate
 {
-    DLog();
+    //DLog();
     _running = NO;
     kill(_pid, SIGTERM);
     if (wait(NULL) == -1) {
@@ -369,7 +369,7 @@ int UIMAApplicationHandleMessages()
             DLog(@"MAPipeMessageHello");
             break;
         case MAPipeMessageTerminateApp:
-            DLog(@"MAPipeMessageTerminateApp");
+            //DLog(@"MAPipeMessageTerminateApp");
             IOPipeWriteMessage(MLPipeMessageTerminateApp, YES);
             return MAPipeMessageTerminateApp;
         default:

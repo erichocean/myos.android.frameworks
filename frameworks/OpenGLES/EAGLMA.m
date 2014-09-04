@@ -8,25 +8,9 @@
 #import <IOKit/IOKit.h>
 #import <CoreAnimation/CoreAnimation.h>
 
-#define _kTimeoutLimit 1.0
+#define _kTimeoutLimit 5.0
 
 #pragma mark - Shared functions
-/*
-void EAGLMAHandleMessages()
-{
-    DLog();
-    int message = IOPipeReadMessageWithPipe(_kEAGLMAPipeRead);
-    switch (message) {
-        case EAGLMAMessageEndOfMessage:
-            DLog(@"EAGLMAMessageEndOfMessage");
-            break;
-        case EAGLMAMessageGenTexture:
-            DLog(@"EAGLMAMessageGenTexture");
-            break;
-        default:
-            break;
-    }
-}*/
 
 int EAGLMAGenTexture()
 {

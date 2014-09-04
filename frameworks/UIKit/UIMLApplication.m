@@ -9,10 +9,10 @@
 #import <CoreAnimation/CoreAnimation-private.h>
 #import <CoreFoundation/CoreFoundation-private.h>
 
-#define _kTimeToTerminateChild      10.0
-#define _kTerminateChildTimeOut     5
-//#define _kCaptureScreenTimeLimit    2.0
-#define _kGobackTimeLimit           1.0
+#define _kTimeToTerminateChild          10.0
+#define _kTerminateChildTimeOutTotal     5
+//#define _kCaptureScreenTimeLimit      2.0
+#define _kGobackTimeLimit               1.0
 
 static NSMutableDictionary *_runningApplicationsDictionary;
 static BOOL _childAppRunning = NO;
@@ -21,20 +21,6 @@ static CFTimeInterval _startTime;
 static CFTimeInterval _lastGobackTime = 0;
 
 #pragma mark - Static functions
-/*
-static UIView *UIMLApplicationGetCurrentView()
-{
-    return _currentMAApplication->_screenImageView;
-}
-
-static void UIMLApplicationShowCurrentApplication()
-{
-    UIView *currentView = _currentMAApplication->_screenImageView; //UIMLApplicationGetCurrentView();
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.25];
-    currentView.frame = CGRectMake(0,currentView.frame.origin.y,currentView.frame.size.width,currentView.frame.size.height);
-    [UIView commitAnimations];
-}*/
 
 @implementation UIMLApplication
 
@@ -320,6 +306,7 @@ void UIMLApplicationMoveCurrentAppToTop()
 void UIMLApplicationTerminateApps()
 {
     //DLog(@"_runningApplicationsDictionary: %@", _runningApplicationsDictionary);
+    float timeOut = _kTerminateChildTimeOutTotal / _runningApplicationsDictionary.count;
     for (NSString *key in _runningApplicationsDictionary) {
         UIMAApplication *maApp = [_runningApplicationsDictionary objectForKey:key];
         DLog(@"maApp: %@", maApp);
@@ -342,7 +329,7 @@ void UIMLApplicationTerminateApps()
                 default:
                     break;
             }
-            if (CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut) {
+            if (CACurrentMediaTime() - _startTime > timeOut) {
                 DLog(@"CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut");
                 done = YES;
             }

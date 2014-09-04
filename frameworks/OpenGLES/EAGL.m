@@ -226,7 +226,7 @@ static void _EAGLDestroyContext(EAGLContext *context)
 + (BOOL)setCurrentContext:(EAGLContext *)context
 {
     if (_currentContext) {
-        DLog();
+        //DLog();
         [_currentContext release];
     }
     _currentContext = [context retain];
