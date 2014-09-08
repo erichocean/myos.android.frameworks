@@ -40,8 +40,9 @@ static void mysig(int sig)
     int status;
     pid_t pid;
     
-    //DLog(@"Signal %d", sig);
+    DLog(@"Signal %d", sig);
     if (sig == SIGALRM) {
+        DLog(@"sig == SIGALRM");
     }
 }
 
@@ -159,7 +160,7 @@ static void mysig(int sig)
 - (NSString *)description
 {
     //DLog(@"_data: %@", _data);
-    return [NSString stringWithFormat:@"<%@: %p; _name: %@; _running: %d; _score: %d; pageNumber: %d; yLocation: %d; xLocation: %d; anchored: %d>", [self className], self, _name, _running, _score, self.pageNumber, self.yLocation, self.xLocation, self.anchored];
+    return [NSString stringWithFormat:@"<%@: %p; _name: %@; _running: %d; isCurrent: %d; _score: %d; pageNumber: %d; yLocation: %d; xLocation: %d; anchored: %d>", [self className], self, _name, _running, [self isCurrent], _score, self.pageNumber, self.yLocation, self.xLocation, self.anchored];
 }
 
 #pragma mark - Data
@@ -219,11 +220,16 @@ static void mysig(int sig)
 
 #pragma mark - Helpers
 
+- (BOOL)isCurrent
+{
+    return (_currentMAApplication == self);
+}
+
 - (void)setAsCurrent:(BOOL)withSignal
 {
-    //DLog(@"self: %@", self);
     IOPipeSetPipes(_pipeRead, _pipeWrite);
     _currentMAApplication = self;
+    DLog(@"self: %@", self);
 #ifdef NA
     EAGLMLSetPipes(_animationPipeRead, _animationPipeWrite);
     if (withSignal) {
