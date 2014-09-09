@@ -27,6 +27,8 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <fcntl.h>
+#import <sys/wait.h>
 #import <UIKit/UIKit-private.h>
 #import <OpenGLES/EAGL-private.h>
 #import <IOKit/IOKit.h>
@@ -58,6 +60,7 @@ const UIBackgroundTaskIdentifier UIBackgroundTaskInvalid = NSUIntegerMax; // cor
 const NSTimeInterval UIMinimumKeepAliveTimeout = 0;
 
 static UIApplication *_application = nil;
+static NSString *_processName = nil;
 
 typedef struct {
     float green;
@@ -70,8 +73,6 @@ typedef struct {
     EAGLContext *context;
     saved_state state;
 } engine;
-
-
 
 #pragma mark - Static functions
 
@@ -116,6 +117,60 @@ static void _UIApplicationProcessInitialize()
 static void _UIApplicationInitialize()
 {
     _UINavigationItemInitialize();
+}
+
+void _UIApplicationTerminate()
+{
+    DLog(@"_application: %@", _application);
+    //if (_application->_applicationState == UIApplicationStateBackground) {
+    if ([_application->_delegate respondsToSelector:@selector(applicationWillTerminate:)]) {
+        [_application->_delegate applicationWillTerminate:_application];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationWillTerminateNotification
+                                                        object:_application];
+    //_application->_applicationState = UIApplicationStateInactive;
+    exit(0);
+    //}
+}
+
+static void mysig(int sig)
+{
+    int status;
+    pid_t pid;
+    
+    //DLog(@"Signal %d", sig);
+    switch (sig) {
+        case SIGALRM:
+            DLog(@"SIGALRM");
+            break;
+        case SIGTERM:
+            DLog(@"SIGTERM");
+            _UIApplicationTerminate();
+            break;
+        default:
+            break;
+    }
+}
+ 
+static void UIApplicationInitialize()
+{
+    //DLog();
+    IOPipeSetPipes(kMainPipeRead, kMainPipeWrite);
+    
+    MAPipeMessage message = IOPipeReadMessage();
+    //DLog(@"message: %d", message);
+    _processName = @"ProcessName";
+    if (message == MAPipeMessageCharString) {
+        _processName = [IOPipeReadCharString() retain];
+        //DLog(@"processName: %@", _processName);
+        [[NSProcessInfo processInfo] setProcessName:_processName];
+        _CGDataProviderSetMAAppName(_processName);
+    } else {
+        //DLog(@"message: %d", message);
+        NSLog(@"Error can't get process name");
+    }
+    (void)signal(SIGALRM, mysig);
+    (void)signal(SIGTERM, mysig);
 }
 
 static void _UIApplicationLaunchApplicationWithDefaultWindow(UIWindow *window)
@@ -344,6 +399,33 @@ static void _UIApplicationInitWindow()
     _UIApplicationLaunchApplicationWithDefaultWindow(nil);
 }
 
+static int _UIApplicationHandleMessages()
+{
+    //DLog();
+    int message = IOPipeReadMessage();
+    //DLog();
+    switch (message) {
+        case MAPipeMessageEndOfMessage:
+            break;
+        case MAPipeMessageWillEnterBackground:
+            _UIApplicationEnterBackground();
+            pause();
+            _UIApplicationEnterForeground();
+            break;
+        case MAPipeMessageHello:
+            DLog(@"MAPipeMessageHello");
+            break;
+        case MAPipeMessageTerminateApp:
+            //DLog(@"MAPipeMessageTerminateApp");
+            IOPipeWriteMessage(MLPipeMessageTerminateApp, YES);
+            _UIApplicationTerminate();
+            //return MAPipeMessageTerminateApp;
+        default:
+            break;
+    }
+    return 0;
+}
+
 @implementation UIApplication
 
 @synthesize keyWindow=_keyWindow;
@@ -464,6 +546,12 @@ static void _UIApplicationInitWindow()
 {
     NSSortDescriptor *sort = [[[NSSortDescriptor alloc] initWithKey:@"windowLevel" ascending:YES] autorelease];
     return [[_visibleWindows valueForKey:@"nonretainedObjectValue"] sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]];
+}
+
+- (NSString *)description
+{
+    //DLog(@"_data: %@", _data);
+    return [NSString stringWithFormat:@"<%@: %p; name: %@; applicationState: %d>", [self className], self, _processName, _applicationState];
 }
 
 #pragma mark - Delegates
@@ -589,7 +677,7 @@ int UIApplicationMain(int argc, char *argv[], NSString *principalClassName, NSSt
 #else
     int events;
 
-    UIMAApplicationInitialize();
+    UIApplicationInitialize();
     _application = [[UIApplication alloc] init];
     Class appDelegateClass = NSClassFromString(delegateClassName);
 
@@ -605,16 +693,17 @@ int UIApplicationMain(int argc, char *argv[], NSString *principalClassName, NSSt
         //DLog();
         //MAPipeMessage pipeMessage = UIMAApplicationHandleMessages();
         //if (pipeMessage) {
-        if (UIMAApplicationHandleMessages() == MAPipeMessageTerminateApp) {
+        _UIApplicationHandleMessages();
+        /*if (_UIApplicationHandleMessages() == MAPipeMessageTerminateApp) {
             //DLog(@"pipeMessage == MAPipeMessageTerminateApp");
             break;
-        }
+        }*/
         [pool2 release];
     }
     DLog(@"outside. exiting");
     UIMAApplicationClosePipes();
     [pool release];
-    exit(0);
+    //exit(0);
 #endif
     return 0;
 }
@@ -629,7 +718,6 @@ void _UIApplicationMain(struct android_app *app, NSString *appName, NSString *de
     int events;
     struct android_poll_source *source;
 
-    //DLog("_UIApplicationMain 1");
     myEngine = malloc(sizeof(engine));
     memset(myEngine, 0, sizeof(engine));
     app->userData = myEngine;
@@ -708,6 +796,7 @@ void _UIApplicationWindowDidBecomeHidden(UIApplication *application, UIWindow *t
 
 BOOL _UIApplicationEnterBackground()
 {
+    DLog(@"_application: %@", _application);
     if (_application->_applicationState != UIApplicationStateBackground) {
         _application->_applicationState = UIApplicationStateBackground;
         if ([_application->_delegate respondsToSelector:@selector(applicationDidEnterBackground:)]) {
@@ -715,6 +804,7 @@ BOOL _UIApplicationEnterBackground()
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationDidEnterBackgroundNotification
                                                             object:_application];
+        _application->_applicationState = UIApplicationStateBackground;
         return YES;
     } else {
         return NO;
@@ -723,13 +813,14 @@ BOOL _UIApplicationEnterBackground()
 
 void _UIApplicationEnterForeground()
 {
+    DLog(@"_application: %@", _application);
     if (_application->_applicationState == UIApplicationStateBackground) {
         if ([_application->_delegate respondsToSelector:@selector(applicationWillEnterForeground:)]) {
             [_application->_delegate applicationWillEnterForeground:_application];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationWillEnterForegroundNotification
                                                             object:_application];
-        _application->_applicationState = UIApplicationStateInactive;
+        _application->_applicationState = UIApplicationStateActive;
     }
 }
 

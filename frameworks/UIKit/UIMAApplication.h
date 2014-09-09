@@ -5,6 +5,9 @@
 
 #import <UIKit/UIImageView.h>
 
+#define kMainPipeRead           10
+#define kMainPipeWrite          21
+
 @class UIApplicationIcon, UIMAApplication;
 
 extern NSMutableDictionary *_allApplicationsDictionary;
@@ -45,6 +48,6 @@ extern UIMAApplication *_currentMAApplication;
 
 @end
 
-void UIMAApplicationInitialize();
-int UIMAApplicationHandleMessages();
+//void UIMAApplicationInitialize();
+//int UIMAApplicationHandleMessages();
 void UIMAApplicationClosePipes();

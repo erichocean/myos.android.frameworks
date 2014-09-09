@@ -311,27 +311,29 @@ void UIMLApplicationTerminateApps()
         UIMAApplication *maApp = [_runningApplicationsDictionary objectForKey:key];
         DLog(@"maApp: %@", maApp);
         //[_runningApplicationsDictionary setObject:nil forKey:maApp->_name];
-        [maApp setAsCurrent:NO];
-        //DLog();
-        IOPipeWriteMessage(MAPipeMessageTerminateApp, YES);
-        BOOL done = NO;
-        _startTime = CACurrentMediaTime();
-        while (!done) {
-            int message = IOPipeReadMessage();
-            switch (message) {
-                case MLPipeMessageEndOfMessage:
-                    DLog(@"MLPipeMessageEndOfMessage");
-                    break;
-                case MLPipeMessageTerminateApp:
-                    DLog(@"MLPipeMessageTerminateApp");
+        //[maApp setAsCurrent:NO];
+        if ([maApp isCurrent]) {
+            //DLog();
+            IOPipeWriteMessage(MAPipeMessageTerminateApp, YES);
+            BOOL done = NO;
+            _startTime = CACurrentMediaTime();
+            while (!done) {
+                int message = IOPipeReadMessage();
+                switch (message) {
+                    case MLPipeMessageEndOfMessage:
+                        DLog(@"MLPipeMessageEndOfMessage");
+                        break;
+                    case MLPipeMessageTerminateApp:
+                        DLog(@"MLPipeMessageTerminateApp");
+                        done = YES;
+                        break;
+                    default:
+                        break;
+                }
+                if (CACurrentMediaTime() - _startTime > timeOut) {
+                    DLog(@"CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut");
                     done = YES;
-                    break;
-                default:
-                    break;
-            }
-            if (CACurrentMediaTime() - _startTime > timeOut) {
-                DLog(@"CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut");
-                done = YES;
+                }
             }
         }
         [maApp terminate];

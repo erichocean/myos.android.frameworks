@@ -27,3 +27,4 @@ void _UIApplicationSetCurrentEventTouchedView();
 void _UIApplicationSendEvent(UIEvent *event);
 void _UIApplicationEnterForeground();
 BOOL _UIApplicationEnterBackground();
+//void _UIApplicationTerminate();
