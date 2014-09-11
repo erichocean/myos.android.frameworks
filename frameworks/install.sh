@@ -31,8 +31,6 @@ cd IOKit
 source ${MY_FRAMEWORKS_PATH}/resources/common-install.sh
 cd ..
 
-CAN_CLEAN=YES
-
 cd OpenGLES
 source ${MY_FRAMEWORKS_PATH}/resources/common-install.sh
 cd ..
@@ -40,6 +38,8 @@ cd ..
 cd CoreAnimation
 source ${MY_FRAMEWORKS_PATH}/resources/common-install.sh
 cd ..
+
+CAN_CLEAN=YES
 
 cd UIKit
 source ${MY_FRAMEWORKS_PATH}/resources/common-install.sh

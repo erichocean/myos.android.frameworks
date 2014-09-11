@@ -10,7 +10,7 @@
 #import <CoreFoundation/CoreFoundation-private.h>
 
 #define _kTimeToTerminateChild          10.0
-#define _kTerminateChildTimeOutTotal     5
+#define _kTerminateChildTimeOut         1.0
 //#define _kCaptureScreenTimeLimit      2.0
 #define _kGobackTimeLimit               1.0
 
@@ -306,14 +306,16 @@ void UIMLApplicationMoveCurrentAppToTop()
 void UIMLApplicationTerminateApps()
 {
     //DLog(@"_runningApplicationsDictionary: %@", _runningApplicationsDictionary);
-    float timeOut = _kTerminateChildTimeOutTotal / _runningApplicationsDictionary.count;
+    //float timeOut = _kTerminateChildTimeOut;
+    //DLog();
     for (NSString *key in _runningApplicationsDictionary) {
+        //DLog();
         UIMAApplication *maApp = [_runningApplicationsDictionary objectForKey:key];
         DLog(@"maApp: %@", maApp);
         //[_runningApplicationsDictionary setObject:nil forKey:maApp->_name];
         //[maApp setAsCurrent:NO];
         if ([maApp isCurrent]) {
-            //DLog();
+            DLog();
             IOPipeWriteMessage(MAPipeMessageTerminateApp, YES);
             BOOL done = NO;
             _startTime = CACurrentMediaTime();
@@ -330,12 +332,13 @@ void UIMLApplicationTerminateApps()
                     default:
                         break;
                 }
-                if (CACurrentMediaTime() - _startTime > timeOut) {
+                if (CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut) {
                     DLog(@"CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut");
                     done = YES;
                 }
             }
         }
+        DLog();
         [maApp terminate];
     }
 }

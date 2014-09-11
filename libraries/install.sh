@@ -44,8 +44,6 @@ cd lcms
 source ${MY_FRAMEWORKS_PATH}/resources/common-install.sh
 cd ..
 
-CAN_CLEAN=YES
-
 cd MAGLESv1_enc
 source ${MY_FRAMEWORKS_PATH}/resources/common-install.sh
 cd ..
@@ -70,4 +68,4 @@ cd MAKit
 source ${MY_FRAMEWORKS_PATH}/resources/common-install.sh
 cd ..
 
-
+CAN_CLEAN=YES

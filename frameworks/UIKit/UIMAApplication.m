@@ -34,24 +34,18 @@ static void UIMAApplicationRunApp(NSString *appName)
     execve(appPath, args, myEnv);
     //DLog();
 }
-/*
-static void mysig(int sig)
+
+static void UIMAApplicationSaveData(UIMAApplication *app)
 {
-    int status;
-    pid_t pid;
-    
-    //DLog(@"Signal %d", sig);
-    switch (sig) {
-        case SIGALRM:
-            DLog(@"SIGALRM");
-            break;
-        case SIGTERM:
-            DLog(@"SIGTERM");
-            break;
-        default:
-            break;
-    }
-}*/
+    NSString *dataPath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/data.json", app->_name];
+    DLog(@"dataPath: %@", dataPath);
+    /*NSData *data = [NSData dataWithContentsOfFile:dataPath];
+    _data = [[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:NULL] retain];
+    //DLog(@"_data: %@", _data);
+    int x = [[_data valueForKeyPath:_kUIMAApplicationXLocationPath] intValue];
+    int y = [[_data valueForKeyPath:_kUIMAApplicationYLocationPath] intValue];
+    _score = [[_data valueForKeyPath:_kUIMAApplicationScorePath] intValue];*/
+}
 
 @implementation UIMAApplication
 
@@ -82,7 +76,8 @@ static void mysig(int sig)
         //DLog(@"_data: %@", _data);
         int x = [[_data valueForKeyPath:_kUIMAApplicationXLocationPath] intValue];
         int y = [[_data valueForKeyPath:_kUIMAApplicationYLocationPath] intValue];
-        _score = [[_data valueForKeyPath:_kUIMAApplicationScorePath] intValue];;
+        _score = [[_data valueForKeyPath:_kUIMAApplicationScorePath] intValue];
+        
         _applicationIcon = [[UIApplicationIcon alloc] initWithApplication:self];
         
         NSString *imagePath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/Default.png", _name];
@@ -333,8 +328,9 @@ static void mysig(int sig)
 
 - (void)terminate
 {
-    //DLog();
-    _running = NO;
+    DLog();
+    //_running = NO;
+    UIMAApplicationSaveData(self);
     kill(_pid, SIGTERM);
     if (wait(NULL) == -1) {
         NSLog(@"wait error");
