@@ -315,7 +315,7 @@ void UIMLApplicationTerminateApps()
         //[_runningApplicationsDictionary setObject:nil forKey:maApp->_name];
         //[maApp setAsCurrent:NO];
         if ([maApp isCurrent]) {
-            DLog();
+            //DLog();
             IOPipeWriteMessage(MAPipeMessageTerminateApp, YES);
             BOOL done = NO;
             _startTime = CACurrentMediaTime();
@@ -338,7 +338,7 @@ void UIMLApplicationTerminateApps()
                 }
             }
         }
-        DLog();
+        //DLog();
         [maApp terminate];
     }
 }
