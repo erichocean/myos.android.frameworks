@@ -39,6 +39,10 @@ static void UIMAApplicationSaveData(UIMAApplication *app)
 {
     NSString *dataPath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/data.json", app->_name];
     DLog(@"dataPath: %@", dataPath);
+    [app->_data setValue:[NSNumber numberWithInt:app->_score] forKeyPath:_kUIMAApplicationScorePath];
+    DLog(@"app->_data: %@", app->_data);
+    NSData *data = [NSJSONSerialization dataWithJSONObject:app->_data options:0 error:NULL];
+    [data writeToFile:dataPath atomically:YES];
     /*NSData *data = [NSData dataWithContentsOfFile:dataPath];
     _data = [[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:NULL] retain];
     //DLog(@"_data: %@", _data);
@@ -328,7 +332,7 @@ static void UIMAApplicationSaveData(UIMAApplication *app)
 
 - (void)terminate
 {
-    DLog();
+    //DLog();
     //_running = NO;
     UIMAApplicationSaveData(self);
     kill(_pid, SIGTERM);

@@ -858,38 +858,31 @@ failure:
 /** <override-subclass>
  * Returns the number of bytes of data encapsulated by the receiver.
  */
-- (NSUInteger) length
+- (NSUInteger)length
 {
   /* This is left to concrete subclasses to implement. */
   [self subclassResponsibility: _cmd];
   return 0;
 }
 
-- (BOOL) writeToFile: (NSString*)path atomically: (BOOL)useAuxiliaryFile
+- (BOOL)writeToFile:(NSString *)path atomically:(BOOL)useAuxiliaryFile
 {
-  if (useAuxiliaryFile)
-    {
-      return [self writeToFile: path options: NSAtomicWrite error: 0];
-    }
-  else
-    {
-      return [self writeToFile: path options: 0 error: 0];
+    if (useAuxiliaryFile) {
+        return [self writeToFile: path options: NSAtomicWrite error: 0];
+    } else {
+        return [self writeToFile: path options: 0 error: 0];
     }
 }
 
-- (BOOL) writeToURL: (NSURL*)anURL atomically: (BOOL)flag
+- (BOOL)writeToURL:(NSURL*)anURL atomically:(BOOL)flag
 {
-  if (flag)
-    {
-      return [self writeToURL: anURL options: NSAtomicWrite error: 0];
-    }
-  else
-    {
-      return [self writeToURL: anURL options: 0 error: 0];
+    if (flag) {
+        return [self writeToURL: anURL options: NSAtomicWrite error: 0];
+    } else {
+        return [self writeToURL: anURL options: 0 error: 0];
     }
 }
 
-
 // Deserializing Data
 
 /**
