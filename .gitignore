@@ -1,9 +1,3 @@
-frameworks/Foundation/base.xcodeproj/xcuserdata/
-frameworks/libobjc2/Test/RuntimeTest.xcodeproj/xcuserdata/
+*.so
 .DS_Store
-Build
-*.xcodeproj/*.pbxuser
-*.xcodeproj/*.perspectivev3
-*.xcodeproj/xcuserdata
-*.xcodeproj/project.xcworkspace/xcuserdata
-*.xcodeproj/project.xcworkspace/xcshareddata
+xcuserdata

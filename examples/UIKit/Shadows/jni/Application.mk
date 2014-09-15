@@ -1,1 +1,0 @@
-NDK_TOOLCHAIN_VERSION := clang

@@ -1,4 +1,1 @@
-*.a
 *.so
-!libffi.a
-!libGLESv1_enc.so
