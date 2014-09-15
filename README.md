@@ -7,7 +7,7 @@ Frameworks for myOS applications in Android environment, using Objective-C, base
 1. Fork myos.android.sdk into path myos/android/sdk
 2. Run:
 
-        myos/android/sdk$ ./install
+        myos/android/sdk$ ./install.sh
 
 * For more info:
 [myos.android.frameworks.wiki](https://github.com/amraboelela/myos.android.frameworks/wiki)
