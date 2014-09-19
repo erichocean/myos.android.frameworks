@@ -5,7 +5,7 @@
 echo
 echo "****************************** frameworks ******************************"
 
-CAN_CLEAN=NO
+#CAN_CLEAN=NO
 
 TARGET=Universal
 
@@ -39,7 +39,7 @@ cd CoreAnimation
 source ${MYOS_PATH}/android/sdk/scripts/common-build.sh
 cd ..
 
-CAN_CLEAN=YES
+#CAN_CLEAN=YES
 
 cd UIKit
 source ${MYOS_PATH}/android/sdk/scripts/common-build.sh

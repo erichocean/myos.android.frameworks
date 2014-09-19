@@ -19,4 +19,4 @@ else
     
     #MAEGL MAOpenglSystemCommon MARenderControl_enc MAGLESv1_enc MAOpenglCodecCommon
 endif
-include ${MY_FRAMEWORKS_PATH}/resources/makefile-shared
+include ${MYOS_PATH}/android/sdk/resources/makefile-shared

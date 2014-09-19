@@ -41,4 +41,4 @@ OBJECTS = \
     CATransactionGroup.o \
     CACompositor.o \
 
-include ${MY_FRAMEWORKS_PATH}/resources/makefile-shared
+include ${MYOS_PATH}/android/sdk/resources/makefile-shared
