@@ -50,4 +50,5 @@ extern UIMAApplication *_currentMAApplication;
 
 //void UIMAApplicationInitialize();
 //int UIMAApplicationHandleMessages();
+void UIMAApplicationSaveData(UIMAApplication *app);
 void UIMAApplicationClosePipes();

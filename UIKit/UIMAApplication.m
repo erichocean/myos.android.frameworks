@@ -35,22 +35,6 @@ static void UIMAApplicationRunApp(NSString *appName)
     //DLog();
 }
 
-static void UIMAApplicationSaveData(UIMAApplication *app)
-{
-    NSString *dataPath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/data.json", app->_name];
-    DLog(@"dataPath: %@", dataPath);
-    [app->_data setValue:[NSNumber numberWithInt:app->_score] forKeyPath:_kUIMAApplicationScorePath];
-    DLog(@"app->_data: %@", app->_data);
-    NSData *data = [NSJSONSerialization dataWithJSONObject:app->_data options:0 error:NULL];
-    [data writeToFile:dataPath atomically:YES];
-    /*NSData *data = [NSData dataWithContentsOfFile:dataPath];
-    _data = [[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:NULL] retain];
-    //DLog(@"_data: %@", _data);
-    int x = [[_data valueForKeyPath:_kUIMAApplicationXLocationPath] intValue];
-    int y = [[_data valueForKeyPath:_kUIMAApplicationYLocationPath] intValue];
-    _score = [[_data valueForKeyPath:_kUIMAApplicationScorePath] intValue];*/
-}
-
 @implementation UIMAApplication
 
 @synthesize screenImageView=_screenImageView;
@@ -391,6 +375,16 @@ int UIMAApplicationHandleMessages()
     }
     return 0;
 }*/
+
+void UIMAApplicationSaveData(UIMAApplication *app)
+{
+    NSString *dataPath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/data.json", app->_name];
+    DLog(@"dataPath: %@", dataPath);
+    [app->_data setValue:[NSNumber numberWithInt:app->_score] forKeyPath:_kUIMAApplicationScorePath];
+    DLog(@"app->_data: %@", app->_data);
+    NSData *data = [NSJSONSerialization dataWithJSONObject:app->_data options:0 error:NULL];
+    [data writeToFile:dataPath atomically:YES];
+}
 
 void UIMAApplicationClosePipes()
 {

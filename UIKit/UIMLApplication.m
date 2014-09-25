@@ -311,7 +311,7 @@ void UIMLApplicationTerminateApps()
     for (NSString *key in _runningApplicationsDictionary) {
         //DLog();
         UIMAApplication *maApp = [_runningApplicationsDictionary objectForKey:key];
-        DLog(@"maApp: %@", maApp);
+        //DLog(@"maApp: %@", maApp);
         //[_runningApplicationsDictionary setObject:nil forKey:maApp->_name];
         //[maApp setAsCurrent:NO];
         if ([maApp isCurrent]) {
