@@ -482,7 +482,10 @@ CFStringRef CTFontCopyName(
   CTFontRef font,
   CFStringRef key)
 {
-  return [[font nameForKey: key] retain];
+    //DLog(@"key: %@", key);
+    //DLog(@"font.fontName: %@", font.fontName);
+    return ([font.fontName copy]);
+    //return [[font nameForKey:key] retain];
 }
 
 CFStringRef CTFontCopyLocalizedName(
@@ -506,7 +509,7 @@ CFStringRef CTFontCopyFamilyName(CTFontRef font)
 
 CFStringRef CTFontCopyFullName(CTFontRef font)
 {
-  return CTFontCopyName(font, kCTFontFullNameKey);
+    return CTFontCopyName(font, kCTFontFullNameKey);
 }
 
 /* CFTypeID */

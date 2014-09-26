@@ -170,6 +170,32 @@
     }
 }
 
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)adjustsFontSizeToFitWidth
+{
+    if (adjustsFontSizeToFitWidth) {
+        //DLog();
+        CGSize boundsSize = self.bounds.size;
+        //DLog();
+        float fontSize = _font.pointSize;
+        //DLog();
+        UIFont *font = [UIFont fontWithName:_font.fontName size:fontSize];
+        //DLog(@"font: %@", font);
+        CGSize size = [_text sizeWithFont:_font];
+        DLog(@"size: %@", NSStringFromCGSize(size));
+        DLog(@"boundsSize: %@", NSStringFromCGSize(boundsSize));
+        while (size.width > boundsSize.width) {
+            fontSize--;
+            DLog(@"fontSize: %0.1f", fontSize);
+            font = [UIFont fontWithName:_font.fontName size:fontSize];
+            size = [_text sizeWithFont:font];
+            DLog(@"size: %@", NSStringFromCGSize(size));
+            //DLog(@"font: %@", font);
+        }
+        self.font = font;
+        //DLog();
+    }
+}
+
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<%@: %p; text: %@; frame = %@; layer = %p>", [self className], self, _text, NSStringFromCGRect(self.frame), _layer];
@@ -224,7 +250,7 @@
         if (numberOfLines > 0) {
             maxSize.height = _font.lineHeight * numberOfLines;
         }
-        CGSize size = [_text sizeWithFont: _font constrainedToSize: maxSize lineBreakMode: _lineBreakMode];
+        CGSize size = [_text sizeWithFont:_font constrainedToSize:maxSize lineBreakMode:_lineBreakMode];
         return (CGRect){bounds.origin, size};
     }
     return (CGRect){bounds.origin, {0, 0}};

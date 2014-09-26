@@ -46,6 +46,7 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
         _iconLabel.textAlignment = UITextAlignmentCenter;
         _iconLabel.font = [UIFont systemFontOfSize:10];
         _iconLabel.text = application->_name;
+        _iconLabel.adjustsFontSizeToFitWidth = YES;
         [self addSubview:_iconLabel];
         
         _closeControl = [[UIIconControl alloc] initWithFrame:CGRectMake(_kIconControlMargin,_kIconControlMargin,
