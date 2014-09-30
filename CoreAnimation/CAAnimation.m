@@ -213,7 +213,7 @@ static void _CAAnimationRemove(CABasicAnimation *animation, CALayer *layer)
     [(CALayer *)anObject addAnimation:self forKey:key];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (id)copyWithZone:(NSZone *)zone
 {
@@ -261,7 +261,7 @@ static void _CAAnimationRemove(CABasicAnimation *animation, CALayer *layer)
     [super dealloc];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (id)copyWithZone:(NSZone *)zone
 {
@@ -329,7 +329,7 @@ static void _CAAnimationRemove(CABasicAnimation *animation, CALayer *layer)
     return [NSString stringWithFormat:@"<%@: %p; values: %@>", [self className], self, _values];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (id)copyWithZone:(NSZone *)zone
 {
@@ -514,7 +514,7 @@ void _CAAnimationGroupRemoveAnimation(CAAnimationGroup *animationGroup, CAAnimat
     }
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 void _CAAnimationCopy(CAAnimation *toAnimation, CAAnimation *fromAnimation)
 {

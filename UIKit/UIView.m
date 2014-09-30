@@ -514,7 +514,7 @@ static BOOL _UIViewInstanceImplementsSelector(SEL sel, Class instanceClass)
 {
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)setNeedsLayout
 {

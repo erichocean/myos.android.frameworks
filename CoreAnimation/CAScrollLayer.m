@@ -31,7 +31,7 @@ NSString *const kCAScrollBoth = @"CAScrollBoth";
     [super dealloc];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)scrollToPoint:(CGPoint)point
 {

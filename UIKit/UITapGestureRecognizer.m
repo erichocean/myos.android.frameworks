@@ -139,6 +139,6 @@
     }
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 @end

@@ -221,7 +221,7 @@ static UIImage *_UIImageLoadImageNamed(NSString *name)
     return [[[UIImage alloc] initWithCGImage:imageRef] autorelease];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)drawAtPoint:(CGPoint)point blendMode:(CGBlendMode)blendMode alpha:(CGFloat)alpha
 {

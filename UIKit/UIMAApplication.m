@@ -208,7 +208,7 @@ static void UIMAApplicationRunApp(NSString *appName)
     }
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)startApp
 {

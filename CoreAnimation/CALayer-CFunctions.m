@@ -184,7 +184,7 @@ void _CALayerDisplay(CALayer *layer)
     layer->_needsDisplay = NO;
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 NSMutableArray *_CALayerGetRootLayers()
 {

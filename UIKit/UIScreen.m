@@ -125,7 +125,7 @@ NSMutableArray *_allScreens = nil;
     return screens;
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (CGPoint)convertPoint:(CGPoint)toConvert toScreen:(UIScreen *)toScreen
 {

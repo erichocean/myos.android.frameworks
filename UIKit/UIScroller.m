@@ -204,7 +204,7 @@ static void _UIScrollerFadeIn(UIScroller *scroller)
                      completion:NULL];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)flash
 {

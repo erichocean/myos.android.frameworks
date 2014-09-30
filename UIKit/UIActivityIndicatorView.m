@@ -184,7 +184,7 @@ static UIImage *UIActivityIndicatorViewFrameImage(UIActivityIndicatorViewStyle s
     return hides;
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)startAnimating
 {

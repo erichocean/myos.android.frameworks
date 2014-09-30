@@ -82,7 +82,7 @@ static CGColorRef _clearColor;
     return [NSString stringWithFormat:@"<%@: %p; components = {%0.2f, %0.2f, %0.2f, %0.2f}>", [self className], self, comps[0], comps[1], comps[2], comps[3]];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (BOOL)isEqual:(id)other
 {

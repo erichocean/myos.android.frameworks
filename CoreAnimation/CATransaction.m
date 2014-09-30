@@ -139,7 +139,7 @@ static void _CATransactionCommitTransactionAfterDelay(float delay)
     return CFDictionaryGetValue(group->_values, key);
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 + (void)begin
 {

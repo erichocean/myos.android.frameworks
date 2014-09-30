@@ -1003,7 +1003,7 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
     return _CALayerGetLocalTimeWithRootLayer(l, rootLayer, tr);
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (CFIndex)indexOfLayer:(CALayer *)layer
 {

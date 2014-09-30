@@ -165,7 +165,7 @@ NSString *const _CARootLayersModifiedNotification = @"CARootLayersModifiedNotifi
     }
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)removeFromSuperview
 {

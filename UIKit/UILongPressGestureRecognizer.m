@@ -141,6 +141,6 @@ BOOL canEnd = YES;
     }
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 @end

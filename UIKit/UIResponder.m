@@ -94,7 +94,7 @@ UIWindow* _UIResponderGetResponderWindow(UIResponder *responder);
 {
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (BOOL)isFirstResponder
 {

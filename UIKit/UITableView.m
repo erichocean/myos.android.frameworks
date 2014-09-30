@@ -407,7 +407,7 @@ const CGFloat _UITableViewDefaultRowHeight = 43;
     _needsReload = NO;
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)beginUpdates
 {

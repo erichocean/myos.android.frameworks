@@ -148,7 +148,7 @@ static NSArray *CGImagesWithUIImages(NSArray *images)
     [super setBounds:newBounds];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 /*
 - (void)displayLayer:(CALayer *)theLayer

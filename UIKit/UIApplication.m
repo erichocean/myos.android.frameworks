@@ -563,7 +563,7 @@ static int _UIApplicationHandleMessages()
     _screenMode = _UIApplicationScreenModeActive;
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)beginIgnoringInteractionEvents
 {

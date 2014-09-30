@@ -159,7 +159,7 @@ static CFArrayRef CreateCTLinesForString(NSString *string, CGSize constrainedToS
     if (lines) {
         CFRelease(lines);
     }
-    DLog(@"resultingSize: %@", NSStringFromCGSize(resultingSize));
+    //DLog(@"resultingSize: %@", NSStringFromCGSize(resultingSize));
     return resultingSize;
 }
 

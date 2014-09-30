@@ -249,7 +249,7 @@
 
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)addTarget:(id)target action:(SEL)action
 {

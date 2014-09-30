@@ -263,7 +263,7 @@ static const CGDataProviderSequentialCallbacks asset_fileCallbacks = {
     [super dealloc];
 }
     
-#pragma mark - Helpers
+#pragma mark - Public methods
     
 /* Opal internal access - Sequential */
 

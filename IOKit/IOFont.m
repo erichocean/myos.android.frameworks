@@ -238,7 +238,7 @@ static FcPattern *opal_FcPatternCacheLookup(const char *name);
     return result;
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (bool)canCreatePostScriptSubset: (CGFontPostScriptFormat)format
 {

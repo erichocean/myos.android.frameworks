@@ -195,7 +195,7 @@
     _tracking = NO;
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)_stateDidChange
 {

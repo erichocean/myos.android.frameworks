@@ -716,7 +716,7 @@ static void _UIScrollViewDragBy(UIScrollView *scrollView, CGPoint delta)
     }
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)flashScrollIndicators
 {

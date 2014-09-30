@@ -835,7 +835,7 @@ callUncaughtHandler(id value)
     [super dealloc];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 + (void)raise:(NSString*)name
 	format: (NSString*)format,...

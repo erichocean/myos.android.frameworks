@@ -214,7 +214,7 @@ BOOL _UIPanGestureRecognizerUpdate(UIPanGestureRecognizer *recognizer, CGPoint d
     }
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)reset
 {

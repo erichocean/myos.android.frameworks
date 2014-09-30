@@ -123,21 +123,44 @@ const CFStringRef kCTTypesetterOptionForcedEmbeddingLevel = @"kCTTypesetterOptio
 
 - (CFIndex)suggestLineBreakAtIndex:(CFIndex)start width:(double)width
 {
-    int index = _as.string.length+1;
-    double lineWidth;
-    do {
-        index--;
-        CTLineRef line = [self createLineWithRange:CFRangeMake(start, index - start)];
-        lineWidth = CTLineGetTypographicBounds(line, NULL, NULL, NULL);
-        CFRelease(line);
-    } while (lineWidth > width);
-    //DLog(@"index: %d", index);
-    return index - start;
+    int stringLength = _as.string.length;
+    int numberOfChars = stringLength - start;
+    if (numberOfChars > 10) {
+        numberOfChars = 10;
+    }
+    CTLineRef line = [self createLineWithRange:CFRangeMake(start, numberOfChars)];
+    double lineWidth = CTLineGetTypographicBounds(line, NULL, NULL, NULL);
+    float charAverageWidth = lineWidth / numberOfChars;
+    int suggestedLength = width / charAverageWidth;
+    if (suggestedLength + start > stringLength) {
+        suggestedLength = stringLength - start;
+    }
+    line = [self createLineWithRange:CFRangeMake(start, suggestedLength)];
+    lineWidth = CTLineGetTypographicBounds(line, NULL, NULL, NULL);
+    if (lineWidth > width) {
+        while (lineWidth > width) {
+            suggestedLength--;
+            CTLineRef line = [self createLineWithRange:CFRangeMake(start, suggestedLength)];
+            lineWidth = CTLineGetTypographicBounds(line, NULL, NULL, NULL);
+            CFRelease(line);
+        }
+    } else if (lineWidth < width) {
+        while (lineWidth < width && suggestedLength + start < stringLength) {
+            suggestedLength++;
+            CTLineRef line = [self createLineWithRange:CFRangeMake(start, suggestedLength)];
+            lineWidth = CTLineGetTypographicBounds(line, NULL, NULL, NULL);
+            CFRelease(line);
+        }
+        if (lineWidth > width) {
+            suggestedLength--;
+        }
+    }
+    return suggestedLength;
 }
 
 @end
 
-/* Functions */
+#pragma mark - Shared functions
 
 CTTypesetterRef CTTypesetterCreateWithAttributedString(NSAttributedString *string)
 {

@@ -143,7 +143,7 @@ void CADisplayLinkStartTimer(CADisplayLink *displayLink)
     [_target performSelector:_selector];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)invalidate
 {

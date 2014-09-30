@@ -179,13 +179,13 @@
         float fontSize = _font.pointSize;
         //DLog();
         UIFont *font = [UIFont fontWithName:_font.fontName size:fontSize];
-        DLog(@"_text: %@", _text);
+        //DLog(@"_text: %@", _text);
         CGSize size = [_text sizeWithFont:_font];
         //DLog(@"size: %@", NSStringFromCGSize(size));
         //DLog(@"boundsSize: %@", NSStringFromCGSize(boundsSize));
         while (size.width > boundsSize.width) {
             fontSize--;
-            DLog(@"fontSize: %0.1f", fontSize);
+            //DLog(@"fontSize: %0.1f", fontSize);
             font = [UIFont fontWithName:_font.fontName size:fontSize];
             size = [_text sizeWithFont:font];
             //DLog(@"size: %@", NSStringFromCGSize(size));
@@ -217,7 +217,7 @@
         if (_numberOfLines > 0) {
             maxSize.height = _font.lineHeight * _numberOfLines;
         }
-        DLog(@"_lineBreakMode: %d", _lineBreakMode);
+        //DLog(@"_lineBreakMode: %d", _lineBreakMode);
         drawRect.size = [_text sizeWithFont:_font constrainedToSize:maxSize lineBreakMode:_lineBreakMode];
 
         // now vertically center it
@@ -242,7 +242,7 @@
     }
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(NSInteger)numberOfLines
 {
@@ -251,7 +251,7 @@
         if (numberOfLines > 0) {
             maxSize.height = _font.lineHeight * numberOfLines;
         }
-        DLog(@"_lineBreakMode: %d", _lineBreakMode);
+        //DLog(@"_lineBreakMode: %d", _lineBreakMode);
         CGSize size = [_text sizeWithFont:_font constrainedToSize:maxSize lineBreakMode:_lineBreakMode];
         return (CGRect){bounds.origin, size};
     }
@@ -260,14 +260,14 @@
 
 - (void)drawTextInRect:(CGRect)rect
 {
-    DLog();
+    //DLog();
     [_text drawInRect:rect withFont:_font lineBreakMode:_lineBreakMode alignment:_textAlignment];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
     size = CGSizeMake(((_numberOfLines > 0)? CGFLOAT_MAX : size.width), ((_numberOfLines <= 0)? CGFLOAT_MAX : (_font.lineHeight*_numberOfLines)));
-    DLog(@"_lineBreakMode: %d", _lineBreakMode);
+    //DLog(@"_lineBreakMode: %d", _lineBreakMode);
     return [_text sizeWithFont:_font constrainedToSize:size lineBreakMode:_lineBreakMode];
 }
 

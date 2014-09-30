@@ -81,6 +81,7 @@ static float _UIPageControlHighlightedDotLoaction(UIPageControl *pageControl)
 {
     _numberOfPages = numberOfPages;
     _CALayerSetNeedsDisplay(_layer);
+    _dotView.hidden = (_numberOfPages == 1);
 }
 
 - (NSString *)description
@@ -92,7 +93,10 @@ static float _UIPageControlHighlightedDotLoaction(UIPageControl *pageControl)
  
 - (void)drawRect:(CGRect)rect
 {
-    //DLog();
+    DLog(@"_numberOfPages: %d", _numberOfPages);
+    if (_numberOfPages == 1) {
+        return;
+    }
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
     float dotsSize = _kPageDotInterSpace * (_numberOfPages - 1);

@@ -178,7 +178,7 @@ static NSDate	*theFuture = nil;
     return [NSString stringWithFormat:@"<%@: %p; target: %@, selector: %@>", [self className], self, target, NSStringFromSelector(selector)];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)fire
 {

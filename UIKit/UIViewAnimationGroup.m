@@ -231,7 +231,7 @@ static CAMediaTimingFunction *CAMediaTimingFunctionFromUIViewAnimationCurve(UIVi
     //DLog(@"_animationGroups2: %@", _animationGroups);
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (CAAnimation *)addAnimation:(CAAnimation *)animation
 {

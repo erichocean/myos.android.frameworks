@@ -212,7 +212,7 @@ static id _UIViewControllerNearestParentViewControllerThatIsKindOf(UIViewControl
 {
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)loadView
 {

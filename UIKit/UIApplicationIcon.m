@@ -44,7 +44,7 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
         _iconLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,kImageSize+5,_kIconWidth,15)];
         _iconLabel.textColor = [UIColor whiteColor];
         _iconLabel.textAlignment = UITextAlignmentCenter;
-        _iconLabel.font = [UIFont systemFontOfSize:12];
+        _iconLabel.font = [UIFont systemFontOfSize:10];
         _iconLabel.text = application->_name;
         _iconLabel.adjustsFontSizeToFitWidth = YES;
         [self addSubview:_iconLabel];
@@ -164,6 +164,6 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
     }
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 @end

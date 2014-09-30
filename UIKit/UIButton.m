@@ -468,7 +468,7 @@ static CGRect _UIButtonComponentRectForSize(UIButton *button, CGSize size, CGRec
     //DLog(@"4");
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (CGSize)sizeThatFits:(CGSize)size
 {

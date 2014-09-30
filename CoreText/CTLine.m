@@ -195,7 +195,7 @@ CTLineRef CTLineCreateTruncatedLine(
 	CTLineTruncationType truncationType,
 	CTLineRef truncationToken)
 {
-    DLog(@"line: %@", line);
+    //DLog(@"line: %@", line);
     //DLog(@"width: %f", width);
     return [[line truncatedLineWithWidth:width
                           truncationType:truncationType

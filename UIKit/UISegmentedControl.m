@@ -344,7 +344,7 @@ static NSString *const kSSSegmentedControlEnabledKey = @"enabled";
     }
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {

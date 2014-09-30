@@ -95,7 +95,7 @@ static float _CAMTFSolveCubicPolynomialBetweenValues(float t0, float t1, float x
     return [NSString stringWithFormat:@"<%@: %p; _c1x:%0.2f; _c1y:%0.2f; _c2x:%0.2f; _c2y:%0.2f>", [self className], self, _c1x, _c1y, _c2x, _c2y];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)getControlPointAtIndex:(size_t)idx values:(float[2])ptr
 {

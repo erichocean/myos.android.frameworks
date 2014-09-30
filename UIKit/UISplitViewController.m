@@ -165,7 +165,7 @@ static const CGFloat SplitterPadding = 3;
     }
 }*/
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)addViewControllers:(NSArray *)viewControllers
 {
@@ -247,7 +247,7 @@ static const CGFloat SplitterPadding = 3;
     _delegateHas.willShowViewController = [_delegate respondsToSelector:@selector(splitViewController:willShowViewController:invalidatingBarButtonItem:)];
 }
 
-#pragma mark - Helpers
+#pragma mark - Public methods
 
 - (void)loadView
 {
