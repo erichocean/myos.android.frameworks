@@ -208,10 +208,14 @@ static UIFont *_UIFontGetFontWithCTFont(CTFontRef aFont)
         UIFont *theFont = _UIFontGetFontWithCTFont(newFont);
         CFRelease(newFont);
         return theFont;
-    } 
-    else {
+    } else {
         return nil;
     }
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: %p; fontName: %@; pointSize: %0.0f>", [self className], self, self.fontName, self.pointSize];
 }
 
 @end

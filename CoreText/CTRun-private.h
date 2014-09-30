@@ -28,6 +28,7 @@
  * Container of adjacent glyphs with the same attributes which have been layed out
  */
 @interface CTRun : NSObject {
+    @package
     size_t _count;
     CGGlyph *_glyphs; // pointer to C array of glphs
     CGSize *_advances;

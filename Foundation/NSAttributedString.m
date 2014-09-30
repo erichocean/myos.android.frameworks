@@ -338,29 +338,31 @@ appendUIntData(NSMutableData *d, NSUInteger i)
   return self;
 }
 
-- (id) replacementObjectForPortCoder: (NSPortCoder*)aCoder
+- (id)replacementObjectForPortCoder:(NSPortCoder *)aCoder
 {
-  if ([aCoder isByref] == NO)
-    return self;
-  return [super replacementObjectForPortCoder: aCoder];
+    if ([aCoder isByref] == NO) {
+        return self;
+    }
+    return [super replacementObjectForPortCoder: aCoder];
 }
 
 //NSCopying protocol
-- (id) copyWithZone: (NSZone*)zone
+- (id)copyWithZone: (NSZone*)zone
 {
-  if ([self isKindOfClass: [NSMutableAttributedString class]]
-    || NSShouldRetainWithZone(self, zone) == NO)
-    return [[GSAttributedStringClass allocWithZone: zone]
-      initWithAttributedString: self];
-  else
-    return RETAIN(self);
+    if ([self isKindOfClass: [NSMutableAttributedString class]]
+        || NSShouldRetainWithZone(self, zone) == NO) {
+        return [[GSAttributedStringClass allocWithZone: zone]
+                initWithAttributedString: self];
+    } else {
+        return RETAIN(self);
+    }
 }
 
 //NSMutableCopying protocol
-- (id) mutableCopyWithZone: (NSZone*)zone
+- (id)mutableCopyWithZone:(NSZone *)zone
 {
-  return [[GSMutableAttributedStringClass allocWithZone: zone]
-    initWithAttributedString: self];
+    return [[GSMutableAttributedStringClass allocWithZone: zone]
+            initWithAttributedString: self];
 }
 
 //Creating an NSAttributedString
@@ -380,9 +382,9 @@ appendUIntData(NSMutableData *d, NSUInteger i)
 /**
  *  Initialize to copy of attributedString.
  */
-- (id) initWithAttributedString: (NSAttributedString*)attributedString
+- (id)initWithAttributedString:(NSAttributedString *)attributedString
 {
-  return [self initWithString: (NSString*)attributedString attributes: nil];
+    return [self initWithString:(NSString*)attributedString attributes: nil];
 }
 
 /**

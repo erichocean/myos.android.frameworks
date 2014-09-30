@@ -32,12 +32,12 @@
 
 static CFArrayRef CreateCTLinesForString(NSString *string, CGSize constrainedToSize, UIFont *font, UILineBreakMode lineBreakMode, CGSize *renderSize)
 {
-    //DLog(@"font: %@", font);
+    //DLog(@"string: %@", string);
     CFMutableArrayRef lines = CFArrayCreateMutable(NULL, 0, &kCFTypeArrayCallBacks);
     CGSize drawSize = CGSizeZero;
     if (font) {
         CFMutableDictionaryRef attributes = CFDictionaryCreateMutable(NULL, 2, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-        CFDictionarySetValue(attributes, kCTFontAttributeName,font->_font);
+        CFDictionarySetValue(attributes, kCTFontAttributeName, font->_font);
         CFDictionarySetValue(attributes, kCTForegroundColorFromContextAttributeName, kCFBooleanTrue);
         
         //NSAttributedString * attributedString = CFAttributedStringCreate(NULL, (__bridge CFStringRef)string, attributes);
@@ -76,7 +76,6 @@ static CFArrayRef CreateCTLinesForString(NSString *string, CGSize constrainedToS
                     line = CTTypesetterCreateLine(typesetter, CFRangeMake(start, usedCharacters));
                 } else {
                     CTLineTruncationType truncType;
-                    
                     if (lineBreakMode == UILineBreakModeHeadTruncation) {
                         truncType = kCTLineTruncationStart;
                     } else if (lineBreakMode == UILineBreakModeTailTruncation) {
@@ -86,7 +85,8 @@ static CFArrayRef CreateCTLinesForString(NSString *string, CGSize constrainedToS
                     }
                     //DLog(@"3");
                     usedCharacters = stringLength - start;
-                    NSAttributedString * ellipsisString = CFAttributedStringCreate(NULL, CFSTR("..."), attributes);
+                    //DLog(@"usedCharacters: %d", usedCharacters);
+                    NSAttributedString *ellipsisString = CFAttributedStringCreate(NULL, CFSTR("..."), attributes);
                     CTLineRef ellipsisLine = CTLineCreateWithAttributedString(ellipsisString);
                     CTLineRef tempLine = CTTypesetterCreateLine(typesetter, CFRangeMake(start, usedCharacters));
                     line = CTLineCreateTruncatedLine(tempLine, constrainedToSize.width, truncType, ellipsisLine);
@@ -103,20 +103,18 @@ static CFArrayRef CreateCTLinesForString(NSString *string, CGSize constrainedToS
                     //DLog(@"4.2");
                     usedCharacters = CTTypesetterSuggestLineBreak(typesetter, start, constrainedToSize.width);
                 }
-                
                 // FIXME
                 if (usedCharacters == 0) {
                     //lineBreakMode = UILineBreakModeTailTruncation;
                     usedCharacters = 7;
                     break;
                 }
-                
+                //DLog(@"start: %d, usedCharacters: %d", start, usedCharacters);
                 line = CTTypesetterCreateLine(typesetter, CFRangeMake(start, usedCharacters));
             }
-            //DLog(@"5");
+            //DLog(@"line: %@", line);
             if (line) {
                 drawSize.width = MAX(drawSize.width, ceilf(CTLineGetTypographicBounds(line,NULL,NULL,NULL)));
-                
                 CFArrayAppendValue(lines, line);
                 CFRelease(line);
             }
@@ -161,12 +159,13 @@ static CFArrayRef CreateCTLinesForString(NSString *string, CGSize constrainedToS
     if (lines) {
         CFRelease(lines);
     }
-    //DLog(@"resultingSize: %@", NSStringFromCGSize(resultingSize));
+    DLog(@"resultingSize: %@", NSStringFromCGSize(resultingSize));
     return resultingSize;
 }
 
 - (CGSize)sizeWithFont:(UIFont *)font constrainedToSize:(CGSize)size
 {
+    //DLog(@"size: %@", NSStringFromCGSize(size));
     return [self sizeWithFont:font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap];
 }
 

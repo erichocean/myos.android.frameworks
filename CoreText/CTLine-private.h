@@ -31,10 +31,10 @@
  */
 @interface CTLine : NSObject {
     @package
-  	NSArray *_runs;
-  	double penOffset;
+    NSArray *_runs;
+    double penOffset;
 }
 
-- (id)initWithRuns: (NSArray*)runs;
+- (id)initWithRuns:(NSArray *)runs;
 
 @end

@@ -379,9 +379,9 @@ int UIMAApplicationHandleMessages()
 void UIMAApplicationSaveData(UIMAApplication *app)
 {
     NSString *dataPath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/data.json", app->_name];
-    DLog(@"dataPath: %@", dataPath);
+    //DLog(@"dataPath: %@", dataPath);
     [app->_data setValue:[NSNumber numberWithInt:app->_score] forKeyPath:_kUIMAApplicationScorePath];
-    DLog(@"app->_data: %@", app->_data);
+    //DLog(@"app->_data: %@", app->_data);
     NSData *data = [NSJSONSerialization dataWithJSONObject:app->_data options:0 error:NULL];
     [data writeToFile:dataPath atomically:YES];
 }

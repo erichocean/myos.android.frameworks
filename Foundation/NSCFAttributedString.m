@@ -60,11 +60,10 @@
     [self release];
     self = (NSAttributedString*)new;
     return self;
-
 }
 
 
-- (NSString*) string
+- (NSString *)string
 {
 	return (NSString*)CFAttributedStringGetString(self);
 }
