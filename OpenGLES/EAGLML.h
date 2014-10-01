@@ -13,8 +13,8 @@ typedef enum {
     EAGLMLMessageDeleteTexture,
 } EAGLMLMessage;
 
-extern NSLock *_EAGLMLLock;
-extern BOOL _EAGLMLCanDraw;
+//extern NSLock *_EAGLMLLock;
+//extern BOOL _EAGLMLCanDraw;
 
 void EAGLMLSetChildAppIsRunning(BOOL isRunning);
 void EAGLMLHandleMessages();

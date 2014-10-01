@@ -93,7 +93,7 @@ static float _UIPageControlHighlightedDotLoaction(UIPageControl *pageControl)
  
 - (void)drawRect:(CGRect)rect
 {
-    DLog(@"_numberOfPages: %d", _numberOfPages);
+    //DLog(@"_numberOfPages: %d", _numberOfPages);
     if (_numberOfPages == 1) {
         return;
     }

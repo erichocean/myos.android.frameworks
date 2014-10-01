@@ -141,7 +141,7 @@ static void mysig(int sig)
     //DLog(@"Signal %d", sig);
     switch (sig) {
         case SIGALRM:
-            DLog(@"SIGALRM");
+            //DLog(@"SIGALRM");
             break;
         case SIGTERM:
             //DLog(@"SIGTERM");

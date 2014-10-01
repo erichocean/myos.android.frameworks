@@ -137,9 +137,7 @@ static void _CAAnimatorCaptureScreenFunction()
         if ([_CAAnimatorNAConditionLock tryLockWhenCondition:_CAAnimatorConditionLockHasWork]) {
             EAGLMLHandleMessages();
             [_CAAnimatorNAConditionLock unlock];
-        } /*else {
-            DLog(@"locked");
-        }*/
+        }
 #endif
         [pool2 release];
     }
@@ -167,7 +165,7 @@ static void _CAAnimatorCaptureScreenFunction()
 #endif
     //DLog();
 #ifdef DEBUG
-    _CAAnimatorFrameCount++;
+    //_CAAnimatorFrameCount++;
 #endif
     //currentTime = CACurrentMediaTime();
     //reportFPS(YES);
@@ -189,7 +187,7 @@ static void _CAAnimatorCaptureScreenFunction()
         //DLog();
         if (_treeHadPendingAnimations) {
 #ifdef DEBUG
-            reportFPS(NO);
+            //reportFPS(NO);
 #endif
             _treeHadPendingAnimations = NO;
         }

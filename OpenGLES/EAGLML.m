@@ -7,8 +7,8 @@
 #import <IOKit/IOKit.h>
 #import <OpenGLES/EAGL-private.h>
 
-NSLock *_EAGLMLLock = nil;
-BOOL _EAGLMLCanDraw = YES;
+//NSLock *_EAGLMLLock = nil;
+//BOOL _EAGLMLCanDraw = YES;
 
 static int _pipeRead;
 static int _pipeWrite;
@@ -105,12 +105,6 @@ void EAGLMLLoadImage()
 void EAGLMLDraw()
 {
     //DLog();
-    //[_EAGLMLLock lock];
-    //DLog(@"_EAGLMLLock: %@", _EAGLMLLock);
-    //if (!_EAGLMLCanDraw) {
-        //return;
-    //}
-
     int i;
     int textureID = IOPipeReadIntWithPipe(_pipeRead);
     glBindTexture(GL_TEXTURE_2D, textureID);

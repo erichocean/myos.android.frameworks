@@ -4,14 +4,10 @@
  */
 
 #import <fcntl.h>
-//#import <sys/wait.h>
 #import <UIKit/UIKit-private.h>
 #import <IOKit/IOKit.h>
 #import <OpenGLES/EAGL-private.h>
 #import <CoreGraphics/CoreGraphics-private.h>
-
-//#define kMainPipeRead           10
-//#define kMainPipeWrite          21
 
 NSMutableDictionary *_allApplicationsDictionary;
 UIMAApplication *_currentMAApplication = nil;

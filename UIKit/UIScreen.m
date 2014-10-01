@@ -198,6 +198,7 @@ UIView *_UIScreenHitTest(UIScreen *screen, CGPoint touchPoint, UIEvent *theEvent
 
 CGImageRef _UIScreenCaptureScreen()
 {
+    //DLog();
     _CAAnimatorCaptureScreen = YES;
     while (_CAAnimatorCaptureScreen) {
         usleep(1000);
