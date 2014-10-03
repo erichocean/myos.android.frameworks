@@ -190,13 +190,13 @@ void UIMLApplicationShowLauncher()
         return;
     }
     //DLog(@"_currentMAApplication: %@", _currentMAApplication);
-    _currentMAApplication->_screenImageView->_layer.contents = _UIScreenCaptureScreen();
+    UIMAApplicationTakeScreenCaptureIfNeeded(_currentMAApplication);
     IOPipeWriteMessage(MAPipeMessageWillEnterBackground, YES);
     _UIApplicationEnterForeground();
     
     UIMLApplication *mlApplication = [UIMLApplication sharedMLApplication];
     _currentMAApplication = nil;
-
+    
     mlApplication->_launcherView.hidden = NO;
     //DLog();
     [mlApplication->_uiApplication->_keyWindow performSelector:@selector(bringSubviewToFront:)
@@ -288,9 +288,11 @@ void UIMLApplicationMoveCurrentAppToTop()
     UIMLApplication *mlApplication = [UIMLApplication sharedMLApplication];
     NSArray *subviews = [mlApplication->_uiApplication->_keyWindow subviews];
     int currentViewIndex = [subviews indexOfObject:currentView];
+    _currentMAApplication->_needsScreenCapture = YES;
     if (currentViewIndex == subviews.count - 1) {
         return;
     }
+    //currentView->_layer.contents = _UIScreenCaptureScreen();
     UIApplication *uiApplication = mlApplication->_uiApplication;
     [uiApplication->_keyWindow bringSubviewToFront:currentView];
     //DLog(@"_launcherApp->_keyWindow.subviews: %@", _launcherApp->_keyWindow.subviews);

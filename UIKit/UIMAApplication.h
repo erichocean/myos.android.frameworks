@@ -18,6 +18,7 @@ extern UIMAApplication *_currentMAApplication;
     NSString *_name;
     NSMutableDictionary *_data;
     BOOL _running;
+    BOOL _needsScreenCapture;
     int _score;
     pid_t _pid;
     int _pipeRead;
@@ -48,7 +49,6 @@ extern UIMAApplication *_currentMAApplication;
 
 @end
 
-//void UIMAApplicationInitialize();
-//int UIMAApplicationHandleMessages();
+void UIMAApplicationTakeScreenCaptureIfNeeded(UIMAApplication *app);
 void UIMAApplicationSaveData(UIMAApplication *app);
 void UIMAApplicationClosePipes();

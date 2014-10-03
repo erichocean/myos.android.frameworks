@@ -54,6 +54,7 @@ static void UIMAApplicationRunApp(NSString *appName)
         _name = name;
         [_allApplicationsDictionary setObject:self forKey:name];
         _running = NO;
+        _needsScreenCapture = YES;
         NSString *dataPath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/data.json", _name];
         NSData *data = [NSData dataWithContentsOfFile:dataPath];
         _data = [[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:NULL] retain];
@@ -140,7 +141,7 @@ static void UIMAApplicationRunApp(NSString *appName)
     _running = newValue;
     //DLog(@"self: %@, running: %d", self, _running);
     //[self didChangeValueForKey:@"running"];
-    _applicationIcon->_iconLabel.textColor = [UIColor orangeColor];
+    _applicationIcon->_iconLabel.textColor = [UIColor yellowColor]; // orangeColor];
 }
 
 - (NSString *)description
@@ -300,7 +301,7 @@ static void UIMAApplicationRunApp(NSString *appName)
 {
     IOPipeSetPipes(_pipeRead, _pipeWrite);
     _currentMAApplication = self;
-    //DLog(@"self: %@", self);
+    DLog(@"self: %@", self);
 #ifdef NA
     EAGLMLSetPipes(_animationPipeRead, _animationPipeWrite);
     if (withSignal) {
@@ -324,53 +325,14 @@ static void UIMAApplicationRunApp(NSString *appName)
 @end
 
 #pragma mark - Shared functions
-/*
-void UIMAApplicationInitialize()
-{
-    //DLog();
-    IOPipeSetPipes(kMainPipeRead, kMainPipeWrite);
-    
-    MAPipeMessage message = IOPipeReadMessage();
-    //DLog(@"message: %d", message);
-    NSString *processName = @"ProcessName";
-    if (message == MAPipeMessageCharString) {
-        processName = IOPipeReadCharString();
-        //DLog(@"processName: %@", processName);
-        [[NSProcessInfo processInfo] setProcessName:processName];
-        _CGDataProviderSetMAAppName(processName);
-    } else {
-        //DLog(@"message: %d", message);
-        NSLog(@"Error can't get process name");
-    }
-    (void)signal(SIGALRM, mysig);
-    (void)signal(SIGTERM, mysig);
-}
 
-int UIMAApplicationHandleMessages()
+void UIMAApplicationTakeScreenCaptureIfNeeded(UIMAApplication *app)
 {
-    //DLog();
-    int message = IOPipeReadMessage();
-    //DLog();
-    switch (message) {
-        case MAPipeMessageEndOfMessage:
-            break;
-        case MAPipeMessageWillEnterBackground:
-            _UIApplicationEnterBackground();
-            pause();
-            _UIApplicationEnterForeground();
-            break;
-        case MAPipeMessageHello:
-            DLog(@"MAPipeMessageHello");
-            break;
-        case MAPipeMessageTerminateApp:
-            //DLog(@"MAPipeMessageTerminateApp");
-            IOPipeWriteMessage(MLPipeMessageTerminateApp, YES);
-            return MAPipeMessageTerminateApp;
-        default:
-            break;
+    if (app->_needsScreenCapture) {
+        app->_screenImageView->_layer.contents = _UIScreenCaptureScreen();
+        app->_needsScreenCapture = NO;
     }
-    return 0;
-}*/
+}
 
 void UIMAApplicationSaveData(UIMAApplication *app)
 {

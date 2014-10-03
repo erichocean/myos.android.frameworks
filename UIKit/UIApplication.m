@@ -141,7 +141,7 @@ static void mysig(int sig)
     //DLog(@"Signal %d", sig);
     switch (sig) {
         case SIGALRM:
-            //DLog(@"SIGALRM");
+            DLog(@"SIGALRM");
             break;
         case SIGTERM:
             //DLog(@"SIGTERM");
@@ -813,7 +813,7 @@ BOOL _UIApplicationEnterBackground()
 
 void _UIApplicationEnterForeground()
 {
-    //DLog(@"_application: %@", _application);
+    DLog(@"_application: %@", _application);
     if (_application->_applicationState == UIApplicationStateBackground) {
         if ([_application->_delegate respondsToSelector:@selector(applicationWillEnterForeground:)]) {
             [_application->_delegate applicationWillEnterForeground:_application];
