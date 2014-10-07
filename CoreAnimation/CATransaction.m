@@ -58,6 +58,7 @@ static void _CATransactionCopyTree(CALayer *layer)
 
 static void _CATransactionUnloadIfNeeded(CALayer *layer)
 {
+    //DLog(@"layer: %@", layer);
     if (layer->_needsUnload) {
         layer->_needsUnload = NO;
         CALayer *presentationLayer = layer->_presentationLayer;
@@ -73,7 +74,7 @@ static void _CATransactionRemoveLayers()
 {
     //DLog();
     for (CALayer *layer in _removeLayers) {
-        //DLog(@"layer: %@", layer);
+        DLog(@"layer: %@", layer);
         CALayer *presentationLayer = layer->_presentationLayer;
         //DLog(@"presentationLayer: %@", presentationLayer);
         CARenderLayer *renderLayer = (CARenderLayer *)presentationLayer->_renderLayer;

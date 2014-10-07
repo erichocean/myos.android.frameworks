@@ -40,10 +40,12 @@ extern UIMAApplication *_currentMAApplication;
 
 - (id)initWithAppName:name;
 - (void)swapLocationWithApp:(UIMAApplication *)anotherApp;
+- (BOOL)isCurrent;
 - (void)startApp;
 - (void)setAsCurrent:(BOOL)withSignal;
 - (void)terminate;
 - (void)singleTapped;
+- (void)showMenu;
 - (void)closeApp;
 - (void)deleteApp;
 

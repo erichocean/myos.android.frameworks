@@ -246,23 +246,24 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
 
 - (void)setHidden:(BOOL)newValue
 {
-    //DLog(@"self: %@", self);
-    _hidden = newValue;
+    DLog(@"self: %@", self);
     if (newValue == YES) {
+        DLog(@"newValue == YES");
         self.opacity = 0;
         //_CALayerSetNeedsUnload(self);
-        if (self->_superlayer== nil || self->_superlayer->_superlayer == nil) {
+        if (_superlayer == nil || _superlayer->_superlayer == nil) {
             _CALayerSetNeedsUnload(self);
         }
     } else {
         self.opacity = 1;
-        if (self->_superlayer== nil || self->_superlayer->_superlayer == nil) {
+        if (_hidden && (_superlayer == nil || _superlayer->_superlayer == nil)) {
+            DLog(@"_hidden && (_superlayer== nil || _superlayer->_superlayer == nil)");
             _CALayerSetNeedsDisplayWithRoot(self);
         } else {
             _CALayerSetNeedsComposite(self);
         }
     }
-    //_CALayerSetNeedsComposite(self);
+    _hidden = newValue;
 }
 
 - (id)presentationLayer
@@ -515,7 +516,8 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@: %p; frame:%@; _animations:%@>", [self className], self, NSStringFromRect(NSRectFromCGRect(self.frame)), _animations];
+    //return [NSString stringWithFormat:@"<%@: %p; frame:%@; _animations:%@>", [self className], self, NSStringFromRect(NSRectFromCGRect(self.frame)), _animations];
+    return [NSString stringWithFormat:@"<%@: %p; frame:%@>", [self className], self, NSStringFromRect(NSRectFromCGRect(self.frame))];
 }
 
 #pragma mark - Layout
@@ -553,7 +555,7 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
 
 - (void)setNeedsDisplay
 {
-    //DLog(@"self: %@", self);
+    DLog(@"self: %@", self);
     _CALayerSetNeedsDisplay(self);
 }
 
@@ -780,8 +782,8 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
 
 - (void)removeFromSuperlayer
 {
-    //DLog(@"self: %@", self);
     if (_superlayer) {
+        DLog(@"self: %@", self);
         _CATransactionAddToRemoveLayers(self);
         _CFArrayRemoveValue(_superlayer->_sublayers, self);
         if (self->_superlayer->_superlayer == nil) { // if superlayer is the window
@@ -794,7 +796,7 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
 
 - (void)insertSublayer:(CALayer *)layer atIndex:(unsigned)index
 {
-    //DLog(@"layer: %@", layer);
+    DLog(@"layer: %@", layer);
     if (!layer) {
         return;
     }
@@ -820,7 +822,7 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
 
 - (void)moveLayerToTop:(CALayer *)layer
 {
-    //DLog(@"layer: %@", layer);
+    DLog(@"layer: %@", layer);
     if (!layer) {
         return;
     }
@@ -834,7 +836,7 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
 
 - (void)insertSublayer:(CALayer *)layer below:(CALayer *)sibling
 {
-    //DLog(@"layer: %@", layer);
+    DLog(@"layer: %@", layer);
     if (!layer || !sibling) {
         return;
     }
@@ -859,7 +861,7 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
 
 - (void)insertSublayer:(CALayer *)layer above:(CALayer *)sibling
 {
-    //DLog(@"layer: %@", layer);
+    DLog(@"layer: %@", layer);
     if (!layer || !sibling) {
         return;
     }
@@ -885,7 +887,7 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
 
 - (void)replaceSublayer:(CALayer *)oldLayer with:(CALayer *)newLayer
 {
-    //DLog(@"newLayer: %@", newLayer);
+    DLog(@"newLayer: %@", newLayer);
     if (oldLayer && newLayer && newLayer->_superlayer != self) {
         [newLayer removeFromSuperlayer];
         CFIndex oldLayerIndex = [self indexOfLayer:oldLayer];

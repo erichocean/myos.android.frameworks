@@ -33,9 +33,9 @@ static void UIMAApplicationRunApp(NSString *appName)
 
 @implementation UIMAApplication
 
-@synthesize screenImageView=_screenImageView;
 @synthesize name=_name;
 @synthesize score=_score;
+@dynamic screenImageView;
 @dynamic pageNumber;
 @dynamic xLocation;
 @dynamic yLocation;
@@ -65,9 +65,9 @@ static void UIMAApplicationRunApp(NSString *appName)
         
         _applicationIcon = [[UIApplicationIcon alloc] initWithApplication:self];
         
-        NSString *imagePath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/Default.png", _name];
-        UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
-        _screenImageView = [[UIImageView alloc] initWithImage:image];
+        //NSString *imagePath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/Default.png", _name];
+        //UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
+        _screenImageView = nil;//[[UIImageView alloc] initWithImage:image];
         //DLog(@"%@, Loaded _screenImageView: %@", name, _screenImageView);
         
         //DLog(@"x: %d", x);
@@ -85,6 +85,25 @@ static void UIMAApplicationRunApp(NSString *appName)
 }
 
 #pragma mark - Accessors
+
+- (UIImageView *)screenImageView
+{
+    //DLog();
+    if (!_screenImageView) {
+        NSString *imagePath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/Default.png", _name];
+        UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
+        _screenImageView = [[UIImageView alloc] initWithImage:image];
+    }
+    return _screenImageView;
+}
+
+- (void)setScreenImageView:(UIImageView *)screenImageView
+{
+    if (_screenImageView) {
+        [_screenImageView release];
+    }
+    _screenImageView = [screenImageView retain];
+}
 
 - (int)pageNumber
 {

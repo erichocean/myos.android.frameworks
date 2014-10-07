@@ -172,7 +172,7 @@ CFSetGetValues(CFSetRef set, const void **values)
         CFArrayGetValues(result, CFRangeMake(0, CFArrayGetCount(result)), values);
         return;
     }
-    printf("CFSetGetValues set: %p", set);
+    //printf("CFSetGetValues set: %p", set);
     GSHashTableGetKeysAndValues((GSHashTableRef)set, values, NULL);
 }
 

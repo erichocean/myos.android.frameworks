@@ -79,6 +79,7 @@ static void _CACompositorCompositeTreeRecursive(CARenderLayer *layer)
 static void _CACompositorCompositeTree(CARenderLayer *rootRenderLayer)
 {
     if (!rootRenderLayer->_hidden) {
+        //DLog(@"rootRenderLayer: %@", rootRenderLayer);
         _CARenderLayerCompositeIfNeeded(rootRenderLayer);
         _CACompositorCompositeTreeRecursive(rootRenderLayer);
     }

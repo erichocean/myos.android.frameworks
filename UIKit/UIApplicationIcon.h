@@ -19,10 +19,10 @@ typedef enum {
     UIImageView *_iconImage;
     UIMAApplication *_application;
     UILabel *_iconLabel;
-    UIIconControl *_closeControl;
-    UIIconControl *_deleteControl;
-    UIIconControl *_menuControl;
-    UIIconControl *_anchorControl;
+    //UIIconControl *_closeControl;
+    //UIIconControl *_deleteControl;
+    //UIIconControl *_menuControl;
+    //UIIconControl *_anchorControl;
     UIApplicationIconMode _mode;
 }
 

@@ -26,7 +26,7 @@
 
 @end
 
-#pragma mark - ========== C functions ==========
+#pragma mark - Shared functions
 
 void _CABackingStoreLoad(CABackingStore *backingStore, NSArray *images)
 {
@@ -37,6 +37,7 @@ void _CABackingStoreLoad(CABackingStore *backingStore, NSArray *images)
 
 void _CABackingStoreUnload(CABackingStore *backingStore)
 {
+    //DLog();
     _EAGLTextureUnload(backingStore->_texture);
 }
 

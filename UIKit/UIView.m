@@ -212,7 +212,7 @@ static BOOL _UIViewInstanceImplementsSelector(SEL sel, Class instanceClass)
 
 - (void)setAlpha:(CGFloat)newAlpha
 {
-    //DLog(@"self: %@, alpha: %f, newAlpha: %f", self, _layer->opacity, newAlpha);
+    //DLog(@"self: %@, alpha: %f, newAlpha: %f", self, _layer->_opacity, newAlpha);
     //if (newAlpha != _layer.opacity) {
         //DLog(@"self: %@", self);
     _layer.opacity = newAlpha;

@@ -12,7 +12,7 @@
 #define _kIconControlMargin     3
 
 #pragma mark - Static functions
-
+/*
 static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIcon)
 {
     applicationIcon->_mode = UIApplicationIconModeNormal;
@@ -20,8 +20,8 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
     applicationIcon->_deleteControl.hidden = YES;
     
     applicationIcon->_menuControl.hidden = YES;
-    applicationIcon->_anchorControl.hidden = YES;
-}
+    //applicationIcon->_anchorControl.hidden = YES;
+}*/
 
 @implementation UIApplicationIcon
 
@@ -49,7 +49,7 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
         _iconLabel.adjustsFontSizeToFitWidth = YES;
         [self addSubview:_iconLabel];
         
-        _closeControl = [[UIIconControl alloc] initWithFrame:CGRectMake(_kIconControlMargin,_kIconControlMargin,
+        /*_closeControl = [[UIIconControl alloc] initWithFrame:CGRectMake(_kIconControlMargin,_kIconControlMargin,
                                                                         _kIconControlSize,_kIconControlSize)
                                                      andType:UIIconControlTypeClose];
         [_closeControl addTarget:self action:@selector(iconControlClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -71,15 +71,15 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
         [_menuControl addTarget:self action:@selector(iconControlClicked:) forControlEvents:UIControlEventTouchUpInside];
         _menuControl.hidden = YES;
         _menuControl->_applicationIcon = self;
-        [self addSubview:_menuControl];
+        [self addSubview:_menuControl];*/
         
-        _anchorControl = [[UIIconControl alloc] initWithFrame:CGRectMake(_kIconWidth-_kIconControlSize,kImageSize-_kIconControlSize,
-                                                                         _kIconControlSize,_kIconControlSize)
-                                                      andType:UIIconControlTypeAnchor];
-        [_anchorControl addTarget:self action:@selector(iconControlClicked:) forControlEvents:UIControlEventTouchUpInside];
-        _anchorControl.hidden = YES;
-        _anchorControl->_applicationIcon = self;
-        [self addSubview:_anchorControl];
+        //_anchorControl = [[UIIconControl alloc] initWithFrame:CGRectMake(_kIconWidth-_kIconControlSize,kImageSize-_kIconControlSize,
+        //                                                                 _kIconControlSize,_kIconControlSize)
+        //                                              andType:UIIconControlTypeAnchor];
+        //[_anchorControl addTarget:self action:@selector(iconControlClicked:) forControlEvents:UIControlEventTouchUpInside];
+        //_anchorControl.hidden = YES;
+        //_anchorControl->_applicationIcon = self;
+        //[self addSubview:_anchorControl];
         
         // Single tap gesture
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -113,17 +113,18 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
 - (void)singleTapped:(id)sender
 {
     //DLog();
-    if (_mode == UIApplicationIconModeNormal) {
+    //if (_mode == UIApplicationIconModeNormal) {
         [_application singleTapped];
-    } else {
-        _UIApplicationIconResetToNormalMode(self);
-    }
+    //} else {
+    //    _UIApplicationIconResetToNormalMode(self);
+    //}
 }
 
 - (void)longPressed:(id)sender
 {
-    //DLog();
-    if (_mode == UIApplicationIconModeNormal) {
+    DLog();
+    [_application showMenu];
+    /*if (_mode == UIApplicationIconModeNormal) {
         if (_application->_running) {
             _mode = UIApplicationIconModeClose;
             _closeControl.hidden = NO;
@@ -132,12 +133,12 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
             _deleteControl.hidden = NO;
         }
         _menuControl.hidden = NO;
-        _anchorControl.hidden = NO;
+        //_anchorControl.hidden = NO;
     } else {
         _UIApplicationIconResetToNormalMode(self);
-    }
+    }*/
 }
-
+/*
 - (void)iconControlClicked:(UIIconControl *)iconControl
 {
     DLog(@"iconControl: %@", iconControl);
@@ -162,7 +163,7 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
         default:
             break;
     }
-}
+}*/
 
 #pragma mark - Public methods
 

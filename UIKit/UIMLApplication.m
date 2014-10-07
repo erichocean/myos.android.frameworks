@@ -51,13 +51,14 @@ static CFTimeInterval _lastGobackTime = 0;
 
 #pragma mark - Accessors
 
-#pragma mark - Other delegates
+#pragma mark - Delegates
 
 - (void)presentAppDone
 {
-    [_uiApplication->_keyWindow sendSubviewToBack:_launcherView];
+    DLog();
     _launcherView.hidden = YES;
-    //DLog();
+    [_uiApplication->_keyWindow sendSubviewToBack:_launcherView];
+    DLog();
     _UIApplicationEnterBackground();
     NSArray *subviews = [_uiApplication->_keyWindow subviews];
     UIView *view = [subviews objectAtIndex:subviews.count-1];
@@ -126,22 +127,22 @@ void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, float animationDura
 {
     //DLog();
     UIApplication *uiApplication = [UIMLApplication sharedMLApplication]->_uiApplication;
-    //DLog(@"currentView: %@", currentView);
-    [uiApplication->_keyWindow bringSubviewToFront:maApp->_screenImageView];
+    //DLog(@"uiApplication: %@", uiApplication);
+    [uiApplication->_keyWindow bringSubviewToFront:maApp.screenImageView];
     
-    maApp->_screenImageView.frame = CGRectMake(0,0,uiApplication->_keyWindow.frame.size.width,uiApplication->_keyWindow.frame.size.height);
-    //DLog(@"maApp->_screenImageView: %@", maApp->_screenImageView);
-    maApp->_screenImageView.hidden = NO;
-    maApp->_screenImageView.alpha = 0;
+    maApp.screenImageView.frame = CGRectMake(0,0,uiApplication->_keyWindow.frame.size.width,uiApplication->_keyWindow.frame.size.height);
+    DLog(@"maApp.screenImageView: %@", maApp.screenImageView);
+    maApp.screenImageView.hidden = NO;
+    maApp.screenImageView.alpha = 0;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveLinear];
     [UIView setAnimationDuration:animationDuration];
     [UIView setAnimationDelegate:[UIMLApplication sharedMLApplication]];
     [UIView setAnimationDidStopSelector:@selector(presentAppDone)];
     
-    maApp->_screenImageView.alpha = 1;
-    //maApp->_screenImageView.frame = CGRectMake(0,0,uiApplication->_keyWindow.frame.size.width,uiApplication->_keyWindow.frame.size.height);
+    maApp.screenImageView.alpha = 1;
     [UIView commitAnimations];
+    //[[UIMLApplication sharedMLApplication] presentAppDone];
 #ifdef NA
     [_CAAnimatorNAConditionLock unlockWithCondition:_CAAnimatorConditionLockHasWork];
 #endif
@@ -177,19 +178,19 @@ void UIMLApplicationRunApp(UIMAApplication *maApp)
 {
     //DLog();
     maApp.running = YES;
-    [_runningApplicationsDictionary setObject:maApp forKey:[NSString stringWithFormat:@"%p", maApp->_screenImageView]];
+    [_runningApplicationsDictionary setObject:maApp forKey:[NSString stringWithFormat:@"%p", maApp.screenImageView]];
     UIApplication *uiApplication = [UIMLApplication sharedMLApplication]->_uiApplication;
-    [uiApplication->_keyWindow addSubview:maApp->_screenImageView];
+    [uiApplication->_keyWindow addSubview:maApp.screenImageView];
     [maApp startApp];
 }
 
 void UIMLApplicationShowLauncher()
 {
-    //DLog();
+    DLog();
     if (!_currentMAApplication) {
         return;
     }
-    //DLog(@"_currentMAApplication: %@", _currentMAApplication);
+    DLog(@"_currentMAApplication: %@", _currentMAApplication);
     UIMAApplicationTakeScreenCaptureIfNeeded(_currentMAApplication);
     IOPipeWriteMessage(MAPipeMessageWillEnterBackground, YES);
     _UIApplicationEnterForeground();
@@ -198,7 +199,7 @@ void UIMLApplicationShowLauncher()
     _currentMAApplication = nil;
     
     mlApplication->_launcherView.hidden = NO;
-    //DLog();
+    DLog();
     [mlApplication->_uiApplication->_keyWindow performSelector:@selector(bringSubviewToFront:)
                                                     withObject:mlApplication->_launcherView
                                                     afterDelay:0.1];
@@ -236,7 +237,7 @@ void UIMLApplicationGoBack()
         //DLog(@"subviews.count == 2");
         return;
     }
-    currentView = _currentMAApplication->_screenImageView;
+    currentView = _currentMAApplication.screenImageView;
     //DLog(@"_currentMAApplication: %@", _currentMAApplication);
     
     IOPipeWriteMessage(MAPipeMessageWillEnterBackground, YES);
@@ -280,11 +281,12 @@ void UIMLApplicationGoBack()
 void UIMLApplicationMoveCurrentAppToTop()
 {
     //return;
+    DLog();
     if (!_currentMAApplication) {
         return;
     }
-    //DLog(@"_currentMAApplication: %@", _currentMAApplication);
-    UIView *currentView = _currentMAApplication->_screenImageView;
+    DLog(@"_currentMAApplication: %@", _currentMAApplication);
+    UIView *currentView = _currentMAApplication.screenImageView;
     UIMLApplication *mlApplication = [UIMLApplication sharedMLApplication];
     NSArray *subviews = [mlApplication->_uiApplication->_keyWindow subviews];
     int currentViewIndex = [subviews indexOfObject:currentView];

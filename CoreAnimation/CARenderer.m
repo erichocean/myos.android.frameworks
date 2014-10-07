@@ -35,6 +35,7 @@ void _CARendererDisplayLayers(BOOL isModelLayer)
         displayLayers = _needsDisplayPresentationLayers;
     }
     //DLog(@"displayLayers: %@", displayLayers);
+    //DLog(@"_needsLoadRenderLayers: %@", _needsLoadRenderLayers);
     //DLog(@"[displayLayers className]: %@", [displayLayers className]);
     for (CALayer *layer in displayLayers) {
         _CALayerDisplay(layer);
@@ -70,7 +71,7 @@ void _CARendererDisplayLayers(BOOL isModelLayer)
 void _CARendererLoadRenderLayers()
 {
     //DLog();
-    //DLog(@"_needsLoadRenderLayers: %p", _needsLoadRenderLayers);
+    //DLog(@"_needsLoadRenderLayers: %@", _needsLoadRenderLayers);
     //DLog(@"_needsLoadRenderLayers.count: %d", _needsLoadRenderLayers.count);
     for (CARenderLayer *layer in _needsLoadRenderLayers) {
         //DLog(@"layer: %@", layer);

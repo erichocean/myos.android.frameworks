@@ -830,6 +830,8 @@ void _UIApplicationSetCurrentEventTouchedView()
     //DLog(@"currentEvent: %@", currentEvent);
     NSSet *touches = [currentEvent allTouches];
     UITouch *touch = [touches anyObject];
+    //DLog(@"touch: %@", touch);
+    //DLog(@"touch.view: %@", touch.view);
     UIView *previousView = [touch.view retain];
     CGPoint screenLocation = touch->_location;
     UIScreen *theScreen = _application->_keyWindow->_screen;

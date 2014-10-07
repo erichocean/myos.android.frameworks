@@ -13,6 +13,7 @@ static BOOL _foundOpaqueLayer = NO;
 
 static void setNeedsCompositeIfIntersects(CARenderLayer *layer, CARenderLayer *opaqueLayer, CGRect r)
 {
+    //if (layer->_opacity > 0) {
     CGRect rectInLayer = [opaqueLayer convertRect:r toLayer:layer];
     if (CGRectIntersectsRect(layer->_bounds, rectInLayer)) {
         CGRect intersection = CGRectIntersection(layer->_bounds, rectInLayer);
@@ -22,18 +23,21 @@ static void setNeedsCompositeIfIntersects(CARenderLayer *layer, CARenderLayer *o
             setNeedsCompositeIfIntersects(sublayer, opaqueLayer, r);
         }
     }
+    //}
 }
 
 static void setNeedsCompositeInRect(CARenderLayer *layer, CARenderLayer *opaqueLayer, CGRect r)
 {
     for (CARenderLayer *sublayer in layer->_sublayers) {
-        if (sublayer==opaqueLayer) {
-            _foundOpaqueLayer = YES;
+        if (!sublayer->_hidden) {
+            if (sublayer==opaqueLayer) {
+                _foundOpaqueLayer = YES;
+            }
+            if (_foundOpaqueLayer) {
+                setNeedsCompositeIfIntersects(sublayer,opaqueLayer,r);
+            }
+            setNeedsCompositeInRect(sublayer, opaqueLayer, r);
         }
-        if (_foundOpaqueLayer) {
-           setNeedsCompositeIfIntersects(sublayer,opaqueLayer,r);
-        }
-        setNeedsCompositeInRect(sublayer, opaqueLayer, r);
     }
 }
 
@@ -152,7 +156,7 @@ static void _CARenderLayerComposite(CARenderLayer *layer)
         _CARenderLayerCompositeWithOpacity(layer, layer->_opacity, textureID);
     } else {
         textureID = layer->_backingStore->_texture->_textureIDs[0];
-        //DLog(@"opacity: %0.1f", layer->opacity);
+        //DLog(@"opacity: %0.1f", layer->_opacity);
         _CARenderLayerCompositeWithOpacity(layer, layer->_opacity, textureID);
     }
 }
@@ -212,7 +216,7 @@ void _CARenderLayerCopy(CARenderLayer *renderLayer, CALayer *presentationLayer)
 
 CARenderLayer *_CARenderLayerClosestOpaqueLayerFromLayer(CARenderLayer *layer)
 {
-    if (layer->_opaque || !layer->_superlayer) {
+    if ((layer->_opaque && !layer->_hidden) || !layer->_superlayer) {
         return layer;
     } else {
         return _CARenderLayerClosestOpaqueLayerFromLayer((CARenderLayer *)layer->_superlayer);
