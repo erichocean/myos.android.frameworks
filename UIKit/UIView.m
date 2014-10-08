@@ -736,7 +736,6 @@ static BOOL _UIViewInstanceImplementsSelector(SEL sel, Class instanceClass)
         [_subviews moveObjectToTop:subview];
         //DLog();
         [_layer moveLayerToTop:subview->_layer];
-        //[_layer insertSublayer:subview->_layer above:[_layer->_sublayers lastObject]];
         //DLog();
     }
 }

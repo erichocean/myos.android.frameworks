@@ -155,9 +155,14 @@ static void _CARenderLayerComposite(CARenderLayer *layer)
         }
         _CARenderLayerCompositeWithOpacity(layer, layer->_opacity, textureID);
     } else {
-        textureID = layer->_backingStore->_texture->_textureIDs[0];
-        //DLog(@"opacity: %0.1f", layer->_opacity);
-        _CARenderLayerCompositeWithOpacity(layer, layer->_opacity, textureID);
+        if (layer->_backingStore->_texture->_numberOfTextures > 0) {
+            textureID = layer->_backingStore->_texture->_textureIDs[0];
+            //DLog(@"opacity: %0.1f", layer->_opacity);
+            //DLog(@"textureID: %d", textureID);
+            _CARenderLayerCompositeWithOpacity(layer, layer->_opacity, textureID);
+        } else {
+            DLog(@"layer->_backingStore->_texture->_numberOfTextures == 0");
+        }
     }
 }
 

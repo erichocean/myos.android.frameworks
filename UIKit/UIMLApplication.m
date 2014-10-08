@@ -186,11 +186,11 @@ void UIMLApplicationRunApp(UIMAApplication *maApp)
 
 void UIMLApplicationShowLauncher()
 {
-    DLog();
+    //DLog();
     if (!_currentMAApplication) {
         return;
     }
-    DLog(@"_currentMAApplication: %@", _currentMAApplication);
+    //DLog(@"_currentMAApplication: %@", _currentMAApplication);
     UIMAApplicationTakeScreenCaptureIfNeeded(_currentMAApplication);
     IOPipeWriteMessage(MAPipeMessageWillEnterBackground, YES);
     _UIApplicationEnterForeground();
@@ -203,6 +203,7 @@ void UIMLApplicationShowLauncher()
     [mlApplication->_uiApplication->_keyWindow performSelector:@selector(bringSubviewToFront:)
                                                     withObject:mlApplication->_launcherView
                                                     afterDelay:0.1];
+    //DLog(@"mlApplication->_launcherView: %@", mlApplication->_launcherView);
 #ifdef NA
     [_CAAnimatorNAConditionLock lockWithCondition:_CAAnimatorConditionLockHasNoWork];
 #endif

@@ -147,5 +147,7 @@ void _CACompositorComposite()
     //DLog();
     CARenderLayer *rootRenderLayer = (CARenderLayer *)_CALayerRootLayer()->_renderLayer;
     _CACompositorCompositeTree(rootRenderLayer);
+    //DLog();
     _CACompositorCleanRenderTree(rootRenderLayer);
+    //DLog();
 }

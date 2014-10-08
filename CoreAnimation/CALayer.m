@@ -247,6 +247,8 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
 - (void)setHidden:(BOOL)newValue
 {
     DLog(@"self: %@", self);
+    BOOL oldValue = _hidden;
+    _hidden = newValue;
     if (newValue == YES) {
         DLog(@"newValue == YES");
         self.opacity = 0;
@@ -256,14 +258,13 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
         }
     } else {
         self.opacity = 1;
-        if (_hidden && (_superlayer == nil || _superlayer->_superlayer == nil)) {
+        if (oldValue && (_superlayer == nil || _superlayer->_superlayer == nil)) {
             DLog(@"_hidden && (_superlayer== nil || _superlayer->_superlayer == nil)");
             _CALayerSetNeedsDisplayWithRoot(self);
         } else {
             _CALayerSetNeedsComposite(self);
         }
     }
-    _hidden = newValue;
 }
 
 - (id)presentationLayer

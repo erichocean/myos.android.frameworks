@@ -195,6 +195,7 @@ static void _CAAnimatorCaptureScreenFunction()
     }
     //DLog();
     _CACompositorComposite();
+    //DLog();
     _EAGLSwapBuffers();
 }
 
