@@ -320,7 +320,7 @@ static void UIMAApplicationRunApp(NSString *appName)
 {
     IOPipeSetPipes(_pipeRead, _pipeWrite);
     _currentMAApplication = self;
-    DLog(@"self: %@", self);
+    //DLog(@"self: %@", self);
 #ifdef NA
     EAGLMLSetPipes(_animationPipeRead, _animationPipeWrite);
     if (withSignal) {

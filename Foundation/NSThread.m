@@ -1195,19 +1195,18 @@ GSRunLoopInfoForThread(NSThread *aThread)
 		       waitUntilDone: (BOOL)aFlag
 			       modes: (NSArray*)anArray
 {
-  /* It's possible that this method could be called before the NSThread
-   * class is initialised, so we check and make sure it's initiailised
-   * if necessary.
-   */
-  if (defaultThread == nil)
-    {
-      [NSThread currentThread];
+    /* It's possible that this method could be called before the NSThread
+     * class is initialised, so we check and make sure it's initiailised
+     * if necessary.
+     */
+    if (defaultThread == nil) {
+        [NSThread currentThread];
     }
-  [self performSelector: aSelector
-               onThread: defaultThread
-             withObject: anObject
-          waitUntilDone: aFlag
-                  modes: anArray];
+    [self performSelector: aSelector
+                 onThread: defaultThread
+               withObject: anObject
+            waitUntilDone: aFlag
+                    modes: anArray];
 }
 
 - (void) performSelectorOnMainThread: (SEL)aSelector
@@ -1220,81 +1219,66 @@ GSRunLoopInfoForThread(NSThread *aThread)
 			      modes: commonModes()];
 }
 
-- (void) performSelector: (SEL)aSelector
-                onThread: (NSThread*)aThread
-              withObject: (id)anObject
-           waitUntilDone: (BOOL)aFlag
-                   modes: (NSArray*)anArray
+- (void) performSelector:(SEL)aSelector
+                onThread:(NSThread *)aThread
+              withObject:(id)anObject
+           waitUntilDone:(BOOL)aFlag
+                   modes:(NSArray*)anArray
 {
-  GSRunLoopThreadInfo   *info;
-  NSThread	        *t;
-
-  if ([anArray count] == 0)
-    {
-      return;
+    GSRunLoopThreadInfo   *info;
+    NSThread	        *t;
+    if ([anArray count] == 0) {
+        return;
     }
-
-  t = GSCurrentThread();
-  if (aThread == nil)
-    {
-      aThread = t;
+    t = GSCurrentThread();
+    if (aThread == nil) {
+        aThread = t;
     }
-  info = GSRunLoopInfoForThread(aThread);
-  if (t == aThread)
-    {
-      /* Perform in current thread.
-       */
-      if (aFlag == YES || info->loop == nil)
-	{
-          /* Wait until done or no run loop.
-           */
-	  [self performSelector: aSelector withObject: anObject];
-	}
-      else
-	{
-          /* Don't wait ... schedule operation in run loop.
-           */
-	  [info->loop performSelector: aSelector
-                               target: self
-                             argument: anObject
-                                order: 0
-                                modes: anArray];
-	}
-    }
-  else
-    {
-      GSPerformHolder   *h;
-      NSConditionLock	*l = nil;
-
-      if ([t isFinished] == YES)
-        {
-          [NSException raise: NSInternalInconsistencyException
-                      format: @"perform on finished thread"];
+    info = GSRunLoopInfoForThread(aThread);
+    if (t == aThread) {
+        /* Perform in current thread.
+         */
+        if (aFlag == YES || info->loop == nil) {
+            /* Wait until done or no run loop.
+             */
+            [self performSelector:aSelector withObject:anObject];
+        } else {
+            /* Don't wait ... schedule operation in run loop.
+             */
+            [info->loop performSelector: aSelector
+                                 target: self
+                               argument: anObject
+                                  order: 0
+                                  modes: anArray];
         }
-      if (aFlag == YES)
-	{
-	  l = [[NSConditionLock alloc] init];
-	}
-
-      h = [GSPerformHolder newForReceiver: self
-				 argument: anObject
-				 selector: aSelector
-				    modes: anArray
-				     lock: l];
-      [info addPerformer: h];
-      if (l != nil)
-	{
-          [l lockWhenCondition: 1];
-	  [l unlock];
-	  RELEASE(l);
-          if ([h isInvalidated] == YES)
-            {
-              [NSException raise: NSInternalInconsistencyException
-                          format: @"perform on finished thread"];
-              RELEASE(h);
+    } else {
+        GSPerformHolder   *h;
+        NSConditionLock	*l = nil;
+        
+        if ([t isFinished] == YES) {
+            [NSException raise: NSInternalInconsistencyException
+                        format: @"perform on finished thread"];
+        }
+        if (aFlag == YES) {
+            l = [[NSConditionLock alloc] init];
+        }
+        h = [GSPerformHolder newForReceiver:self
+                                   argument:anObject
+                                   selector:aSelector
+                                      modes:anArray
+                                       lock:l];
+        [info addPerformer:h];
+        if (l != nil) {
+            [l lockWhenCondition:1];
+            [l unlock];
+            RELEASE(l);
+            if ([h isInvalidated] == YES) {
+                [NSException raise: NSInternalInconsistencyException
+                            format: @"perform on finished thread"];
+                RELEASE(h);
             }
-	}
-      RELEASE(h);
+        }
+        RELEASE(h);
     }
 }
 

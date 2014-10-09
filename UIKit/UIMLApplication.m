@@ -55,10 +55,10 @@ static CFTimeInterval _lastGobackTime = 0;
 
 - (void)presentAppDone
 {
-    DLog();
+    //DLog();
     _launcherView.hidden = YES;
     [_uiApplication->_keyWindow sendSubviewToBack:_launcherView];
-    DLog();
+    //DLog();
     _UIApplicationEnterBackground();
     NSArray *subviews = [_uiApplication->_keyWindow subviews];
     UIView *view = [subviews objectAtIndex:subviews.count-1];
@@ -199,7 +199,7 @@ void UIMLApplicationShowLauncher()
     _currentMAApplication = nil;
     
     mlApplication->_launcherView.hidden = NO;
-    DLog();
+    //DLog();
     [mlApplication->_uiApplication->_keyWindow performSelector:@selector(bringSubviewToFront:)
                                                     withObject:mlApplication->_launcherView
                                                     afterDelay:0.1];
@@ -282,11 +282,11 @@ void UIMLApplicationGoBack()
 void UIMLApplicationMoveCurrentAppToTop()
 {
     //return;
-    DLog();
+    //DLog();
     if (!_currentMAApplication) {
         return;
     }
-    DLog(@"_currentMAApplication: %@", _currentMAApplication);
+    //DLog(@"_currentMAApplication: %@", _currentMAApplication);
     UIView *currentView = _currentMAApplication.screenImageView;
     UIMLApplication *mlApplication = [UIMLApplication sharedMLApplication];
     NSArray *subviews = [mlApplication->_uiApplication->_keyWindow subviews];
