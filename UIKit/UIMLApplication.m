@@ -11,7 +11,6 @@
 
 #define _kTimeToTerminateChild          10.0
 #define _kTerminateChildTimeOut         1.0
-//#define _kCaptureScreenTimeLimit      2.0
 #define _kGobackTimeLimit               1.0
 
 static NSMutableDictionary *_runningApplicationsDictionary;
@@ -68,9 +67,6 @@ static CFTimeInterval _lastGobackTime = 0;
     //_EAGLMLCanDraw = YES;
     //DLog(@"_EAGLMLCanDraw: %d", _EAGLMLCanDraw);
     //[_EAGLMLLock lock];
-    //DLog(@"_EAGLMLLock: %@", _EAGLMLLock);
-    //[_EAGLMLLock lock];
-    //[_EAGLMLLock unlock];
     //DLog(@"_EAGLMLLock2: %@", _EAGLMLLock);
     //DLog(@"_EAGLMLLock->counter2: %d", _EAGLMLLock->counter);
     if (_currentMAApplication != maApp) {
@@ -131,7 +127,7 @@ void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, float animationDura
     [uiApplication->_keyWindow bringSubviewToFront:maApp.screenImageView];
     
     maApp.screenImageView.frame = CGRectMake(0,0,uiApplication->_keyWindow.frame.size.width,uiApplication->_keyWindow.frame.size.height);
-    DLog(@"maApp.screenImageView: %@", maApp.screenImageView);
+    //DLog(@"maApp.screenImageView: %@", maApp.screenImageView);
     maApp.screenImageView.hidden = NO;
     maApp.screenImageView.alpha = 0;
     [UIView beginAnimations:nil context:nil];
@@ -310,40 +306,37 @@ void UIMLApplicationMoveCurrentAppToTop()
 
 void UIMLApplicationTerminateApps()
 {
-    //DLog(@"_runningApplicationsDictionary: %@", _runningApplicationsDictionary);
-    //float timeOut = _kTerminateChildTimeOut;
-    //DLog();
+#ifdef NA
+    [_CAAnimatorNAConditionLock lockWithCondition:_CAAnimatorConditionLockHasNoWork];
+#endif
+    DLog(@"_currentMAApplication: %@", _currentMAApplication);
+    IOPipeWriteMessage(MAPipeMessageTerminateApp, YES);
     for (NSString *key in _runningApplicationsDictionary) {
         //DLog();
         UIMAApplication *maApp = [_runningApplicationsDictionary objectForKey:key];
         //DLog(@"maApp: %@", maApp);
-        //[_runningApplicationsDictionary setObject:nil forKey:maApp->_name];
-        //[maApp setAsCurrent:NO];
-        if ([maApp isCurrent]) {
-            //DLog();
-            IOPipeWriteMessage(MAPipeMessageTerminateApp, YES);
-            BOOL done = NO;
-            _startTime = CACurrentMediaTime();
-            while (!done) {
-                int message = IOPipeReadMessage();
-                switch (message) {
-                    case MLPipeMessageEndOfMessage:
-                        DLog(@"MLPipeMessageEndOfMessage");
-                        break;
-                    case MLPipeMessageTerminateApp:
-                        DLog(@"MLPipeMessageTerminateApp");
-                        done = YES;
-                        break;
-                    default:
-                        break;
-                }
-                if (CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut) {
-                    DLog(@"CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut");
-                    done = YES;
-                }
-            }
+        if (maApp != _currentMAApplication) {
+            [maApp terminate];
         }
-        //DLog();
-        [maApp terminate];
+    }
+    BOOL done = NO;
+    _startTime = CACurrentMediaTime();
+    while (!done) {
+        int message = IOPipeReadMessage();
+        switch (message) {
+            case MLPipeMessageEndOfMessage:
+                DLog(@"MLPipeMessageEndOfMessage");
+                break;
+            case MLPipeMessageTerminateApp:
+                DLog(@"MLPipeMessageTerminateApp");
+                done = YES;
+                break;
+            default:
+                break;
+        }
+        if (CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut) {
+            DLog(@"CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut");
+            done = YES;
+        }
     }
 }

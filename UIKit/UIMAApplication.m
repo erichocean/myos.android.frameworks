@@ -332,7 +332,7 @@ static void UIMAApplicationRunApp(NSString *appName)
 
 - (void)terminate
 {
-    //DLog();
+    DLog(@"%@", self);
     //_running = NO;
     UIMAApplicationSaveData(self);
     kill(_pid, SIGTERM);
