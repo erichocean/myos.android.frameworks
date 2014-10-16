@@ -24,7 +24,12 @@ typedef enum {
     //UIIconControl *_menuControl;
     //UIIconControl *_anchorControl;
     UIApplicationIconMode _mode;
+    UIScrollView *_parentScrollView;
+    UITapGestureRecognizer *_singleTap;
+    UILongPressGestureRecognizer *_longPress;
 }
+
+@property (nonatomic, assign) UIScrollView *parentScrollView;
 
 - (id)initWithApplication:(UIMAApplication *)application;
 

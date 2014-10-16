@@ -82,18 +82,11 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
         //[self addSubview:_anchorControl];
         
         // Single tap gesture
-        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                    action:@selector(singleTapped:)];
-        [self addGestureRecognizer:singleTap];
-        [singleTap release];
-        
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                                                                  action:@selector(longPressed:)];
-        [self addGestureRecognizer:longPress];
-        [longPress release];
-        
-        [singleTap requireGestureRecognizerToFail:longPress];
-        
+        _singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapped:)];
+        [self addGestureRecognizer:_singleTap];
+        _longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressed:)];
+        [self addGestureRecognizer:_longPress];
+        [_singleTap requireGestureRecognizerToFail:_longPress];
         //_mode = UIApplicationIconModeNormal;
     }
     return self;
@@ -103,16 +96,31 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
 {
     [_iconImage release];
     [_iconLabel release];
+    [_singleTap release];
+    [_longPress release];
     [super dealloc];
 }
 
 #pragma mark - Accessors
 
+- (UIScrollView *)parentScrollView
+{
+    return _parentScrollView;
+}
+
+- (void)setParentScrollView:(UIScrollView *)scrollView
+{
+    //DLog(@"scrollView: %@", scrollView);
+    _parentScrollView = scrollView;
+    [_singleTap requireGestureRecognizerToFail:_parentScrollView.panGestureRecognizer];
+    [_longPress requireGestureRecognizerToFail:_parentScrollView.panGestureRecognizer];
+}
+
 #pragma mark - Actions
 
 - (void)singleTapped:(id)sender
 {
-    //DLog();
+    DLog();
     //if (_mode == UIApplicationIconModeNormal) {
         [_application singleTapped];
     //} else {
