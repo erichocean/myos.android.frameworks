@@ -307,7 +307,9 @@ void UIMLApplicationMoveCurrentAppToTop()
 void UIMLApplicationTerminateApps()
 {
 #ifdef NA
-    [_CAAnimatorNAConditionLock lockWithCondition:_CAAnimatorConditionLockHasNoWork];
+    if ([_CAAnimatorNAConditionLock condition] == _CAAnimatorConditionLockHasWork) {
+        [_CAAnimatorNAConditionLock lockWithCondition:_CAAnimatorConditionLockHasNoWork];
+    }
 #endif
     DLog(@"_currentMAApplication: %@", _currentMAApplication);
     IOPipeWriteMessage(MAPipeMessageTerminateApp, YES);
