@@ -120,9 +120,9 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
 
 - (void)singleTapped:(id)sender
 {
-    DLog();
+    //DLog();
     //if (_mode == UIApplicationIconModeNormal) {
-        [_application singleTapped];
+    [_application singleTapped];
     //} else {
     //    _UIApplicationIconResetToNormalMode(self);
     //}
