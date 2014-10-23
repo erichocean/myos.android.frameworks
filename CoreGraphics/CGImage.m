@@ -142,6 +142,9 @@ void DumpPixel(const void *data, NSString *msg)
 
 - (void)dealloc
 {
+    if (height > 500) {
+        DLog(@"self: %@", self);
+    }
     CGColorSpaceRelease(self->cspace);
     CGDataProviderRelease(self->dp);
     if (self->decode) {
@@ -156,7 +159,7 @@ void DumpPixel(const void *data, NSString *msg)
 - (NSString *)description
 {
     //return [NSString stringWithFormat: @"<CGImage %p width: %d height: %d bits-per-component: %d bpp: %d bytes-per-row: %d provider: %@ shouldInterpolate: %d>", self, (int)width, (int)height, (int)bitsPerComponent, (int)bitsPerPixel, (int)bytesPerRow, dp, (int)shouldInterpolate];
-    return [NSString stringWithFormat: @"<CGImage %p width:%d height:%d provider:<%@ %p>>", self, width, height, [dp className], dp];
+    return [NSString stringWithFormat: @"<%@: %p; retainCount:%d; width:%d; height:%d; provider:<%@ %p>>", [self className], self, self.retainCount, width, height, [dp className], dp];
 }
 
 @end

@@ -160,28 +160,36 @@ void _CALayerDisplay(CALayer *layer)
         DLog();
         [layer->delegate displayLayer:layer];
     }
-    if (layer->_contents) {
-        //DLog(@"layer->_contents: %@", layer->_contents);
-        if (layer->_displayContents) {
+    if (!layer->_contentsWasSet) {
+        if (layer->_contents) {
+            DLog(@"layer: %@", layer);
+            DLog(@"layer->_contents: %@", layer->_contents);
+            if (layer->_displayContents) {
+                CGImageRelease(layer->_displayContents);
+            }
+            layer->_displayContents = layer->_contents; //CGImageCreateCopy(layer->_contents);
+            layer->_contents = nil;
+            layer->_contentsWasSet = YES;
+        } else {
+            //DLog(@"layer->_contentsScale: %0.2f", layer->_contentsScale);
+            CGContextRef context = _CGBitmapContextCreateWithOptions(layer->_bounds.size, layer->_opaque, layer->_contentsScale);
+            //DLog(@"layer->_contentsScale 2: %0.2f", layer->_contentsScale);
+            CGContextScaleCTM(context, layer->_contentsScale, layer->_contentsScale);
+            //DLog();
+            _CALayerSetShadow(layer, context);
+            //DLog();
+            _CALayerSetClip(layer, context);
+            _CALayerDrawBackground(layer, context);
+            [layer drawInContext:context];
+            _CALayerEndClip(layer, context);
+            _CALayerDrawBorder(layer, context);
+            
+            //DLog();
             CGImageRelease(layer->_displayContents);
+            layer->_displayContents = CGBitmapContextCreateImage(context);
+            //DLog(@"layer->_displayContents: %@", layer->_displayContents);
+            CGContextRelease(context);
         }
-        layer->_displayContents = CGImageCreateCopy(layer->_contents);
-    } else {
-        CGContextRef context = _CGBitmapContextCreateWithOptions(layer->_bounds.size, layer->_opaque, layer->_contentsScale);
-        CGContextScaleCTM(context, layer->_contentsScale, layer->_contentsScale);
-        _CALayerSetShadow(layer, context);
-        //DLog();
-        _CALayerSetClip(layer, context);
-        _CALayerDrawBackground(layer, context);
-        [layer drawInContext:context];
-        _CALayerEndClip(layer, context);
-        _CALayerDrawBorder(layer, context);
-
-        //DLog();
-        CGImageRelease(layer->_displayContents);
-        layer->_displayContents = CGBitmapContextCreateImage(context);
-        //DLog(@"layer->_displayContents: %@", layer->_displayContents);
-        CGContextRelease(context);
     }
     layer->_needsDisplay = NO;
 }

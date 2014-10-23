@@ -76,13 +76,13 @@ static CFArrayRef CreateCTLinesForAttributedString(NSAttributedString *attribute
                 CFRelease(ellipsisString);
                 CFRelease(attributes);
             } else {
-                DLog();
+                //DLog();
                 usedCharacters = CTTypesetterSuggestLineBreak(typesetter, start, constrainedToSize.width);
                 line = CTTypesetterCreateLine(typesetter, CFRangeMake(start, usedCharacters));
             }
             if (line) {
                 drawSize.width = MAX(drawSize.width, ceilf(CTLineGetTypographicBounds(line,NULL,NULL,NULL)));
-                DLog(@"drawSize.width: %0.1f", drawSize.width);
+                //DLog(@"drawSize.width: %0.1f", drawSize.width);
                 CFArrayAppendValue(lines, line);
                 CFRelease(line);
             }

@@ -38,6 +38,7 @@ extern NSString *const kCATransition;
     BOOL _opaque;
     id _oldContents;
     id _contents;
+    BOOL _contentsWasSet;
     id _displayContents;
     NSArray *_keyframesContents;
     CGPoint _position;

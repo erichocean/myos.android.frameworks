@@ -37,7 +37,7 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
         //DLog(@"imagePath: %@", imagePath);
         //UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
         _iconImage = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:imagePath]];
-        //DLog(@"_iconImage: %@", _iconImage);
+        DLog(@"_iconImage: %@", _iconImage);
         _iconImage.frame = CGRectMake(5,5,kImageSize,kImageSize);
         [self addSubview:_iconImage];
         

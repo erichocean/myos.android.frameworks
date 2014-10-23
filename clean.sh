@@ -13,13 +13,13 @@ echo "****************************** Cleaning frameworks ***********************
 #make clean
 #cd ..
 
-#cd CoreGraphics
-#make clean
-#cd ..
+cd CoreGraphics
+make clean
+cd ..
 
-#cd CoreText
-#make clean
-#cd ..
+cd CoreText
+make clean
+cd ..
 
 cd IOKit
 make clean

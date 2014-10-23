@@ -108,7 +108,7 @@ static UIImage *_UIImageLoadImageNamed(NSString *name)
     DLog(@"pngData: %@", pngData);
     _image = CGImageCreateWithPNGDataProvider(pngData, NULL, YES, kCGRenderingIntentDefault);
 #endif
-    //DLog(@"_image: %@", _image);
+    DLog(@"_image: %@", _image);
     CGDataProviderRelease(pngData);
     return self;
 }

@@ -106,7 +106,7 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
         _modelLayer = self;
         _bounds = theBounds;
         _contentsScale = 1.0;
-        //DLog(@"self: %@", self);
+        //DLog(@"_contentsScale: %0.2f", _contentsScale);
         _CALayerSetNeedsLayout(self);
         //_needsLayout = YES;
         _needsDisplay = YES;
@@ -122,6 +122,8 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
         _masksToBounds = NO;
         _oldContents = nil;
         _contents = nil;
+        //DLog(@"_contentsWasSet: %d", _contentsWasSet);
+        _contentsWasSet = NO;
         _displayContents = nil;
         _keyframesContents = nil;
         _contentsRect = CGRectMake(0.0, 0.0, 1.0, 1.0);
@@ -324,8 +326,12 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
 {
     //DLog(@"newContents: %@", newContents);
     [self willChangeValueForKey:@"contents"];
+    if (_bounds.size.height > 500) {
+        DLog(@"_contents: %@", _contents);
+    }
     [_contents release];
     _contents = [newContents retain];
+    _contentsWasSet = NO;
     [self didChangeValueForKey:@"contents"];
 }
 

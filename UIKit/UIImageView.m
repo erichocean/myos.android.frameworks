@@ -238,7 +238,7 @@ void _UIImageViewUpdateContent(UIImageView *imageView)
 {
     UIImage *contentImage = imageView->_highlighted ? imageView->_highlightedImage : imageView->_image;
     if (contentImage) {
-        //DLog();
+        DLog();
         CGRect rect = CGRectZero;
         rect.size = contentImage.size;
         CGContextRef ctx = _CGBitmapContextCreateWithOptions(rect.size, true, 1);
@@ -250,6 +250,8 @@ void _UIImageViewUpdateContent(UIImageView *imageView)
         CGContextRestoreGState(ctx);
         
         imageView->_layer.contents = CGBitmapContextCreateImage(ctx);
+        [imageView->_layer->_contents release];
+        CGContextRelease(ctx);
     }
 }
 

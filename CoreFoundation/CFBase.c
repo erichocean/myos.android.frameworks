@@ -24,16 +24,17 @@
    Boston, MA 02110-1301, USA.
 */ 
 
-#include "CFBase.h"
-#include "CFRuntime.h"
+#import <stdlib.h>
+#import <string.h>
+#import <stdio.h>
+#import <unistd.h>
 
-#include <stdlib.h>
-#include <string.h>
+#import "CFBase.h"
+#import "CFRuntime.h"
 
-#include <stdio.h>
 //#include <proc/readproc.h>
-#include <unistd.h>
-#include "GSPrivate.h"
+
+#import "GSPrivate.h"
 
 const double kCFCoreFoundationVersionNumber = 550.13;
 
@@ -271,7 +272,6 @@ CFNullGetTypeID (void)
 {
   return _kCFNullTypeID;
 }
-
 /*
 natural_t CFGetFreeMemory()
 {
@@ -309,15 +309,17 @@ long CFGetFreeMemory()
         size_t bufsize = 1024 * sizeof(char);
         char *buf = (char *)malloc(bufsize);
         long value = -1L;
-        /*while (getline(&buf, &bufsize, fp) >= 0) {
+//#ifdef NA
+        while (getline(&buf, &bufsize, fp) >= 0) {
             if (strncmp(buf, "MemFree", 7) != 0) {
                 continue;
             }
             sscanf(buf, "MemFree: %ld", &value);
             break;
-        }*/
+        }
         fclose(fp);
         free((void *)buf);
+//#endif
         return value;
     }
     return 0;

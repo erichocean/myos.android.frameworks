@@ -79,6 +79,7 @@ static void _CAAnimatorCaptureScreenFunction()
     //DLog();
     glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
     CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer, myDataLength, NULL);
+    DLog(@"_CAAnimatorScreenCapture: %@", _CAAnimatorScreenCapture);
     CGImageRelease(_CAAnimatorScreenCapture);
     _CAAnimatorScreenCapture = [[CGImage alloc] initWithWidth:w
                                                        height:h
@@ -92,6 +93,7 @@ static void _CAAnimatorCaptureScreenFunction()
                                             shouldInterpolate:YES
                                                        intent:kCGRenderingIntentDefault];
     CGDataProviderRelease(provider);
+    //DLog(@"_CAAnimatorScreenCapture: %@", _CAAnimatorScreenCapture);
     _CAAnimatorCaptureScreen = NO;
 }
 
