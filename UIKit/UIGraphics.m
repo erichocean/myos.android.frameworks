@@ -57,7 +57,6 @@ void UIGraphicsBeginImageContextWithOptions(CGSize size, BOOL opaque, CGFloat sc
     if (scale == 0.f) {
         scale = [UIScreen mainScreen].scale;
     }
-    
     const size_t width = size.width * scale;
     const size_t height = size.height * scale;
     //DLog();
@@ -89,7 +88,6 @@ UIImage *UIGraphicsGetImageFromCurrentImageContext()
 
 void UIGraphicsEndImageContext()
 {
-    
     UIGraphicsPopContext();
 }
 

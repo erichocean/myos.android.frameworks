@@ -58,7 +58,7 @@ void _CARendererDisplayLayers(BOOL isModelLayer)
                 DLog(@"no renderLayer - layer: %@", layer);
             }
         } else {
-                //DLog(@"no layer->_displayContents - layer: %@", layer);
+                DLog(@"no layer->_displayContents - layer: %@", layer);
         }
     }
     //DLog(@"displayLayers.count: %d", displayLayers.count);

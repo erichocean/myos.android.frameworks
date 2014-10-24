@@ -142,9 +142,9 @@ void DumpPixel(const void *data, NSString *msg)
 
 - (void)dealloc
 {
-    if (height > 500) {
-        DLog(@"self: %@", self);
-    }
+    //if (height > 500) {
+    DLog(@"self: %@", self);
+    //}
     CGColorSpaceRelease(self->cspace);
     CGDataProviderRelease(self->dp);
     if (self->decode) {

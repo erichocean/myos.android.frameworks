@@ -105,10 +105,10 @@ static UIImage *_UIImageLoadImageNamed(NSString *name)
     }
 #else
     pngData = CGDataProviderCreateWithFilename([path cString]);
-    DLog(@"pngData: %@", pngData);
+    //DLog(@"pngData: %@", pngData);
     _image = CGImageCreateWithPNGDataProvider(pngData, NULL, YES, kCGRenderingIntentDefault);
 #endif
-    DLog(@"_image: %@", _image);
+    //DLog(@"_image: %@", _image);
     CGDataProviderRelease(pngData);
     return self;
 }

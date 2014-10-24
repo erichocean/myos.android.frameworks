@@ -123,7 +123,7 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
         _oldContents = nil;
         _contents = nil;
         //DLog(@"_contentsWasSet: %d", _contentsWasSet);
-        _contentsWasSet = NO;
+        //_contentsWasSet = NO;
         _displayContents = nil;
         _keyframesContents = nil;
         _contentsRect = CGRectMake(0.0, 0.0, 1.0, 1.0);
@@ -326,12 +326,12 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
 {
     //DLog(@"newContents: %@", newContents);
     [self willChangeValueForKey:@"contents"];
-    if (_bounds.size.height > 500) {
-        DLog(@"_contents: %@", _contents);
-    }
+    //if (_bounds.size.height > 500) {
+        //DLog(@"_contents: %@", _contents);
+    //}
     [_contents release];
     _contents = [newContents retain];
-    _contentsWasSet = NO;
+    //_contentsWasSet = NO;
     [self didChangeValueForKey:@"contents"];
 }
 
