@@ -18,24 +18,25 @@ extern UIMAApplication *_currentMAApplication;
     NSString *_name;
     NSMutableDictionary *_data;
     BOOL _running;
-    BOOL _needsScreenCapture;
+    //BOOL _needsScreenCapture;
     int _score;
     pid_t _pid;
     int _pipeRead;
     int _pipeWrite;
     int _animationPipeRead;
     int _animationPipeWrite;
-    UIImageView *_screenImageView;
+    //UIImageView *_screenImageView;
     UIApplicationIcon *_applicationIcon;
 }
 
-@property (nonatomic, retain) UIImageView *screenImageView;
+//@property (nonatomic, retain) UIImageView *screenImageView;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic) int score;
 @property (nonatomic) int pageNumber;
 @property (nonatomic) int xLocation;
 @property (nonatomic) int yLocation;
 @property (nonatomic) BOOL anchored;
+@property (nonatomic, readonly) UIView *defaultScreenView;
 @property BOOL running;
 
 - (id)initWithAppName:name;
@@ -51,6 +52,6 @@ extern UIMAApplication *_currentMAApplication;
 
 @end
 
-void UIMAApplicationTakeScreenCaptureIfNeeded(UIMAApplication *app);
+//void UIMAApplicationTakeScreenCaptureIfNeeded(UIMAApplication *app);
 void UIMAApplicationSaveData(UIMAApplication *app);
 void UIMAApplicationClosePipes();

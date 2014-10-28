@@ -14,12 +14,10 @@ typedef enum {
 
 @interface UIMLApplication : NSObject {
 @package
-    UIApplication *_uiApplication;
-    UIView *_launcherView;
     //BOOL _isActive;
 }
 
-+ (UIMLApplication *)sharedMLApplication;
+//+ (UIMLApplication *)sharedMLApplication;
 
 @end
 

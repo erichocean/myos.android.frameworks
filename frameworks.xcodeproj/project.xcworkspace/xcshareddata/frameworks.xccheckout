@@ -14,7 +14,7 @@
 		<string>https://github.com/amraboelela/myos.android.frameworks.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>frameworks.xcodeproj/project.xcworkspace</string>
+	<string>frameworks.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>8E0AAE0F013BDBE780B447972B8995FEFC4ACAF2</key>

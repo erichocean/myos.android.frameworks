@@ -35,7 +35,7 @@ static void UIMAApplicationRunApp(NSString *appName)
 
 @synthesize name=_name;
 @synthesize score=_score;
-@dynamic screenImageView;
+//@dynamic screenImageView;
 @dynamic pageNumber;
 @dynamic xLocation;
 @dynamic yLocation;
@@ -54,7 +54,7 @@ static void UIMAApplicationRunApp(NSString *appName)
         _name = name;
         [_allApplicationsDictionary setObject:self forKey:name];
         _running = NO;
-        _needsScreenCapture = YES;
+        //_needsScreenCapture = YES;
         NSString *dataPath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/data.json", _name];
         NSData *data = [NSData dataWithContentsOfFile:dataPath];
         _data = [[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:NULL] retain];
@@ -67,7 +67,7 @@ static void UIMAApplicationRunApp(NSString *appName)
         
         //NSString *imagePath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/Default.png", _name];
         //UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
-        _screenImageView = nil;//[[UIImageView alloc] initWithImage:image];
+        //_screenImageView = nil;//[[UIImageView alloc] initWithImage:image];
         //DLog(@"%@, Loaded _screenImageView: %@", name, _screenImageView);
         
         //DLog(@"x: %d", x);
@@ -79,13 +79,13 @@ static void UIMAApplicationRunApp(NSString *appName)
 {
     [_name release];
     [_data release];
-    [_screenImageView release];
+    //[_screenImageView release];
     [_applicationIcon release];
     [super dealloc];
 }
 
 #pragma mark - Accessors
-
+/*
 - (UIImageView *)screenImageView
 {
     //DLog();
@@ -103,7 +103,7 @@ static void UIMAApplicationRunApp(NSString *appName)
         [_screenImageView release];
     }
     _screenImageView = [screenImageView retain];
-}
+}*/
 
 - (int)pageNumber
 {
@@ -147,6 +147,13 @@ static void UIMAApplicationRunApp(NSString *appName)
 - (void)setAnchored:(BOOL)anchored
 {
     [_data setValue:[NSNumber numberWithBool:anchored] forKeyPath:_kUIMAApplicationAnchoredPath];
+}
+
+- (UIView *)defaultScreenView
+{
+    NSString *imagePath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/Default.png", _name];
+    UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
+    return [[[UIImageView alloc] initWithImage:image] autorelease];
 }
 
 - (BOOL)running
@@ -230,6 +237,7 @@ static void UIMAApplicationRunApp(NSString *appName)
 {
     //return;
     //DLog(@"_name: %@", _name);
+    self.running = YES;
     int pipe1[2];
     int pipe2[2];
     
@@ -344,14 +352,14 @@ static void UIMAApplicationRunApp(NSString *appName)
 @end
 
 #pragma mark - Shared functions
-
+/*
 void UIMAApplicationTakeScreenCaptureIfNeeded(UIMAApplication *app)
 {
     if (app->_needsScreenCapture) {
-        app->_screenImageView->_layer.contents = _UIScreenCaptureScreen();
+        //app->_screenImageView->_layer.contents = _UIScreenCaptureScreen();
         app->_needsScreenCapture = NO;
     }
-}
+}*/
 
 void UIMAApplicationSaveData(UIMAApplication *app)
 {
