@@ -12,6 +12,7 @@
 
 extern NSMutableDictionary *_allApplicationsDictionary;
 extern UIMAApplication *_currentMAApplication;
+extern NSMutableArray *_runningApplications;
 
 @interface UIMAApplication : NSObject {
 @package
@@ -36,7 +37,7 @@ extern UIMAApplication *_currentMAApplication;
 @property (nonatomic) int xLocation;
 @property (nonatomic) int yLocation;
 @property (nonatomic) BOOL anchored;
-@property (nonatomic, readonly) UIView *defaultScreenView;
+@property (nonatomic, readonly) UIImageView *defaultScreenView;
 @property BOOL running;
 
 - (id)initWithAppName:name;

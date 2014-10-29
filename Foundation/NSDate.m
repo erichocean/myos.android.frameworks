@@ -65,7 +65,7 @@ static Class	calendarClass = nil;
 @interface NSGDate : NSDate
 {
 @public
-  NSTimeInterval _seconds_since_ref;
+    NSTimeInterval _seconds_since_ref;
 }
 @end
 
@@ -158,7 +158,7 @@ otherTime(NSDate* other)
  */
 + (NSTimeInterval) timeIntervalSinceReferenceDate
 {
-  return GSPrivateTimeNow();
+    return GSPrivateTimeNow();
 }
 
 /**

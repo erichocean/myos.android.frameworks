@@ -168,18 +168,18 @@ lastDayOfGregorianMonth(NSUInteger month, NSUInteger year)
 static inline NSUInteger
 absoluteGregorianDay(NSUInteger day, NSUInteger month, NSUInteger year)
 {
-  if (month > 1)
+    if (month > 1)
     {
-      while (--month > 0)
-	{
-	  day = day + lastDayOfGregorianMonth(month, year);
-	}
+        while (--month > 0)
+        {
+            day = day + lastDayOfGregorianMonth(month, year);
+        }
     }
-  if (year > 0)
+    if (year > 0)
     {
-      year--;
+        year--;
     }
-  return
+    return
     (day            // days this year
      + 365 * year   // days in previous years ignoring leap days
      + year/4       // Julian leap days before this year...
@@ -190,33 +190,31 @@ absoluteGregorianDay(NSUInteger day, NSUInteger month, NSUInteger year)
 static inline int
 dayOfCommonEra(NSTimeInterval when)
 {
-  int r;
-
-  // Get reference date in terms of days
-  when /= 86400.0;
-  // Offset by Gregorian reference
-  when += GREGORIAN_REFERENCE;
-  r = (NSInteger)when;
-  return r;
+    int r;
+    
+    // Get reference date in terms of days
+    when /= 86400.0;
+    // Offset by Gregorian reference
+    when += GREGORIAN_REFERENCE;
+    r = (NSInteger)when;
+    return r;
 }
 
 static void
 gregorianDateFromAbsolute(NSInteger abs, int *day, int *month, int *year)
 {
-  // Search forward year by year from approximate year
-  *year = abs/366;
-  while (abs >= absoluteGregorianDay(1, 1, (*year)+1))
-    {
-      (*year)++;
+    // Search forward year by year from approximate year
+    *year = abs/366;
+    while (abs >= absoluteGregorianDay(1, 1, (*year)+1)) {
+        (*year)++;
     }
-  // Search forward month by month from January
-  (*month) = 1;
-  while (abs > absoluteGregorianDay(lastDayOfGregorianMonth(*month, *year),
-    *month, *year))
-    {
-      (*month)++;
+    // Search forward month by month from January
+    (*month) = 1;
+    while (abs > absoluteGregorianDay(lastDayOfGregorianMonth(*month, *year),
+                                      *month, *year)) {
+        (*month)++;
     }
-  *day = abs - absoluteGregorianDay(1, *month, *year) + 1;
+    *day = abs - absoluteGregorianDay(1, *month, *year) + 1;
 }
 
 /**
@@ -226,18 +224,18 @@ gregorianDateFromAbsolute(NSInteger abs, int *day, int *month, int *year)
 static NSTimeInterval
 GSTime(unsigned day, unsigned month, unsigned year, unsigned hour, unsigned minute, unsigned second, unsigned mil)
 {
-  NSTimeInterval	a;
-
-  a = (NSTimeInterval)absoluteGregorianDay(day, month, year);
-
-  // Calculate date as GMT
-  a -= GREGORIAN_REFERENCE;
-  a = (NSTimeInterval)a * 86400;
-  a += hour * 3600;
-  a += minute * 60;
-  a += second;
-  a += ((NSTimeInterval)mil)/1000.0;
-  return a;
+    NSTimeInterval	a;
+    
+    a = (NSTimeInterval)absoluteGregorianDay(day, month, year);
+    
+    // Calculate date as GMT
+    a -= GREGORIAN_REFERENCE;
+    a = (NSTimeInterval)a * 86400;
+    a += hour * 3600;
+    a += minute * 60;
+    a += second;
+    a += ((NSTimeInterval)mil)/1000.0;
+    return a;
 }
 
 /**
@@ -249,35 +247,35 @@ void
 GSBreakTime(NSTimeInterval when, int *year, int *month, int *day,
   int *hour, int *minute, int *second, int *mil)
 {
-  int h, m, dayOfEra;
-  double a, b, c, d;
-
-  // Get reference date in terms of days
-  a = when / 86400.0;
-  // Offset by Gregorian reference
-  a += GREGORIAN_REFERENCE;
-  // result is the day of common era.
-  dayOfEra = (NSInteger)a;
-
-  // Calculate year, month, and day
-  gregorianDateFromAbsolute(dayOfEra, day, month, year);
-
-  // Calculate hour, minute, and seconds
-  d = dayOfEra - GREGORIAN_REFERENCE;
-  d *= 86400;
-  a = abs(d - when);
-  b = a / 3600;
-  *hour = (NSInteger)b;
-  h = *hour;
-  h = h * 3600;
-  b = a - h;
-  b = b / 60;
-  *minute = (NSInteger)b;
-  m = *minute;
-  m = m * 60;
-  c = a - h - m;
-  *second = (NSInteger)c;
-  *mil = (NSInteger)((a - h - m - c) * 1000.0 + 0.5);
+    int h, m, dayOfEra;
+    double a, b, c, d;
+    
+    // Get reference date in terms of days
+    a = when / 86400.0;
+    // Offset by Gregorian reference
+    a += GREGORIAN_REFERENCE;
+    // result is the day of common era.
+    dayOfEra = (NSInteger)a;
+    
+    // Calculate year, month, and day
+    gregorianDateFromAbsolute(dayOfEra, day, month, year);
+    
+    // Calculate hour, minute, and seconds
+    d = dayOfEra - GREGORIAN_REFERENCE;
+    d *= 86400;
+    a = abs(d - when);
+    b = a / 3600;
+    *hour = (NSInteger)b;
+    h = *hour;
+    h = h * 3600;
+    b = a - h;
+    b = b / 60;
+    *minute = (NSInteger)b;
+    m = *minute;
+    m = m * 60;
+    c = a - h - m;
+    *second = (NSInteger)c;
+    *mil = (NSInteger)((a - h - m - c) * 1000.0 + 0.5);
 }
 
 /**
@@ -286,58 +284,51 @@ GSBreakTime(NSTimeInterval when, int *year, int *month, int *day,
 NSTimeInterval
 GSPrivateTimeNow(void)
 {
-  NSTimeInterval t;
+    NSTimeInterval t;
 #if !defined(__MINGW__)
-  struct timeval tp;
-
-  gettimeofday (&tp, NULL);
-  t = (NSTimeInterval)tp.tv_sec - NSTimeIntervalSince1970;
-  t += (NSTimeInterval)tp.tv_usec / (NSTimeInterval)1000000.0;
+    struct timeval tp;
+    
+    gettimeofday(&tp, NULL);
+    t = (NSTimeInterval)tp.tv_sec - NSTimeIntervalSince1970;
+    t += (NSTimeInterval)tp.tv_usec / (NSTimeInterval)1000000.0;
 #if	1
-/* This is a workaround for a bug on some SMP intel systems where the TSC
- * clock information from the processors gets out of sync and causes a
- * leap of 4398 seconds into the future for an instant, and then back.
- * If we detect a time jump back by more than the sort of small interval
- * that ntpd might do (or forwards by a very large amount) we refetch the
- * system time to make sure we don't have a temporary glitch.
- */
-{
-  static int	old = 0;
-
-  if (old == 0)
+    /* This is a workaround for a bug on some SMP intel systems where the TSC
+     * clock information from the processors gets out of sync and causes a
+     * leap of 4398 seconds into the future for an instant, and then back.
+     * If we detect a time jump back by more than the sort of small interval
+     * that ntpd might do (or forwards by a very large amount) we refetch the
+     * system time to make sure we don't have a temporary glitch.
+     */
     {
-      old = tp.tv_sec;
+        static int old = 0;
+        if (old == 0) {
+            old = tp.tv_sec;
+        } else {
+            int	diff = tp.tv_sec - old;
+            old = tp.tv_sec;
+            if (diff < -1 || diff > 3000) {
+                time_t	now = (time_t)tp.tv_sec;
+                fprintf(stderr, "WARNING: system time changed by %d seconds: %s\n",
+                        diff, ctime(&now));
+                /* Get time again ... should be OK now.
+                 */
+                t = GSPrivateTimeNow();
+            }
+        }
     }
-  else
-    {
-      int	diff = tp.tv_sec - old;
-
-      old = tp.tv_sec;
-      if (diff < -1 || diff > 3000)
-	{
-	  time_t	now = (time_t)tp.tv_sec;
-
-	  fprintf(stderr, "WARNING: system time changed by %d seconds: %s\n",
-	    diff, ctime(&now));
-	  /* Get time again ... should be OK now.
-	   */
-	  t = GSPrivateTimeNow();
-	}
-    }
-}
 #endif
-
+    
 #else
-  SYSTEMTIME sys_time;
-  /*
-   * Get current GMT time, convert to NSTimeInterval since reference date,
-   */
-  GetSystemTime(&sys_time);
-  t = GSTime(sys_time.wDay, sys_time.wMonth, sys_time.wYear, sys_time.wHour,
-    sys_time.wMinute, sys_time.wSecond, sys_time.wMilliseconds);
+    SYSTEMTIME sys_time;
+    /*
+     * Get current GMT time, convert to NSTimeInterval since reference date,
+     */
+    GetSystemTime(&sys_time);
+    t = GSTime(sys_time.wDay, sys_time.wMonth, sys_time.wYear, sys_time.wHour,
+               sys_time.wMinute, sys_time.wSecond, sys_time.wMilliseconds);
 #endif /* __MINGW__ */
-
-  return t;
+    
+    return t;
 }
 
 /**
@@ -347,7 +338,7 @@ GSPrivateTimeNow(void)
  */
 @implementation NSCalendarDate
 
-+ (void) initialize
++ (void)initialize
 {
   if (self == [NSCalendarDate class])
     {

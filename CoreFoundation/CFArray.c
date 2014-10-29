@@ -293,7 +293,7 @@ CFArrayGetCountOfValue (CFArrayRef array, CFRange range, const void *value)
 }
 
 CFIndex
-CFArrayGetFirstIndexOfValue (CFArrayRef array, CFRange range,
+CFArrayGetFirstIndexOfValue(CFArrayRef array, CFRange range,
                              const void *value)
 {
     const void **contents;
@@ -314,8 +314,7 @@ CFArrayGetFirstIndexOfValue (CFArrayRef array, CFRange range,
             }
             idx++;
         }
-    }
-    else {
+    } else {
         while (idx < end) {
             if (value == contents[idx]) {
                 break;
@@ -369,7 +368,7 @@ CFArrayGetTypeID (void)
 }
 
 const void *
-CFArrayGetValueAtIndex (CFArrayRef array, CFIndex idx)
+CFArrayGetValueAtIndex(CFArrayRef array, CFIndex idx)
 {
     CF_OBJC_FUNCDISPATCH1(_kCFArrayTypeID, const void *, array, "objectAtIndex:", idx);
     assert (idx < array->_count);
@@ -546,7 +545,12 @@ void _CFArrayMoveValueToTop(CFMutableArrayRef array, const void *value)
     CFRelease(value);
 }
 
-void CFArrayRemoveValueAtIndex (CFMutableArrayRef array, CFIndex idx)
+const void *_CFArrayGetLastValue(CFMutableArrayRef array)
+{
+    return (array->_contents)[array->_count-1];
+}
+
+void CFArrayRemoveValueAtIndex(CFMutableArrayRef array, CFIndex idx)
 {
     //fprintf(stderr, "idx: %d \n", idx);
     CF_OBJC_FUNCDISPATCH1(_kCFArrayTypeID, void, array, "removeObjectAtIndex:", idx);
@@ -555,7 +559,7 @@ void CFArrayRemoveValueAtIndex (CFMutableArrayRef array, CFIndex idx)
 }
 
 void
-CFArrayReplaceValues (CFMutableArrayRef array, CFRange range,
+CFArrayReplaceValues(CFMutableArrayRef array, CFRange range,
                       const void **newValues, CFIndex newCount)
 {
     const void **start;

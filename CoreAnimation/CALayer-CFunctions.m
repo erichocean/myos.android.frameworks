@@ -150,7 +150,7 @@ void _CALayerSetNeedsDisplay(CALayer *layer)
 
 void _CALayerDisplay(CALayer *layer)
 {
-    DLog(@"layer: %@", layer);
+    //DLog(@"layer: %@", layer);
     if (CGRectEqualToRect(layer->_bounds,CGRectZero)) {
         //DLog(@"CGRectZero layer: %@", layer);
         _CALayerSetNeedsUnload(layer);
@@ -163,7 +163,7 @@ void _CALayerDisplay(CALayer *layer)
     //if (!layer->_contentsWasSet) {
     if (layer->_contents) {
         //DLog(@"layer: %@", layer);
-        DLog(@"layer->_contents: %@", layer->_contents);
+        //DLog(@"layer->_contents: %@", layer->_contents);
         if (layer->_displayContents) {
             CGImageRelease(layer->_displayContents);
         }
