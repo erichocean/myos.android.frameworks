@@ -137,11 +137,15 @@ void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
     //DLog(@"uiApplication: %@", uiApplication);
     _uiMAApplication = maApp;
     [_uiApplication->_keyWindow bringSubviewToFront:_maAppView];
+    _launcherView.hidden = YES;
+    _UIApplicationEnterBackground();
     if (coldStart) {
+        [_maAppView addSubview:maApp.defaultScreenView];
         [maApp startApp];
+        
+        //[maApp performSelector:@selector(startApp) withObject:nil afterDelay:0.1];
         //imageView.frame = _maAppView.frame;
         //if ([[_maAppView subviews] count] == 0) {
-        [_maAppView addSubview:maApp.defaultScreenView];
         
         //[[[_maAppView subviews] objectAtIndex:0] removeFromSuperview];
         //}
@@ -165,15 +169,13 @@ void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
     }*/
     //[[UIMLApplication sharedMLApplication] presentAppDone];
     
-    
-    _launcherView.hidden = YES;
     //[_uiApplication->_keyWindow sendSubviewToBack:_launcherView];
     //[_uiApplication->_keyWindow removeFromSuperview];
     //DLog();
-    _UIApplicationEnterBackground();
-    if (coldStart) {
+    
+    /*if (coldStart) {
         [[[_maAppView subviews] objectAtIndex:0] removeFromSuperview];
-    }
+    }*/
     //NSArray *subviews = [_uiApplication->_keyWindow subviews];
     //UIView *view = [subviews objectAtIndex:subviews.count-1];
     //UIMAApplication *maApp = [_openedApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", view]];
@@ -187,7 +189,9 @@ void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
     //DLog(@"_EAGLMLLock2: %@", _EAGLMLLock);
     //DLog(@"_EAGLMLLock->counter2: %d", _EAGLMLLock->counter);
     //if (_currentMAApplication != maApp) {
-    [_uiMAApplication setAsCurrent:YES];
+    if (!coldStart) {
+        [_uiMAApplication setAsCurrent:YES];
+    }
     
 #ifdef NA
     [_CAAnimatorNAConditionLock unlockWithCondition:_CAAnimatorConditionLockHasWork];
@@ -223,11 +227,14 @@ void UIMLApplicationHandleMessages()
 void UIMLApplicationShowLauncher()
 {
     //DLog();
-    if (!_currentMAApplication) {
+    /*if (!_currentMAApplication) {
         return;
-    }
+    }*/
     //DLog(@"_currentMAApplication: %@", _currentMAApplication);
     //UIMAApplicationTakeScreenCaptureIfNeeded(_currentMAApplication);
+    if ([[_maAppView subviews] count] > 0) {
+        [[[_maAppView subviews] objectAtIndex:0] removeFromSuperview];
+    }
     [_currentMAApplication gotoBackground];
     _UIApplicationEnterForeground();
     
