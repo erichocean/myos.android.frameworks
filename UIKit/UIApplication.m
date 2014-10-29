@@ -141,7 +141,7 @@ static void mysig(int sig)
     //DLog(@"Signal %d", sig);
     switch (sig) {
         case SIGALRM:
-            //DLog(@"SIGALRM");
+            DLog(@"SIGALRM");
             break;
         case SIGTERM:
             DLog(@"SIGTERM");
@@ -410,6 +410,7 @@ static int _UIApplicationHandleMessages()
         case MAPipeMessageWillEnterBackground:
             _UIApplicationEnterBackground();
             pause();
+            DLog(@"_application: %@", _application);
             _UIApplicationEnterForeground();
             break;
         case MAPipeMessageHello:
@@ -813,7 +814,7 @@ BOOL _UIApplicationEnterBackground()
 
 void _UIApplicationEnterForeground()
 {
-    //DLog(@"_application: %@", _application);
+    DLog(@"_application: %@", _application);
     if (_application->_applicationState == UIApplicationStateBackground) {
         if ([_application->_delegate respondsToSelector:@selector(applicationWillEnterForeground:)]) {
             [_application->_delegate applicationWillEnterForeground:_application];
@@ -821,6 +822,7 @@ void _UIApplicationEnterForeground()
         [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationWillEnterForegroundNotification
                                                             object:_application];
         _application->_applicationState = UIApplicationStateActive;
+        _CALayerSetNeedsComposite(_application->_keyWindow->_layer);
     }
 }
 

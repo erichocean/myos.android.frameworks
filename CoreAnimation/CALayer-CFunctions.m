@@ -162,8 +162,8 @@ void _CALayerDisplay(CALayer *layer)
     }
     //if (!layer->_contentsWasSet) {
     if (layer->_contents) {
-        DLog(@"layer: %@", layer);
-        DLog(@"layer->_contents: %@", layer->_contents);
+        //DLog(@"layer: %@", layer);
+        //DLog(@"layer->_contents: %@", layer->_contents);
         if (layer->_displayContents) {
             CGImageRelease(layer->_displayContents);
         }

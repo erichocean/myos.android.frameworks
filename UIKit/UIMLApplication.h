@@ -14,12 +14,11 @@ typedef enum {
 
 @interface UIMLApplication : NSObject {
 @package
-    UIApplication *_uiApplication;
-    UIView *_launcherView;
     //BOOL _isActive;
 }
 
 + (UIMLApplication *)sharedMLApplication;
+- (void)presentAppDone;
 
 @end
 
@@ -29,8 +28,8 @@ void UIMLApplicationLauncherViewDidAdded();
 void UIMLApplicationSetChildAppIsRunning(BOOL isRunning);
 //void UIMLApplicationLog(NSString *longString);
 void UIMLApplicationHandleMessages();
-void UIMLApplicationRunApp(UIMAApplication *maApp);
-void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, float animationDuration);
+//void UIMLApplicationRunApp(UIMAApplication *maApp);
+void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart);
 void UIMLApplicationMoveCurrentAppToTop();
 void UIMLApplicationTerminateApps();
 void UIMLApplicationGoBack();
