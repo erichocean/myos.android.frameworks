@@ -9,11 +9,10 @@
 #import <CoreAnimation/CoreAnimation-private.h>
 #import <CoreFoundation/CoreFoundation-private.h>
 
-#define _kTimeToTerminateChild          10.0
-#define _kTerminateChildTimeOut         1.0
-#define _kGobackTimeLimit               1.0
+//#define _kTimeToTerminateChild          10.0
+#define _kTerminateChildTimeOut         2.0
+//#define _kGobackTimeLimit               1.0
 
-//static NSMutableDictionary *_runningApplicationsDictionary;
 static BOOL _childAppRunning = NO;
 static UIMLApplication *_mlApp = nil;
 static CFTimeInterval _startTime;
@@ -67,7 +66,7 @@ static UIView *_maAppView = nil;
     _UIApplicationEnterBackground();
     //NSArray *subviews = [_uiApplication->_keyWindow subviews];
     //UIView *view = [subviews objectAtIndex:subviews.count-1];
-    //UIMAApplication *maApp = [_runningApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", view]];
+    //UIMAApplication *maApp = [_openedApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", view]];
     [[[_maAppView subviews] objectAtIndex:0] removeFromSuperview];
     //DLog(@"maApp: %@", maApp);
     //[_EAGLMLLock lock];
@@ -87,7 +86,7 @@ static UIView *_maAppView = nil;
     //UIMLApplication *mlApplication = [UIMLApplication sharedMLApplication];
     //NSArray *subviews = [_uiApplication->_keyWindow subviews];
     //UIView *currentView = [subviews objectAtIndex:subviews.count-1];
-    //UIMAApplication *maApp = [_runningApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", currentView]];
+    //UIMAApplication *maApp = [_openedApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", currentView]];
     [_uiMAApplication setAsCurrent:YES];
 }*/
 
@@ -100,8 +99,8 @@ void UIMLApplicationInitialize()
     DLog(@"UIMLApplicationInitialize");
     _uiApplication = [UIApplication sharedApplication];
     _uiMAApplication = [[UIMAApplication alloc] init];
-    //CFArrayAppendValue(_runningApplications, _launcherApp);
-    //_runningApplicationsDictionary = [[NSMutableDictionary alloc] init];
+    //CFArrayAppendValue(_openedApplications, _launcherApp);
+    //_openedApplicationsDictionary = [[NSMutableDictionary alloc] init];
     
     //_EAGLMLLock = [[NSLock alloc] init];
     //DLog(@"_EAGLMLLock: %@", _EAGLMLLock);
@@ -116,8 +115,8 @@ void UIMLApplicationLauncherViewDidAdded()
     _maAppView = [[UIView alloc] initWithFrame:_launcherView.frame];
     //_maAppView.backgroundColor = [UIColor redColor];
     [_uiApplication->_keyWindow insertSubview:_maAppView atIndex:0];
-    DLog(@"_launcherView: %@", _launcherView);
-    DLog(@"_maAppView: %@", _maAppView);
+    //DLog(@"_launcherView: %@", _launcherView);
+    //DLog(@"_maAppView: %@", _maAppView);
 }
 
 void UIMLApplicationSetChildAppIsRunning(BOOL isRunning)
@@ -133,7 +132,7 @@ void UIMLApplicationSetChildAppIsRunning(BOOL isRunning)
 
 void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
 {
-    //DLog();
+    DLog();
     //UIApplication *uiApplication = [UIMLApplication sharedMLApplication]->_uiApplication;
     //DLog(@"uiApplication: %@", uiApplication);
     _uiMAApplication = maApp;
@@ -177,7 +176,7 @@ void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
     }
     //NSArray *subviews = [_uiApplication->_keyWindow subviews];
     //UIView *view = [subviews objectAtIndex:subviews.count-1];
-    //UIMAApplication *maApp = [_runningApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", view]];
+    //UIMAApplication *maApp = [_openedApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", view]];
     //if (coldStart) {
     //[[[_maAppView subviews] objectAtIndex:0] removeFromSuperview];
     //DLog(@"maApp: %@", maApp);
@@ -220,36 +219,27 @@ void UIMLApplicationHandleMessages()
     }
 #endif
 }
-/*
-void UIMLApplicationRunApp(UIMAApplication *maApp)
-{
-    DLog();
-    //maApp.running = YES;
-    //[_runningApplicationsDictionary setObject:maApp forKey:[NSString stringWithFormat:@"%p", maApp.screenImageView]];
-    //UIApplication *uiApplication = [UIMLApplication sharedMLApplication]->_uiApplication;
-    //[_uiApplication->_keyWindow addSubview:maApp.screenImageView];
-    [maApp startApp];
-}*/
 
 void UIMLApplicationShowLauncher()
 {
-    DLog();
+    //DLog();
     if (!_currentMAApplication) {
         return;
     }
     //DLog(@"_currentMAApplication: %@", _currentMAApplication);
     //UIMAApplicationTakeScreenCaptureIfNeeded(_currentMAApplication);
-    IOPipeWriteMessage(MAPipeMessageWillEnterBackground, YES);
+    [_currentMAApplication gotoBackground];
     _UIApplicationEnterForeground();
     
     //UIMLApplication *mlApplication = [UIMLApplication sharedMLApplication];
-    _currentMAApplication = nil;
+    //_currentMAApplication = nil;
     
     _launcherView.hidden = NO;
     //DLog();
-    [_uiApplication->_keyWindow performSelector:@selector(bringSubviewToFront:)
-                                     withObject:_launcherView
-                                     afterDelay:0.1];
+    [_uiApplication->_keyWindow bringSubviewToFront:_launcherView];
+    //[_uiApplication->_keyWindow performSelector:@selector(bringSubviewToFront:)
+    //                                 withObject:_launcherView
+    //                                afterDelay:0.1];
     //DLog(@"mlApplication->_launcherView: %@", mlApplication->_launcherView);
 #ifdef NA
     [_CAAnimatorNAConditionLock lockWithCondition:_CAAnimatorConditionLockHasNoWork];
@@ -262,44 +252,43 @@ void UIMLApplicationGoBack()
     //NSArray *subviews = [_uiApplication->_keyWindow subviews];
     //UIView *currentView;
     //DLog();
-    //DLog(@"_runningApplications: %@", _runningApplications);
+    //DLog(@"_openedApplications: %@", _openedApplications);
     //_maAppView.hidden = NO;
     if (!_launcherView.hidden) { //(!_currentMAApplication) {
         DLog(@"!_launcherView.hidden");
-        return;
-        /*
-        if (CFArrayGetCount(_runningApplications) == 0) {
+        //return;
+        if (CFArrayGetCount(_openedApplications) == 0) {
             //if (subviews.count == 1) {
-            //DLog(@"CFArrayGetCount(_runningApplications) == 0");
+            DLog(@"CFArrayGetCount(_openedApplications) == 0");
             return;
         } else {
-            DLog(@"CFArrayGetCount(_runningApplications) > 0");
-            
+            //DLog(@"CFArrayGetCount(_openedApplications) > 0");
+            DLog(@"_currentMAApplication: %@", _currentMAApplication);
             UIMLApplicationPresentAppScreen(_currentMAApplication, NO);
-            return;
+            //return;
             //currentView = [subviews objectAtIndex:subviews.count-2];
             //currentView.frame = CGRectMake(0,currentView.frame.origin.y,currentView.frame.size.width,currentView.frame.size.height);
             //DLog(@"view: %@", view);
-            //UIMAApplication *maApp = [_runningApplications   // objectForKey:[NSString stringWithFormat:@"%p", currentView]];
-            //DLog(@"maApp: %@", maApp);
+            //UIMAApplication *maApp = [_openedApplications   // objectForKey:[NSString stringWithFormat:@"%p", currentView]];
+           
             //[_currentMAApplication setAsCurrent:YES];
-            [_uiApplication->_keyWindow bringSubviewToFront:_maAppView];
-            _launcherView.hidden = YES;
-            _uiMAApplication = _currentMAApplication;
-            //UIMLApplicationPresentAppScreen(_currentMAApplication, NO);
-        }*/
+            //[_uiApplication->_keyWindow bringSubviewToFront:_maAppView];
+            //_launcherView.hidden = YES;
+            //_uiMAApplication = _currentMAApplication;
+        }
     } else {
         _maAppView.hidden = NO;
-        if (CFArrayGetCount(_runningApplications) == 1) {
-            //DLog(@"CFArrayGetCount(_runningApplications) == 1");
+        if (CFArrayGetCount(_openedApplications) == 1) {
+            //DLog(@"CFArrayGetCount(_openedApplications) == 1");
             return;
         }
         //currentView = _currentMAApplication.screenImageView;
         //DLog(@"_currentMAApplication: %@", _currentMAApplication);
-        IOPipeWriteMessage(MAPipeMessageWillEnterBackground, YES);
-        //int currentAppIndex = [_runningApplications indexOfObject:_currentMAApplication];
-        CFRange range = {0, CFArrayGetCount(_runningApplications)};
-        int currentAppIndex  = CFArrayGetFirstIndexOfValue(_runningApplications, range, _currentMAApplication);
+        [_currentMAApplication gotoBackground];
+        //IOPipeWriteMessage(MAPipeMessageWillEnterBackground, YES);
+        //int currentAppIndex = [_openedApplications indexOfObject:_currentMAApplication];
+        CFRange range = {0, CFArrayGetCount(_openedApplications)};
+        int currentAppIndex  = CFArrayGetFirstIndexOfValue(_openedApplications, range, _currentMAApplication);
         //DLog(@"currentAppIndex: %d", currentAppIndex);
         if (currentAppIndex == 0) {
             //DLog(@"currentAppIndex == 0");
@@ -309,7 +298,7 @@ void UIMLApplicationGoBack()
             //[UIView setAnimationDelegate:[UIMLApplication sharedMLApplication]];
             //[UIView setAnimationDidStopSelector:@selector(goBackDone)];
             //for (int i=2; i<subviews.count; i++) {
-            _uiMAApplication = _CFArrayGetLastValue(_runningApplications);//[_runningApplications objectAtIndex:CFArrayGetCount(_runningApplications)-1];
+            _uiMAApplication = _CFArrayGetLastValue(_openedApplications);//[_openedApplications objectAtIndex:CFArrayGetCount(_openedApplications)-1];
             //currentView = [subviews objectAtIndex:subviews.count-1];
             //currentView.hidden = NO;
             //currentView.frame = CGRectMake(0,currentView.frame.origin.y,currentView.frame.size.width,currentView.frame.size.height);
@@ -317,11 +306,11 @@ void UIMLApplicationGoBack()
             //[UIView commitAnimations];
             //[mlApplication goBackDone];
         } else {
-            _uiMAApplication = [_runningApplications objectAtIndex:currentAppIndex-1];
+            _uiMAApplication = [_openedApplications objectAtIndex:currentAppIndex-1];
             //DLog(@"_uiMAApplication: %@", _uiMAApplication);
         }
         //UIView *previousView = [subviews objectAtIndex:currentViewIndex-1];
-        //UIMAApplication *previousApp = [_runningApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", previousView]];
+        //UIMAApplication *previousApp = [_openedApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", previousView]];
         //DLog(@"previousApp: %@", previousApp);
         //previousView.hidden = NO;
         //previousView.frame = CGRectMake(0,previousView.frame.origin.y,previousView.frame.size.width,previousView.frame.size.height);
@@ -347,22 +336,22 @@ void UIMLApplicationMoveCurrentAppToTop()
     //UIView *currentView = _currentMAApplication.screenImageView;
     //UIMLApplication *mlApplication = [UIMLApplication sharedMLApplication];
     //NSArray *subviews = [mlApplication->_uiApplication->_keyWindow subviews];
-    int currentAppIndex = [_runningApplications indexOfObject:_currentMAApplication];
+    int currentAppIndex = [_openedApplications indexOfObject:_currentMAApplication];
     //_currentMAApplication->_needsScreenCapture = YES;
-    if (currentAppIndex == CFArrayGetCount(_runningApplications) - 1) {
+    if (currentAppIndex == CFArrayGetCount(_openedApplications) - 1) {
         return;
     }
     //currentView->_layer.contents = _UIScreenCaptureScreen();
     //UIApplication *uiApplication = mlApplication->_uiApplication;
     //[uiApplication->_keyWindow bringSubviewToFront:currentView];
     //DLog(@"_launcherApp->_keyWindow.subviews: %@", _launcherApp->_keyWindow.subviews);
-    //UIMAApplication *currentApp = CFArrayGetValueAtIndex(_runningApplications, _currentAppIndex);
+    //UIMAApplication *currentApp = CFArrayGetValueAtIndex(_openedApplications, _currentAppIndex);
     //if (currentApp != _launcherApp) {
     _currentMAApplication->_score++;
     //}
-    _CFArrayMoveValueToTop(_runningApplications, _currentMAApplication);
-    //DLog(@"_runningApplications: %@", _runningApplications);
-    //_currentAppIndex = CFArrayGetCount(_runningApplications) - 1;
+    _CFArrayMoveValueToTop(_openedApplications, _currentMAApplication);
+    //DLog(@"_openedApplications: %@", _openedApplications);
+    //_currentAppIndex = CFArrayGetCount(_openedApplications) - 1;
 }
 
 void UIMLApplicationTerminateApps()
@@ -373,34 +362,39 @@ void UIMLApplicationTerminateApps()
     }
 #endif
     DLog(@"_currentMAApplication: %@", _currentMAApplication);
-    IOPipeWriteMessage(MAPipeMessageTerminateApp, YES);
-    for (UIMAApplication *maApp in _runningApplications) {
-    //for (NSString *key in _runningApplicationsDictionary) {
+    if (_currentMAApplication->_running) {
+        IOPipeWriteMessage(MAPipeMessageTerminateApp, YES);
+    }
+    for (UIMAApplication *maApp in _openedApplications) {
+        //for (NSString *key in _openedApplicationsDictionary) {
         //DLog();
-        //UIMAApplication *maApp = [_runningApplicationsDictionary objectForKey:key];
+        //UIMAApplication *maApp = [_openedApplicationsDictionary objectForKey:key];
         //DLog(@"maApp: %@", maApp);
-        if (maApp != _currentMAApplication) {
+        if (maApp != _currentMAApplication || !_currentMAApplication->_running) {
             [maApp terminate];
         }
     }
-    BOOL done = NO;
-    _startTime = CACurrentMediaTime();
-    while (!done) {
-        int message = IOPipeReadMessage();
-        switch (message) {
-            case MLPipeMessageEndOfMessage:
-                DLog(@"MLPipeMessageEndOfMessage");
-                break;
-            case MLPipeMessageTerminateApp:
-                DLog(@"MLPipeMessageTerminateApp");
+    if (_currentMAApplication->_running) {
+        BOOL done = NO;
+        _startTime = CACurrentMediaTime();
+        while (!done) {
+            int message = IOPipeReadMessage();
+            switch (message) {
+                case MLPipeMessageEndOfMessage:
+                    DLog(@"MLPipeMessageEndOfMessage");
+                    break;
+                case MLPipeMessageTerminateApp:
+                    DLog(@"MLPipeMessageTerminateApp");
+                    done = YES;
+                    break;
+                default:
+                    break;
+            }
+            if (CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut) {
+                DLog(@"CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut");
                 done = YES;
-                break;
-            default:
-                break;
-        }
-        if (CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut) {
-            DLog(@"CACurrentMediaTime() - _startTime > _kTerminateChildTimeOut");
-            done = YES;
+                [_currentMAApplication terminate];
+            }
         }
     }
 }

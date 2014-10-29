@@ -133,7 +133,7 @@ static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIc
     DLog();
     [_application showMenu];
     /*if (_mode == UIApplicationIconModeNormal) {
-        if (_application->_running) {
+        if (_application->_opened) {
             _mode = UIApplicationIconModeClose;
             _closeControl.hidden = NO;
         } else {

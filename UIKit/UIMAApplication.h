@@ -12,12 +12,13 @@
 
 extern NSMutableDictionary *_allApplicationsDictionary;
 extern UIMAApplication *_currentMAApplication;
-extern NSMutableArray *_runningApplications;
+extern NSMutableArray *_openedApplications;
 
 @interface UIMAApplication : NSObject {
 @package
     NSString *_name;
     NSMutableDictionary *_data;
+    BOOL _opened;
     BOOL _running;
     //BOOL _needsScreenCapture;
     int _score;
@@ -26,7 +27,6 @@ extern NSMutableArray *_runningApplications;
     int _pipeWrite;
     int _animationPipeRead;
     int _animationPipeWrite;
-    //UIImageView *_screenImageView;
     UIApplicationIcon *_applicationIcon;
 }
 
@@ -45,6 +45,7 @@ extern NSMutableArray *_runningApplications;
 - (BOOL)isCurrent;
 - (void)startApp;
 - (void)setAsCurrent:(BOOL)withSignal;
+- (void)gotoBackground;
 - (void)terminate;
 - (void)singleTapped;
 - (void)showMenu;

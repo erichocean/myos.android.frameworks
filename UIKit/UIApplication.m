@@ -141,7 +141,7 @@ static void mysig(int sig)
     //DLog(@"Signal %d", sig);
     switch (sig) {
         case SIGALRM:
-            DLog(@"SIGALRM");
+            //DLog(@"SIGALRM");
             break;
         case SIGTERM:
             DLog(@"SIGTERM");
@@ -410,14 +410,14 @@ static int _UIApplicationHandleMessages()
         case MAPipeMessageWillEnterBackground:
             _UIApplicationEnterBackground();
             pause();
-            DLog(@"_application: %@", _application);
+            //DLog(@"_application: %@", _application);
             _UIApplicationEnterForeground();
             break;
         case MAPipeMessageHello:
             DLog(@"MAPipeMessageHello");
             break;
         case MAPipeMessageTerminateApp:
-            //DLog(@"MAPipeMessageTerminateApp");
+            DLog(@"MAPipeMessageTerminateApp");
             IOPipeWriteMessage(MLPipeMessageTerminateApp, YES);
             _UIApplicationTerminate();
             //return MAPipeMessageTerminateApp;

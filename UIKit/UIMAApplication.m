@@ -11,7 +11,7 @@
 
 NSMutableDictionary *_allApplicationsDictionary;
 UIMAApplication *_currentMAApplication = nil;
-NSMutableArray *_runningApplications;
+NSMutableArray *_openedApplications;
 
 static NSString *const _kUIMAApplicationPageNumberPath = @"page.pageNumber";
 static NSString *const _kUIMAApplicationXLocationPath = @"page.xLocation";
@@ -46,7 +46,7 @@ static void UIMAApplicationRunApp(NSString *appName)
 + (void)initialize
 {
     _allApplicationsDictionary = [[NSMutableDictionary alloc] init];
-    _runningApplications = CFArrayCreateMutable(kCFAllocatorDefault, 5, &kCFTypeArrayCallBacks);
+    _openedApplications = CFArrayCreateMutable(kCFAllocatorDefault, 5, &kCFTypeArrayCallBacks);
 }
 
 - (id)initWithAppName:(NSString *)name
@@ -54,7 +54,7 @@ static void UIMAApplicationRunApp(NSString *appName)
     if ((self=[super init])) {
         _name = name;
         [_allApplicationsDictionary setObject:self forKey:name];
-        _running = NO;
+        _opened = NO;
         //_needsScreenCapture = YES;
         NSString *dataPath = [NSString stringWithFormat:@"/data/data/com.myos.myapps/apps/%@.app/data.json", _name];
         NSData *data = [NSData dataWithContentsOfFile:dataPath];
@@ -138,16 +138,16 @@ static void UIMAApplicationRunApp(NSString *appName)
     //return [[[UIImageView alloc] init] autorelease];
 }
 
-- (BOOL)running
+- (BOOL)opened
 {
-    return _running;
+    return _opened;
 }
 
-- (void)setRunning:(BOOL)newValue
+- (void)setOpened:(BOOL)newValue
 {
     //[self willChangeValueForKey:@"running"];
-    _running = newValue;
-    //DLog(@"self: %@, running: %d", self, _running);
+    _opened = newValue;
+    //DLog(@"self: %@, running: %d", self, _opened);
     //[self didChangeValueForKey:@"running"];
     _applicationIcon->_iconLabel.textColor = [UIColor yellowColor]; // orangeColor];
 }
@@ -155,7 +155,7 @@ static void UIMAApplicationRunApp(NSString *appName)
 - (NSString *)description
 {
     //DLog(@"_data: %@", _data);
-    return [NSString stringWithFormat:@"<%@: %p; name: %@; running: %d; isCurrent: %d; score: %d; pageNumber: %d; xLocation: %d; yLocation: %d; anchored: %d>", [self className], self, _name, _running, [self isCurrent], _score, self.pageNumber, self.xLocation, self.yLocation, self.anchored];
+    return [NSString stringWithFormat:@"<%@: %p; name: %@; opened: %d; isCurrent: %d; score: %d; pageNumber: %d; xLocation: %d; yLocation: %d; anchored: %d>", [self className], self, _name, _opened, [self isCurrent], _score, self.pageNumber, self.xLocation, self.yLocation, self.anchored];
 }
 
 #pragma mark - Data
@@ -195,7 +195,7 @@ static void UIMAApplicationRunApp(NSString *appName)
 - (void)singleTapped
 {
     //DLog();
-    if (!_running) {
+    if (!_opened) {
         UIMLApplicationPresentAppScreen(self, YES);
     } else {
         //DLog();
@@ -210,7 +210,7 @@ static void UIMAApplicationRunApp(NSString *appName)
 {
     //return;
     //DLog(@"_name: %@", _name);
-    self.running = YES;
+    self.opened = YES;
     int pipe1[2];
     int pipe2[2];
     
@@ -285,7 +285,7 @@ static void UIMAApplicationRunApp(NSString *appName)
         _animationPipeWrite = animationPipeWrite;
         //DLog();
         [self setAsCurrent:NO];
-        CFArrayAppendValue(_runningApplications, self);
+        CFArrayAppendValue(_openedApplications, self);
         IOPipeWriteMessage(MAPipeMessageCharString, NO);
         IOPipeWriteCharString(_name);
         UIMLApplicationSetChildAppIsRunning(YES);
@@ -301,6 +301,7 @@ static void UIMAApplicationRunApp(NSString *appName)
 {
     IOPipeSetPipes(_pipeRead, _pipeWrite);
     _currentMAApplication = self;
+    _running = YES;
     //DLog(@"self: %@", self);
 #ifdef NA
     EAGLMLSetPipes(_animationPipeRead, _animationPipeWrite);
@@ -311,10 +312,16 @@ static void UIMAApplicationRunApp(NSString *appName)
     _score++;
 }
 
+- (void)gotoBackground
+{
+    _running = NO;
+    IOPipeWriteMessage(MAPipeMessageWillEnterBackground, YES);
+}
+
 - (void)terminate
 {
     DLog(@"%@", self);
-    //_running = NO;
+    //_opened = NO;
     UIMAApplicationSaveData(self);
     kill(_pid, SIGTERM);
     if (wait(NULL) == -1) {
