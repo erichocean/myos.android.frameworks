@@ -132,67 +132,19 @@ void UIMLApplicationSetChildAppIsRunning(BOOL isRunning)
 
 void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
 {
-    DLog();
+    //DLog();
     //UIApplication *uiApplication = [UIMLApplication sharedMLApplication]->_uiApplication;
     //DLog(@"uiApplication: %@", uiApplication);
-    _uiMAApplication = maApp;
-    [_uiApplication->_keyWindow bringSubviewToFront:_maAppView];
+    //_uiMAApplication = maApp;
+    //[_uiApplication->_keyWindow bringSubviewToFront:_maAppView];
     _launcherView.hidden = YES;
     _UIApplicationEnterBackground();
     if (coldStart) {
         [_maAppView addSubview:maApp.defaultScreenView];
         [maApp startApp];
-        
-        //[maApp performSelector:@selector(startApp) withObject:nil afterDelay:0.1];
-        //imageView.frame = _maAppView.frame;
-        //if ([[_maAppView subviews] count] == 0) {
-        
-        //[[[_maAppView subviews] objectAtIndex:0] removeFromSuperview];
-        //}
-        
-        //UIImageView *defaultScreenView = maApp.defaultScreenView;
-        //UIImageView *defaultAppScreenView = [_appView subviewAtIndex:0]
-        //maApp.screenImageView.frame = CGRectMake(0,0,uiApplication->_keyWindow.frame.size.width,uiApplication->_keyWindow.frame.size.height);
-        //DLog(@"maApp.screenImageView: %@", maApp.screenImageView);
-        //maApp.screenImageView.hidden = NO;
-        /*defaultScreenView.alpha = 0;
-         [UIView beginAnimations:nil context:nil];
-         [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-         [UIView setAnimationDuration:0.25];
-         [UIView setAnimationDelegate:[UIMLApplication sharedMLApplication]];
-         [UIView setAnimationDidStopSelector:@selector(presentAppDone)];
-         defaultScreenView.alpha = 1;
-         //maApp.screenImageView.alpha = 1;
-         [UIView commitAnimations];*/
-    } /*else {
-        [[UIMLApplication sharedMLApplication] presentAppDone];
-    }*/
-    //[[UIMLApplication sharedMLApplication] presentAppDone];
-    
-    //[_uiApplication->_keyWindow sendSubviewToBack:_launcherView];
-    //[_uiApplication->_keyWindow removeFromSuperview];
-    //DLog();
-    
-    /*if (coldStart) {
-        [[[_maAppView subviews] objectAtIndex:0] removeFromSuperview];
-    }*/
-    //NSArray *subviews = [_uiApplication->_keyWindow subviews];
-    //UIView *view = [subviews objectAtIndex:subviews.count-1];
-    //UIMAApplication *maApp = [_openedApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", view]];
-    //if (coldStart) {
-    //[[[_maAppView subviews] objectAtIndex:0] removeFromSuperview];
-    //DLog(@"maApp: %@", maApp);
-    //[_EAGLMLLock lock];
-    //_EAGLMLCanDraw = YES;
-    //DLog(@"_EAGLMLCanDraw: %d", _EAGLMLCanDraw);
-    //[_EAGLMLLock lock];
-    //DLog(@"_EAGLMLLock2: %@", _EAGLMLLock);
-    //DLog(@"_EAGLMLLock->counter2: %d", _EAGLMLLock->counter);
-    //if (_currentMAApplication != maApp) {
-    if (!coldStart) {
-        [_uiMAApplication setAsCurrent:YES];
+    } else {
+        [maApp setAsCurrent:YES];
     }
-    
 #ifdef NA
     [_CAAnimatorNAConditionLock unlockWithCondition:_CAAnimatorConditionLockHasWork];
 #endif
@@ -226,28 +178,16 @@ void UIMLApplicationHandleMessages()
 
 void UIMLApplicationShowLauncher()
 {
-    //DLog();
-    /*if (!_currentMAApplication) {
-        return;
-    }*/
-    //DLog(@"_currentMAApplication: %@", _currentMAApplication);
-    //UIMAApplicationTakeScreenCaptureIfNeeded(_currentMAApplication);
+    DLog();
     if ([[_maAppView subviews] count] > 0) {
+        //DLog(@"[[_maAppView subviews] count] > 0");
         [[[_maAppView subviews] objectAtIndex:0] removeFromSuperview];
     }
     [_currentMAApplication gotoBackground];
     _UIApplicationEnterForeground();
-    
-    //UIMLApplication *mlApplication = [UIMLApplication sharedMLApplication];
-    //_currentMAApplication = nil;
-    
     _launcherView.hidden = NO;
     //DLog();
-    [_uiApplication->_keyWindow bringSubviewToFront:_launcherView];
-    //[_uiApplication->_keyWindow performSelector:@selector(bringSubviewToFront:)
-    //                                 withObject:_launcherView
-    //                                afterDelay:0.1];
-    //DLog(@"mlApplication->_launcherView: %@", mlApplication->_launcherView);
+    //[_uiApplication->_keyWindow bringSubviewToFront:_launcherView];
 #ifdef NA
     [_CAAnimatorNAConditionLock lockWithCondition:_CAAnimatorConditionLockHasNoWork];
 #endif
@@ -255,14 +195,9 @@ void UIMLApplicationShowLauncher()
 
 void UIMLApplicationGoBack()
 {
-    //UIMLApplication *mlApplication = [UIMLApplication sharedMLApplication];
-    //NSArray *subviews = [_uiApplication->_keyWindow subviews];
-    //UIView *currentView;
-    //DLog();
-    //DLog(@"_openedApplications: %@", _openedApplications);
-    //_maAppView.hidden = NO;
-    if (!_launcherView.hidden) { //(!_currentMAApplication) {
-        DLog(@"!_launcherView.hidden");
+    _maAppView.hidden = NO;
+    if (!_launcherView.hidden) {
+        //DLog(@"!_launcherView.hidden");
         //return;
         if (CFArrayGetCount(_openedApplications) == 0) {
             //if (subviews.count == 1) {
@@ -272,16 +207,6 @@ void UIMLApplicationGoBack()
             //DLog(@"CFArrayGetCount(_openedApplications) > 0");
             DLog(@"_currentMAApplication: %@", _currentMAApplication);
             UIMLApplicationPresentAppScreen(_currentMAApplication, NO);
-            //return;
-            //currentView = [subviews objectAtIndex:subviews.count-2];
-            //currentView.frame = CGRectMake(0,currentView.frame.origin.y,currentView.frame.size.width,currentView.frame.size.height);
-            //DLog(@"view: %@", view);
-            //UIMAApplication *maApp = [_openedApplications   // objectForKey:[NSString stringWithFormat:@"%p", currentView]];
-           
-            //[_currentMAApplication setAsCurrent:YES];
-            //[_uiApplication->_keyWindow bringSubviewToFront:_maAppView];
-            //_launcherView.hidden = YES;
-            //_uiMAApplication = _currentMAApplication;
         }
     } else {
         _maAppView.hidden = NO;
@@ -316,21 +241,8 @@ void UIMLApplicationGoBack()
             _uiMAApplication = [_openedApplications objectAtIndex:currentAppIndex-1];
             //DLog(@"_uiMAApplication: %@", _uiMAApplication);
         }
-        //UIView *previousView = [subviews objectAtIndex:currentViewIndex-1];
-        //UIMAApplication *previousApp = [_openedApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", previousView]];
-        //DLog(@"previousApp: %@", previousApp);
-        //previousView.hidden = NO;
-        //previousView.frame = CGRectMake(0,previousView.frame.origin.y,previousView.frame.size.width,previousView.frame.size.height);
-        //DLog(@"previousView: %@", previousView);
-        //[UIView beginAnimations:nil context:nil];
-        //[UIView setAnimationDuration:0.25];
-        //currentView.hidden = YES;
-        //currentView.frame = CGRectMake(currentView.frame.size.width,currentView.frame.origin.y,currentView.frame.size.width,currentView.frame.size.height);
-        //[UIView commitAnimations];
+        [_uiMAApplication setAsCurrent:YES];
     }
-    [_uiMAApplication setAsCurrent:YES];
-    //[previousApp setAsCurrent:YES];
-    //DLog(@"_currentMAApplication2: %@", _currentMAApplication);
 }
 
 void UIMLApplicationMoveCurrentAppToTop()

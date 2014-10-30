@@ -15,7 +15,7 @@ extern NSConditionLock *_CAAnimatorConditionLock;
 #ifdef NA
 extern NSConditionLock *_CAAnimatorNAConditionLock;
 #endif
-extern BOOL _CAAnimatorCaptureScreen;
+//extern BOOL _CAAnimatorCaptureScreen;
 extern CGImageRef _CAAnimatorScreenCapture;
 
 @interface CAAnimator : NSObject

@@ -15,7 +15,7 @@ NSConditionLock *_CAAnimatorConditionLock = nil;
 NSConditionLock *_CAAnimatorNAConditionLock = nil;
 #endif
 
-BOOL _CAAnimatorCaptureScreen = NO;
+//BOOL _CAAnimatorCaptureScreen = NO;
 CGImageRef _CAAnimatorScreenCapture = nil;
 
 static int _CAAnimatorFrameCount = 0;
@@ -64,7 +64,7 @@ static void reportFPS(BOOL withCondition)
         previousTimestamp = CACurrentMediaTime();
     }
 }
-
+/*
 static void _CAAnimatorCaptureScreenFunction()
 {
     EAGLContext *context = _EAGLGetCurrentContext();
@@ -94,8 +94,8 @@ static void _CAAnimatorCaptureScreenFunction()
                                                        intent:kCGRenderingIntentDefault];
     CGDataProviderRelease(provider);
     //DLog(@"_CAAnimatorScreenCapture: %@", _CAAnimatorScreenCapture);
-    _CAAnimatorCaptureScreen = NO;
-}
+    //_CAAnimatorCaptureScreen = NO;
+}*/
 
 // CAAnimator uses CACompositor to composite Render Tree for each frame.
 @implementation CAAnimator
@@ -131,9 +131,9 @@ static void _CAAnimatorCaptureScreenFunction()
         NSDate *limit = [[NSDate alloc] initWithTimeIntervalSinceNow:0.01];
         [[NSRunLoop currentRunLoop] runUntilDate:limit];
         [limit release];
-        if (_CAAnimatorCaptureScreen) {
+        /*if (_CAAnimatorCaptureScreen) {
             _CAAnimatorCaptureScreenFunction();
-        }
+        }*/
         //}
 #ifdef NA
         if ([_CAAnimatorNAConditionLock tryLockWhenCondition:_CAAnimatorConditionLockHasWork]) {

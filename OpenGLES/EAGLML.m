@@ -7,9 +7,6 @@
 #import <IOKit/IOKit.h>
 #import <OpenGLES/EAGL-private.h>
 
-//NSLock *_EAGLMLLock = nil;
-//BOOL _EAGLMLCanDraw = YES;
-
 static int _pipeRead;
 static int _pipeWrite;
 static BOOL _childAppRunning = NO;
@@ -109,15 +106,11 @@ void EAGLMLDraw()
     int textureID = IOPipeReadIntWithPipe(_pipeRead);
     glBindTexture(GL_TEXTURE_2D, textureID);
     //DLog(@"_width: %d, _height: %d", _width, _height);
-    
     EAGLContext *context = _EAGLGetCurrentContext();
     //DLog(@"context->_width: %d, context->_height: %d", context->_width, context->_height);
     glViewport(0, 0, context->_width, context->_height);
-    
-    //glViewport(0, 0, _width, _height);
     int size = sizeof(GLfloat)*8;
     //DLog(@"size: %d", size);
-
     GLfloat texCoords[] = {
         0, 1,
         1, 1,
@@ -133,7 +126,6 @@ void EAGLMLDraw()
     };
     IOPipeReadDataWithPipe(vertices, size, _pipeRead);
     glTexCoordPointer(2, GL_FLOAT, 0, texCoords);
-
     //DLog(@"vertices: %p", vertices);
     glVertexPointer(2, GL_FLOAT, 0, vertices);
     float opacity = IOPipeReadFloatWithPipe(_pipeRead);
