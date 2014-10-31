@@ -197,48 +197,25 @@ void UIMLApplicationGoBack()
 {
     _maAppView.hidden = NO;
     if (!_launcherView.hidden) {
-        //DLog(@"!_launcherView.hidden");
-        //return;
         if (CFArrayGetCount(_openedApplications) == 0) {
-            //if (subviews.count == 1) {
             DLog(@"CFArrayGetCount(_openedApplications) == 0");
             return;
         } else {
-            //DLog(@"CFArrayGetCount(_openedApplications) > 0");
-            DLog(@"_currentMAApplication: %@", _currentMAApplication);
+            //DLog(@"_currentMAApplication: %@", _currentMAApplication);
             UIMLApplicationPresentAppScreen(_currentMAApplication, NO);
         }
     } else {
         _maAppView.hidden = NO;
         if (CFArrayGetCount(_openedApplications) == 1) {
-            //DLog(@"CFArrayGetCount(_openedApplications) == 1");
             return;
         }
-        //currentView = _currentMAApplication.screenImageView;
-        //DLog(@"_currentMAApplication: %@", _currentMAApplication);
         [_currentMAApplication gotoBackground];
-        //IOPipeWriteMessage(MAPipeMessageWillEnterBackground, YES);
-        //int currentAppIndex = [_openedApplications indexOfObject:_currentMAApplication];
-        CFRange range = {0, CFArrayGetCount(_openedApplications)};
-        int currentAppIndex  = CFArrayGetFirstIndexOfValue(_openedApplications, range, _currentMAApplication);
+        int currentAppIndex = _CFArrayGetIndexOfValue(_openedApplications, _currentMAApplication);
         //DLog(@"currentAppIndex: %d", currentAppIndex);
         if (currentAppIndex == 0) {
-            //DLog(@"currentAppIndex == 0");
-            //DLog(@"[subviews indexOfObject:_currentMAApplication->_screenImageView] == 1");
-            //[UIView beginAnimations:nil context:nil];
-            //[UIView setAnimationDuration:0.25];
-            //[UIView setAnimationDelegate:[UIMLApplication sharedMLApplication]];
-            //[UIView setAnimationDidStopSelector:@selector(goBackDone)];
-            //for (int i=2; i<subviews.count; i++) {
-            _uiMAApplication = _CFArrayGetLastValue(_openedApplications);//[_openedApplications objectAtIndex:CFArrayGetCount(_openedApplications)-1];
-            //currentView = [subviews objectAtIndex:subviews.count-1];
-            //currentView.hidden = NO;
-            //currentView.frame = CGRectMake(0,currentView.frame.origin.y,currentView.frame.size.width,currentView.frame.size.height);
-            //}
-            //[UIView commitAnimations];
-            //[mlApplication goBackDone];
+            _uiMAApplication = _CFArrayGetLastValue(_openedApplications);
         } else {
-            _uiMAApplication = [_openedApplications objectAtIndex:currentAppIndex-1];
+            _uiMAApplication = CFArrayGetValueAtIndex(_openedApplications, currentAppIndex-1);
             //DLog(@"_uiMAApplication: %@", _uiMAApplication);
         }
         [_uiMAApplication setAsCurrent:YES];
@@ -251,22 +228,12 @@ void UIMLApplicationMoveCurrentAppToTop()
     if (!_launcherView.hidden) {
         return;
     }
-    //DLog(@"_currentMAApplication: %@", _currentMAApplication);
-    //UIView *currentView = _currentMAApplication.screenImageView;
-    //UIMLApplication *mlApplication = [UIMLApplication sharedMLApplication];
-    //NSArray *subviews = [mlApplication->_uiApplication->_keyWindow subviews];
-    int currentAppIndex = [_openedApplications indexOfObject:_currentMAApplication];
+    //int currentAppIndex = [_openedApplications indexOfObject:_currentMAApplication];
     //_currentMAApplication->_needsScreenCapture = YES;
-    if (currentAppIndex == CFArrayGetCount(_openedApplications) - 1) {
+    /*if (currentAppIndex == CFArrayGetCount(_openedApplications) - 1) {
         return;
-    }
-    //currentView->_layer.contents = _UIScreenCaptureScreen();
-    //UIApplication *uiApplication = mlApplication->_uiApplication;
-    //[uiApplication->_keyWindow bringSubviewToFront:currentView];
-    //DLog(@"_launcherApp->_keyWindow.subviews: %@", _launcherApp->_keyWindow.subviews);
-    //UIMAApplication *currentApp = CFArrayGetValueAtIndex(_openedApplications, _currentAppIndex);
-    //if (currentApp != _launcherApp) {
-    _currentMAApplication->_score++;
+    }*/
+    //_currentMAApplication->_score++;
     //}
     _CFArrayMoveValueToTop(_openedApplications, _currentMAApplication);
     //DLog(@"_openedApplications: %@", _openedApplications);

@@ -328,6 +328,12 @@ CFArrayGetFirstIndexOfValue(CFArrayRef array, CFRange range,
     return idx;
 }
 
+CFIndex _CFArrayGetIndexOfValue(CFArrayRef array, const void *value)
+{
+    CFRange range = {0, CFArrayGetCount(array)};
+    return CFArrayGetFirstIndexOfValue(array, range, value);
+}
+
 CFIndex
 CFArrayGetLastIndexOfValue (CFArrayRef array, CFRange range,
                             const void *value)

@@ -284,8 +284,8 @@ static void UIMAApplicationRunApp(NSString *appName)
         _animationPipeRead = animationPipeRead;
         _animationPipeWrite = animationPipeWrite;
         //DLog();
-        [self setAsCurrent:NO];
         CFArrayAppendValue(_openedApplications, self);
+        [self setAsCurrent:NO];
         IOPipeWriteMessage(MAPipeMessageCharString, NO);
         IOPipeWriteCharString(_name);
         UIMLApplicationSetChildAppIsRunning(YES);
@@ -301,6 +301,7 @@ static void UIMAApplicationRunApp(NSString *appName)
 {
     IOPipeSetPipes(_pipeRead, _pipeWrite);
     _currentMAApplication = self;
+    DLog(@"indexOfObject:_currentMAApplication: %d", [_openedApplications indexOfObject:_currentMAApplication]);
     _running = YES;
     //DLog(@"self: %@", self);
 #ifdef NA
