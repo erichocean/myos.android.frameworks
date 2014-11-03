@@ -1,6 +1,18 @@
 /*
- * Copyright 2014 myOS Group. All rights reserved.
- *
+ Copyright © 2014 myOS Group
+ 
+ This file is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later version.
+ 
+ This file is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ Lesser General Public License for more details.
+ 
+ Contributor(s):
+ Amr Aboelela <amraboelela@gmail.com>
  */
 
 #import <fcntl.h>
@@ -9,7 +21,6 @@
 #import <CoreAnimation/CoreAnimation-private.h>
 #import <CoreFoundation/CoreFoundation-private.h>
 
-//#define _kTimeToTerminateChild          10.0
 #define _kTerminateChildTimeOut         2.0
 //#define _kGobackTimeLimit               1.0
 
@@ -178,7 +189,7 @@ void UIMLApplicationHandleMessages()
 
 void UIMLApplicationShowLauncher()
 {
-    DLog();
+    //DLog();
     if ([[_maAppView subviews] count] > 0) {
         //DLog(@"[[_maAppView subviews] count] > 0");
         [[[_maAppView subviews] objectAtIndex:0] removeFromSuperview];
@@ -228,12 +239,11 @@ void UIMLApplicationMoveCurrentAppToTop()
     if (!_launcherView.hidden) {
         return;
     }
-    //int currentAppIndex = [_openedApplications indexOfObject:_currentMAApplication];
     //_currentMAApplication->_needsScreenCapture = YES;
     /*if (currentAppIndex == CFArrayGetCount(_openedApplications) - 1) {
         return;
     }*/
-    //_currentMAApplication->_score++;
+    _currentMAApplication->_score++;
     //}
     _CFArrayMoveValueToTop(_openedApplications, _currentMAApplication);
     //DLog(@"_openedApplications: %@", _openedApplications);
@@ -247,14 +257,11 @@ void UIMLApplicationTerminateApps()
         [_CAAnimatorNAConditionLock lockWithCondition:_CAAnimatorConditionLockHasNoWork];
     }
 #endif
-    DLog(@"_currentMAApplication: %@", _currentMAApplication);
+    //DLog(@"_currentMAApplication: %@", _currentMAApplication);
     if (_currentMAApplication->_running) {
         IOPipeWriteMessage(MAPipeMessageTerminateApp, YES);
     }
     for (UIMAApplication *maApp in _openedApplications) {
-        //for (NSString *key in _openedApplicationsDictionary) {
-        //DLog();
-        //UIMAApplication *maApp = [_openedApplicationsDictionary objectForKey:key];
         //DLog(@"maApp: %@", maApp);
         if (maApp != _currentMAApplication || !_currentMAApplication->_running) {
             [maApp terminate];

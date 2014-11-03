@@ -144,7 +144,7 @@ static void mysig(int sig)
             //DLog(@"SIGALRM");
             break;
         case SIGTERM:
-            DLog(@"SIGTERM");
+            //DLog(@"SIGTERM");
             _UIApplicationTerminate();
             break;
         default:
@@ -411,6 +411,7 @@ static int _UIApplicationHandleMessages()
             _UIApplicationEnterBackground();
             pause();
             //DLog(@"_application: %@", _application);
+            DLog(@"Free memory: %ld KB", CFGetFreeMemory());
             _UIApplicationEnterForeground();
             break;
         case MAPipeMessageHello:

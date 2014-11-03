@@ -1,6 +1,18 @@
 /*
- * Copyright 2014 myOS Group. All rights reserved.
- *
+ Copyright © 2014 myOS Group
+ 
+ This file is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later version.
+ 
+ This file is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ Lesser General Public License for more details.
+ 
+ Contributor(s):
+ Amr Aboelela <amraboelela@gmail.com>
  */
 
 #import "UIApplicationIcon.h"
@@ -12,16 +24,6 @@
 #define _kIconControlMargin     3
 
 #pragma mark - Static functions
-/*
-static void _UIApplicationIconResetToNormalMode(UIApplicationIcon *applicationIcon)
-{
-    applicationIcon->_mode = UIApplicationIconModeNormal;
-    applicationIcon->_closeControl.hidden = YES;
-    applicationIcon->_deleteControl.hidden = YES;
-    
-    applicationIcon->_menuControl.hidden = YES;
-    //applicationIcon->_anchorControl.hidden = YES;
-}*/
 
 @implementation UIApplicationIcon
 

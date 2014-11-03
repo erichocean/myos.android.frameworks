@@ -1,17 +1,22 @@
 /*
- * Copyright 2014 myOS Group. All rights reserved.
- *
+ Copyright © 2014 myOS Group
+ 
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2 of the License, or (at your option) any later version.
+ 
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ Lesser General Public License for more details.
+ 
+ Contributor(s):
+ Amr Aboelela <amraboelela@gmail.com>
  */
 
-//#import <fcntl.h>
-//#import <sys/ioctl.h>
-//#import <stdio.h>
 #import <CoreAnimation/CoreAnimation-private.h>
 #import <OpenGLES/EAGL-private.h>
-
-//#ifndef FBIO_WAITFORVSYNC
-//#define FBIO_WAITFORVSYNC   _IOW('F', 0x20, __u32)
-//#endif
 
 #pragma mark - Static functions
 

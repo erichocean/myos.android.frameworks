@@ -367,66 +367,66 @@ GSCurrentThreadDictionary(void)
 static void
 gnustep_base_thread_callback(void)
 {
-  /*
-   * Protect this function with locking ... to avoid any possibility
-   * of multiple threads registering with the system simultaneously,
-   * and so that all NSWillBecomeMultiThreadedNotifications are sent
-   * out before any second thread can interfere with anything.
-   */
-  if (entered_multi_threaded_state == NO)
+    /*
+     * Protect this function with locking ... to avoid any possibility
+     * of multiple threads registering with the system simultaneously,
+     * and so that all NSWillBecomeMultiThreadedNotifications are sent
+     * out before any second thread can interfere with anything.
+     */
+    if (entered_multi_threaded_state == NO)
     {
-      [gnustep_global_lock lock];
-      if (entered_multi_threaded_state == NO)
-	{
-	  /*
-	   * For apple compatibility ... and to make things easier for
-	   * code called indirectly within a will-become-multi-threaded
-	   * notification handler, we set the flag to say we are multi
-	   * threaded BEFORE sending the notifications.
-	   */
-	  entered_multi_threaded_state = YES;
+        [gnustep_global_lock lock];
+        if (entered_multi_threaded_state == NO)
+        {
+            /*
+             * For apple compatibility ... and to make things easier for
+             * code called indirectly within a will-become-multi-threaded
+             * notification handler, we set the flag to say we are multi
+             * threaded BEFORE sending the notifications.
+             */
+            entered_multi_threaded_state = YES;
 #if	GS_WITH_GC && defined(HAVE_GC_ALLOW_REGISTER_THREADS)
-	  /* This function needs to be called before going multi-threaded
-	   * so that the garbage collection library knows to support
-	   * registration of new threads.
-	   */
-	  GS_allow_register_threads();
+            /* This function needs to be called before going multi-threaded
+             * so that the garbage collection library knows to support
+             * registration of new threads.
+             */
+            GS_allow_register_threads();
 #endif
-	  NS_DURING
-	    {
-	      [GSPerformHolder class];	// Force initialization
-
-	      /*
-	       * Post a notification if this is the first new thread
-	       * to be created.
-	       * Won't work properly if threads are not all created
-	       * by this class, but it's better than nothing.
-	       */
-	      if (nc == nil)
-		{
-		  nc = RETAIN([NSNotificationCenter defaultCenter]);
-		}
+            NS_DURING
+            {
+                [GSPerformHolder class];	// Force initialization
+                
+                /*
+                 * Post a notification if this is the first new thread
+                 * to be created.
+                 * Won't work properly if threads are not all created
+                 * by this class, but it's better than nothing.
+                 */
+                if (nc == nil)
+                {
+                    nc = RETAIN([NSNotificationCenter defaultCenter]);
+                }
 #if	!defined(HAVE_INITIALIZE)
-	      if (NO == [[NSUserDefaults standardUserDefaults]
-		boolForKey: @"GSSilenceInitializeWarning"])
-		{
-		  NSLog(@"WARNING your program is becoming multi-threaded, but you are using an ObjectiveC runtime library which does not have a thread-safe implementation of the +initialize method. Please see README.initialize for more information.");
-		}
+                if (NO == [[NSUserDefaults standardUserDefaults]
+                           boolForKey: @"GSSilenceInitializeWarning"])
+                {
+                    //NSLog(@"WARNING your program is becoming multi-threaded, but you are using an ObjectiveC runtime library which does not have a thread-safe implementation of the +initialize method. Please see README.initialize for more information.");
+                }
 #endif
-	      [nc postNotificationName: NSWillBecomeMultiThreadedNotification
-				object: nil
-			      userInfo: nil];
-	    }
-	  NS_HANDLER
-	    {
-	      fprintf(stderr,
-"ALERT ... exception while becoming multi-threaded ... system may not be\n"
-"properly initialised.\n");
-	      fflush(stderr);
-	    }
-	  NS_ENDHANDLER
-	}
-      [gnustep_global_lock unlock];
+                [nc postNotificationName: NSWillBecomeMultiThreadedNotification
+                                  object: nil
+                                userInfo: nil];
+            }
+            NS_HANDLER
+            {
+                fprintf(stderr,
+                        "ALERT ... exception while becoming multi-threaded ... system may not be\n"
+                        "properly initialised.\n");
+                fflush(stderr);
+            }
+            NS_ENDHANDLER
+        }
+        [gnustep_global_lock unlock];
     }
 }
 
