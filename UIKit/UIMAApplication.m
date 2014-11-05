@@ -160,14 +160,18 @@ static void UIMAApplicationRunApp(NSString *appName)
     //[self willChangeValueForKey:@"running"];
     _opened = newValue;
     //DLog(@"self: %@, running: %d", self, _opened);
-    //[self didChangeValueForKey:@"running"];
-    _applicationIcon->_iconLabel.textColor = [UIColor yellowColor]; // orangeColor];
+    if (_opened) {
+        _applicationIcon->_iconLabel.textColor = [UIColor yellowColor];
+    } else {
+        _applicationIcon->_iconLabel.textColor = [UIColor whiteColor];
+        //DLog(@"self: %@", self);
+    }
 }
 
 - (NSString *)description
 {
-    //DLog(@"_data: %@", _data);
-    return [NSString stringWithFormat:@"<%@: %p; name: %@; opened: %d; isCurrent: %d; score: %d; pageNumber: %d; xLocation: %d; yLocation: %d; anchored: %d>", [self className], self, _name, _opened, [self isCurrent], _score, self.pageNumber, self.xLocation, self.yLocation, self.anchored];
+    return [NSString stringWithFormat:@"<%@: %p; name: %@; opened: %d; isCurrent: %d>", [self className], self, _name, _opened, [self isCurrent]];
+    /*return [NSString stringWithFormat:@"<%@: %p; name: %@; opened: %d; isCurrent: %d; score: %d; pageNumber: %d; xLocation: %d; yLocation: %d; anchored: %d>", [self className], self, _name, _opened, [self isCurrent], _score, self.pageNumber, self.xLocation, self.yLocation, self.anchored];*/
 }
 
 #pragma mark - Data
@@ -186,11 +190,11 @@ static void UIMAApplicationRunApp(NSString *appName)
 }
 
 #pragma mark - Delegates
-
+/*
 - (void)closeApp
 {
     DLog(@"self: %@", self);
-}
+}*/
 
 - (void)deleteApp
 {
@@ -334,7 +338,7 @@ static void UIMAApplicationRunApp(NSString *appName)
 - (void)terminate
 {
     DLog(@"%@", self);
-    //_opened = NO;
+    self.opened = NO;
     UIMAApplicationSaveData(self);
     kill(_pid, SIGTERM);
     if (wait(NULL) == -1) {
@@ -345,14 +349,6 @@ static void UIMAApplicationRunApp(NSString *appName)
 @end
 
 #pragma mark - Shared functions
-/*
-void UIMAApplicationTakeScreenCaptureIfNeeded(UIMAApplication *app)
-{
-    if (app->_needsScreenCapture) {
-        //app->_screenImageView->_layer.contents = _UIScreenCaptureScreen();
-        app->_needsScreenCapture = NO;
-    }
-}*/
 
 void UIMAApplicationSaveData(UIMAApplication *app)
 {

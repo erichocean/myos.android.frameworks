@@ -219,12 +219,10 @@ CFArrayCreate (CFAllocatorRef allocator, const void **values,
     return (CFArrayRef)new;
 }
 
-CFArrayRef
-CFArrayCreateCopy (CFAllocatorRef allocator, CFArrayRef array)
+CFArrayRef CFArrayCreateCopy(CFAllocatorRef allocator, CFArrayRef array)
 {
     CF_OBJC_FUNCDISPATCH0(_kCFArrayTypeID, CFArrayRef, array, "copy");
-    return CFArrayCreate (allocator, array->_contents, array->_count,
-                          array->_callBacks);
+    return CFArrayCreate(allocator, array->_contents, array->_count, array->_callBacks);
 }
 
 void
@@ -236,8 +234,7 @@ CFArrayApplyFunction (CFArrayRef array, CFRange range,
         applier(CFArrayGetValueAtIndex(array, i), context);
 }
 
-CFIndex
-CFArrayBSearchValues (CFArrayRef array, CFRange range, const void *value,
+CFIndex CFArrayBSearchValues(CFArrayRef array, CFRange range, const void *value,
                       CFComparatorFunction comparator, void *context)
 {
     CFIndex min, max, mid;
@@ -415,9 +412,7 @@ CFArrayCheckCapacityAndGrow (CFMutableArrayRef array, CFIndex newCapacity)
     return 0;
 }
 
-CFMutableArrayRef
-CFArrayCreateMutable (CFAllocatorRef allocator, CFIndex capacity,
-                      const CFArrayCallBacks *callBacks)
+CFMutableArrayRef CFArrayCreateMutable(CFAllocatorRef allocator, CFIndex capacity, const CFArrayCallBacks *callBacks)
 {
     struct __CFMutableArray *new;
     new = (struct __CFMutableArray*) _CFRuntimeCreateInstance (allocator,
@@ -529,9 +524,9 @@ void _CFArrayRemoveValue(CFMutableArrayRef array, const void *value)
     CFArrayEqualCallBack equal = array->_callBacks->equal;
     contents = array->_contents;
     if (equal) {
-        for (idx = 0 ; idx < array->_count ;++idx) {
+        for (idx = 0; idx < array->_count ;++idx) {
             if (equal (value, contents[idx])) {
-                CFArrayReplaceValues (array, CFRangeMake(idx, 1), NULL, 0);
+                CFArrayReplaceValues(array, CFRangeMake(idx, 1), NULL, 0);
             }
         }
     } else {
@@ -561,7 +556,7 @@ void CFArrayRemoveValueAtIndex(CFMutableArrayRef array, CFIndex idx)
     //fprintf(stderr, "idx: %d \n", idx);
     CF_OBJC_FUNCDISPATCH1(_kCFArrayTypeID, void, array, "removeObjectAtIndex:", idx);
     //fprintf(stderr, "idx: %d \n", idx);
-    CFArrayReplaceValues (array, CFRangeMake(idx, 1), NULL, 0);
+    CFArrayReplaceValues(array, CFRangeMake(idx, 1), NULL, 0);
 }
 
 void

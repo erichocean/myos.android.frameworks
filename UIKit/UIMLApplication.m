@@ -33,6 +33,7 @@ static UIMLApplication *_uiMLApplication = nil;
 static UIMAApplication *_uiMAApplication = nil;
 static UIView *_launcherView = nil;
 static UIView *_maAppView = nil;
+static long _freeMemory = NSIntegerMax;
 
 #pragma mark - Static functions
 
@@ -67,55 +68,17 @@ static UIView *_maAppView = nil;
 
 #pragma mark - Delegates
 
-- (void)presentAppDone
-{
-    DLog();
-    _launcherView.hidden = YES;
-    //[_uiApplication->_keyWindow sendSubviewToBack:_launcherView];
-    //[_uiApplication->_keyWindow removeFromSuperview];
-    //DLog();
-    _UIApplicationEnterBackground();
-    //NSArray *subviews = [_uiApplication->_keyWindow subviews];
-    //UIView *view = [subviews objectAtIndex:subviews.count-1];
-    //UIMAApplication *maApp = [_openedApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", view]];
-    [[[_maAppView subviews] objectAtIndex:0] removeFromSuperview];
-    //DLog(@"maApp: %@", maApp);
-    //[_EAGLMLLock lock];
-    //_EAGLMLCanDraw = YES;
-    //DLog(@"_EAGLMLCanDraw: %d", _EAGLMLCanDraw);
-    //[_EAGLMLLock lock];
-    //DLog(@"_EAGLMLLock2: %@", _EAGLMLLock);
-    //DLog(@"_EAGLMLLock->counter2: %d", _EAGLMLLock->counter);
-    //if (_currentMAApplication != maApp) {
-    [_uiMAApplication setAsCurrent:YES];
-    //}
-    //_lastGobackTime = CACurrentMediaTime();
-}
-/*
-- (void)goBackDone
-{
-    //UIMLApplication *mlApplication = [UIMLApplication sharedMLApplication];
-    //NSArray *subviews = [_uiApplication->_keyWindow subviews];
-    //UIView *currentView = [subviews objectAtIndex:subviews.count-1];
-    //UIMAApplication *maApp = [_openedApplicationsDictionary objectForKey:[NSString stringWithFormat:@"%p", currentView]];
-    [_uiMAApplication setAsCurrent:YES];
-}*/
-
 @end
 
 #pragma mark - Shared functions
 
 void UIMLApplicationInitialize()
 {
-    DLog(@"UIMLApplicationInitialize");
+    //DLog(@"UIMLApplicationInitialize");
     _uiApplication = [UIApplication sharedApplication];
     _uiMAApplication = [[UIMAApplication alloc] init];
     //CFArrayAppendValue(_openedApplications, _launcherApp);
     //_openedApplicationsDictionary = [[NSMutableDictionary alloc] init];
-    
-    //_EAGLMLLock = [[NSLock alloc] init];
-    //DLog(@"_EAGLMLLock: %@", _EAGLMLLock);
-    //[_EAGLMLLock lock];
 }
 
 void UIMLApplicationLauncherViewDidAdded()
@@ -140,6 +103,29 @@ void UIMLApplicationSetChildAppIsRunning(BOOL isRunning)
     EAGLMLSetChildAppIsRunning(isRunning);
 #endif
 }
+/*
+void UIMLApplicationCheckMemory()
+{
+    long freeMemory = CFGetFreeMemory();
+    if (freeMemory < 3000) {
+        DLog(@"Low memory: %ld KB", CFGetFreeMemory());
+    }
+}*/
+
+void UIMLApplicationTerminateSomeApps()
+{
+    //DLog(@"_openedApplications 1: %@", _openedApplications);
+    //NSMutableArray *openedApplications = CFArrayCreateCopy(kCFAllocatorDefault, _openedApplications);
+    int count = _openedApplications.count * 0.25;
+    for (int i=0; i<=count; i++) {
+        UIMAApplication *maApp = CFArrayGetValueAtIndex(_openedApplications, 0);
+        //DLog(@"Terminating app: %@", maApp);
+        [maApp terminate];
+        CFArrayRemoveValueAtIndex(_openedApplications, 0);
+    }
+    //[openedApplications release];
+    //DLog(@"_openedApplications 2: %@", _openedApplications);
+}
 
 void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
 {
@@ -152,7 +138,18 @@ void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
     _UIApplicationEnterBackground();
     if (coldStart) {
         [_maAppView addSubview:maApp.defaultScreenView];
+        long freeMemory = CFGetFreeMemory();
+        DLog(@"%@ Free memory: %ld KB", maApp->_name, freeMemory);
+        if (freeMemory > _freeMemory) {
+            DLog(@"Low memory");
+            UIMLApplicationTerminateSomeApps();
+            freeMemory = CFGetFreeMemory();
+            DLog(@"%@ Free memory 2: %ld KB", maApp->_name, freeMemory);
+        }
+        _freeMemory = freeMemory;
         [maApp startApp];
+        //DLog(@"Free memory 2: %ld KB", CFGetFreeMemory());
+        //UIMLApplicationCheckMemory();
     } else {
         [maApp setAsCurrent:YES];
     }
@@ -247,7 +244,6 @@ void UIMLApplicationMoveCurrentAppToTop()
     //}
     _CFArrayMoveValueToTop(_openedApplications, _currentMAApplication);
     //DLog(@"_openedApplications: %@", _openedApplications);
-    //_currentAppIndex = CFArrayGetCount(_openedApplications) - 1;
 }
 
 void UIMLApplicationTerminateApps()

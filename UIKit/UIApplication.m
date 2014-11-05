@@ -142,6 +142,7 @@ static void mysig(int sig)
     switch (sig) {
         case SIGALRM:
             //DLog(@"SIGALRM");
+            //DLog(@"Free memory: %ld KB", CFGetFreeMemory());
             break;
         case SIGTERM:
             //DLog(@"SIGTERM");
@@ -411,7 +412,7 @@ static int _UIApplicationHandleMessages()
             _UIApplicationEnterBackground();
             pause();
             //DLog(@"_application: %@", _application);
-            DLog(@"Free memory: %ld KB", CFGetFreeMemory());
+            //DLog(@"Free memory: %ld KB", CFGetFreeMemory());
             _UIApplicationEnterForeground();
             break;
         case MAPipeMessageHello:
