@@ -33,7 +33,7 @@ static UIMLApplication *_uiMLApplication = nil;
 static UIMAApplication *_uiMAApplication = nil;
 static UIView *_launcherView = nil;
 static UIView *_maAppView = nil;
-static long _freeMemory = NSIntegerMax;
+//static long _freeMemory = NSIntegerMax;
 
 #pragma mark - Static functions
 
@@ -103,28 +103,29 @@ void UIMLApplicationSetChildAppIsRunning(BOOL isRunning)
     EAGLMLSetChildAppIsRunning(isRunning);
 #endif
 }
-/*
-void UIMLApplicationCheckMemory()
-{
-    long freeMemory = CFGetFreeMemory();
-    if (freeMemory < 3000) {
-        DLog(@"Low memory: %ld KB", CFGetFreeMemory());
-    }
-}*/
 
 void UIMLApplicationTerminateSomeApps()
 {
     //DLog(@"_openedApplications 1: %@", _openedApplications);
     //NSMutableArray *openedApplications = CFArrayCreateCopy(kCFAllocatorDefault, _openedApplications);
-    int count = _openedApplications.count * 0.25;
+    int count = _openedApplications.count * 0.3;
     for (int i=0; i<=count; i++) {
         UIMAApplication *maApp = CFArrayGetValueAtIndex(_openedApplications, 0);
         //DLog(@"Terminating app: %@", maApp);
         [maApp terminate];
         CFArrayRemoveValueAtIndex(_openedApplications, 0);
     }
-    //[openedApplications release];
-    //DLog(@"_openedApplications 2: %@", _openedApplications);
+}
+
+void UIMLApplicationCheckMemory()
+{
+    long freeMemory = CFGetFreeMemory();
+    DLog(@"Free memory: %ld KB", freeMemory);
+    if (freeMemory < 10000) {
+        DLog(@"Low memory");
+        UIMLApplicationTerminateSomeApps();
+        DLog(@"Free memory 2: %ld KB", CFGetFreeMemory());
+    }
 }
 
 void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
@@ -137,19 +138,19 @@ void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
     _launcherView.hidden = YES;
     _UIApplicationEnterBackground();
     if (coldStart) {
+        DLog(@"%@", maApp->_name);
+        UIMLApplicationCheckMemory();
         [_maAppView addSubview:maApp.defaultScreenView];
-        long freeMemory = CFGetFreeMemory();
+        /*long freeMemory = CFGetFreeMemory();
         DLog(@"%@ Free memory: %ld KB", maApp->_name, freeMemory);
-        if (freeMemory > _freeMemory) {
+        if (freeMemory > _freeMemory || freeMemory < 5000) {
             DLog(@"Low memory");
             UIMLApplicationTerminateSomeApps();
             freeMemory = CFGetFreeMemory();
             DLog(@"%@ Free memory 2: %ld KB", maApp->_name, freeMemory);
         }
-        _freeMemory = freeMemory;
+        _freeMemory = freeMemory;*/
         [maApp startApp];
-        //DLog(@"Free memory 2: %ld KB", CFGetFreeMemory());
-        //UIMLApplicationCheckMemory();
     } else {
         [maApp setAsCurrent:YES];
     }
