@@ -18,10 +18,7 @@
 #import "UIApplicationIcon.h"
 #import <UIKit/UIKit-private.h>
 
-#define kImageSize              68
-#define _kIconWidth             80
-#define _kIconHeight            92
-#define _kIconControlMargin     3
+#define _kLabelHeight       20
 
 #pragma mark - Static functions
 
@@ -40,17 +37,26 @@
         //UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
         _iconImage = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:imagePath]];
         //DLog(@"_iconImage: %@", _iconImage);
-        _iconImage.frame = CGRectMake(5,5,kImageSize,kImageSize);
+        _iconImage.frame = CGRectMake((_kIconWidth - _kImageSize) / 2.0, 5, _kImageSize, _kImageSize);
         [self addSubview:_iconImage];
         
-        _iconLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,kImageSize+5,_kIconWidth,15)];
+        _iconLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,_kImageSize+3,_kIconWidth,_kLabelHeight)];
         _iconLabel.textColor = [UIColor whiteColor];
         _iconLabel.textAlignment = UITextAlignmentCenter;
         _iconLabel.font = [UIFont systemFontOfSize:10];
         _iconLabel.text = application->_name;
         _iconLabel.adjustsFontSizeToFitWidth = YES;
+        //DLog(@"_iconLabel.frame 1: %@", NSStringFromCGRect(_iconLabel.frame));
+        [_iconLabel sizeToFit];
+        CGRect frame = _iconLabel.frame;
+        //DLog(@"_iconLabel.frame 2: %@", NSStringFromCGRect(_iconLabel.frame));
+        frame.origin.x = 0;
+        frame.origin.y += (_kLabelHeight - frame.size.height) / 2.0;
+        frame.size.width = _kIconWidth;
+        _iconLabel.frame = frame;
+        //DLog(@"_iconLabel.frame 3: %@", NSStringFromCGRect(_iconLabel.frame));
         [self addSubview:_iconLabel];
-        
+
         /*_closeControl = [[UIIconControl alloc] initWithFrame:CGRectMake(_kIconControlMargin,_kIconControlMargin,
                                                                         _kIconControlSize,_kIconControlSize)
                                                      andType:UIIconControlTypeClose];

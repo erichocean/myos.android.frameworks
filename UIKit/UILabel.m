@@ -268,7 +268,8 @@
 {
     size = CGSizeMake(((_numberOfLines > 0)? CGFLOAT_MAX : size.width), ((_numberOfLines <= 0)? CGFLOAT_MAX : (_font.lineHeight*_numberOfLines)));
     //DLog(@"_lineBreakMode: %d", _lineBreakMode);
-    return [_text sizeWithFont:_font constrainedToSize:size lineBreakMode:_lineBreakMode];
+    CGSize result = [_text sizeWithFont:_font constrainedToSize:size lineBreakMode:_lineBreakMode];
+    return CGSizeMake(result.width+2, result.height+2);
 }
 
 @end

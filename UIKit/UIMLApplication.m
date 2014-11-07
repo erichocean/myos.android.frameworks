@@ -255,6 +255,9 @@ void UIMLApplicationTerminateApps()
     }
 #endif
     //DLog(@"_currentMAApplication: %@", _currentMAApplication);
+    if (!_currentMAApplication) {
+        return;
+    }
     if (_currentMAApplication->_running) {
         IOPipeWriteMessage(MAPipeMessageTerminateApp, YES);
     }

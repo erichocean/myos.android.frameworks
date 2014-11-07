@@ -17,6 +17,11 @@
 
 #import <UIKit/UIKit.h>
 
+#define _kImageSize             68
+#define _kIconWidth             80
+#define _kIconHeight            87
+#define _kIconControlMargin     3
+
 typedef enum {
     UIApplicationIconModeNormal,
     UIApplicationIconModeClose,
