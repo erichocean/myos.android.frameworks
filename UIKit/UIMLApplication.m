@@ -33,7 +33,7 @@ static UIMLApplication *_uiMLApplication = nil;
 static UIMAApplication *_uiMAApplication = nil;
 static UIView *_launcherView = nil;
 static UIView *_maAppView = nil;
-//static long _freeMemory = NSIntegerMax;
+static long _freeMemory = NSIntegerMax;
 
 #pragma mark - Static functions
 
@@ -108,15 +108,19 @@ void UIMLApplicationTerminateSomeApps()
 {
     //DLog(@"_openedApplications 1: %@", _openedApplications);
     //NSMutableArray *openedApplications = CFArrayCreateCopy(kCFAllocatorDefault, _openedApplications);
-    int count = _openedApplications.count * 0.3;
+    int count = _openedApplications.count;
     for (int i=0; i<=count; i++) {
         UIMAApplication *maApp = CFArrayGetValueAtIndex(_openedApplications, 0);
+        if (maApp != _currentMAApplication) {
         //DLog(@"Terminating app: %@", maApp);
-        [maApp terminate];
-        CFArrayRemoveValueAtIndex(_openedApplications, 0);
+            [maApp terminate];
+            CFArrayRemoveValueAtIndex(_openedApplications, 0);
+        } else {
+            return;
+        }
     }
 }
-
+/*
 void UIMLApplicationCheckMemory()
 {
     long freeMemory = CFGetFreeMemory();
@@ -126,7 +130,7 @@ void UIMLApplicationCheckMemory()
         UIMLApplicationTerminateSomeApps();
         DLog(@"Free memory 2: %ld KB", CFGetFreeMemory());
     }
-}
+}*/
 
 void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
 {
@@ -139,9 +143,9 @@ void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
     _UIApplicationEnterBackground();
     if (coldStart) {
         DLog(@"%@", maApp->_name);
-        UIMLApplicationCheckMemory();
+        //UIMLApplicationCheckMemory();
         [_maAppView addSubview:maApp.defaultScreenView];
-        /*long freeMemory = CFGetFreeMemory();
+        long freeMemory = CFGetFreeMemory();
         DLog(@"%@ Free memory: %ld KB", maApp->_name, freeMemory);
         if (freeMemory > _freeMemory || freeMemory < 5000) {
             DLog(@"Low memory");
@@ -149,7 +153,7 @@ void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
             freeMemory = CFGetFreeMemory();
             DLog(@"%@ Free memory 2: %ld KB", maApp->_name, freeMemory);
         }
-        _freeMemory = freeMemory;*/
+        _freeMemory = freeMemory;
         [maApp startApp];
     } else {
         [maApp setAsCurrent:YES];
@@ -198,7 +202,9 @@ void UIMLApplicationShowLauncher()
     //DLog();
     //[_uiApplication->_keyWindow bringSubviewToFront:_launcherView];
 #ifdef NA
-    [_CAAnimatorNAConditionLock lockWithCondition:_CAAnimatorConditionLockHasNoWork];
+    if ([_CAAnimatorNAConditionLock condition] == _CAAnimatorConditionLockHasWork) {
+        [_CAAnimatorNAConditionLock lockWithCondition:_CAAnimatorConditionLockHasNoWork];
+    }
 #endif
 }
 

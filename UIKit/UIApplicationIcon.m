@@ -56,38 +56,6 @@
         _iconLabel.frame = frame;
         //DLog(@"_iconLabel.frame 3: %@", NSStringFromCGRect(_iconLabel.frame));
         [self addSubview:_iconLabel];
-
-        /*_closeControl = [[UIIconControl alloc] initWithFrame:CGRectMake(_kIconControlMargin,_kIconControlMargin,
-                                                                        _kIconControlSize,_kIconControlSize)
-                                                     andType:UIIconControlTypeClose];
-        [_closeControl addTarget:self action:@selector(iconControlClicked:) forControlEvents:UIControlEventTouchUpInside];
-        _closeControl.hidden = YES;
-        _closeControl->_applicationIcon = self;
-        [self addSubview:_closeControl];
-        
-        _deleteControl = [[UIIconControl alloc] initWithFrame:CGRectMake(_kIconControlMargin,_kIconControlMargin,
-                                                                         _kIconControlSize,_kIconControlSize)
-                                                      andType:UIIconControlTypeDelete];
-        [_deleteControl addTarget:self action:@selector(iconControlClicked:) forControlEvents:UIControlEventTouchUpInside];
-        _deleteControl.hidden = YES;
-        _deleteControl->_applicationIcon = self;
-        [self addSubview:_deleteControl];
-        
-        _menuControl = [[UIIconControl alloc] initWithFrame:CGRectMake(_kIconWidth-_kIconControlSize,_kIconControlMargin,
-                                                                       _kIconControlSize,_kIconControlSize)
-                                                    andType:UIIconControlTypeMenu];
-        [_menuControl addTarget:self action:@selector(iconControlClicked:) forControlEvents:UIControlEventTouchUpInside];
-        _menuControl.hidden = YES;
-        _menuControl->_applicationIcon = self;
-        [self addSubview:_menuControl];*/
-        
-        //_anchorControl = [[UIIconControl alloc] initWithFrame:CGRectMake(_kIconWidth-_kIconControlSize,kImageSize-_kIconControlSize,
-        //                                                                 _kIconControlSize,_kIconControlSize)
-        //                                              andType:UIIconControlTypeAnchor];
-        //[_anchorControl addTarget:self action:@selector(iconControlClicked:) forControlEvents:UIControlEventTouchUpInside];
-        //_anchorControl.hidden = YES;
-        //_anchorControl->_applicationIcon = self;
-        //[self addSubview:_anchorControl];
         
         // Single tap gesture
         _singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapped:)];
