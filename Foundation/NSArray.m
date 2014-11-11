@@ -976,12 +976,13 @@ static SEL	rlSel;
 /**
  * Returns the last object in the receiver, or nil if the receiver is empty.
  */
-- (id) lastObject
+- (id)lastObject
 {
-  unsigned count = [self count];
-  if (count == 0)
-    return nil;
-  return [self objectAtIndex: count-1];
+    unsigned count = [self count];
+    if (count == 0) {
+        return nil;
+    }
+    return [self objectAtIndex: count-1];
 }
 
 /**

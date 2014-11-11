@@ -267,17 +267,17 @@ static NSString *_NSStringFromCGPoint(CGPoint p)
         //DLog(@"newValue == YES");
         self.opacity = 0;
         //_CALayerSetNeedsUnload(self);
-        if (_superlayer == nil || _superlayer->_superlayer == nil) {
+        /*if (_superlayer == nil || _superlayer->_superlayer == nil) {
             _CALayerSetNeedsUnload(self);
-        }
+        }*/
     } else {
         self.opacity = 1;
-        if (oldValue && (_superlayer == nil || _superlayer->_superlayer == nil)) {
+        /*if (oldValue && (_superlayer == nil || _superlayer->_superlayer == nil)) {
             //DLog(@"_hidden && (_superlayer== nil || _superlayer->_superlayer == nil)");
             _CALayerSetNeedsDisplayWithRoot(self);
-        } else {
-            _CALayerSetNeedsComposite(self);
-        }
+        } else {*/
+        _CALayerSetNeedsComposite(self);
+        //}
     }
 }
 
