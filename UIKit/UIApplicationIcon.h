@@ -1,5 +1,5 @@
 /*
- Copyright © 2014 myOS Group
+ Copyright © 2014 myOS Group.
  
  This file is free software; you can redistribute it and/or
  modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@ typedef enum {
 } UIApplicationIconMode;
 
 @class UIMAApplication; 
-@class UIIconControl;
+//@class UIIconControl;
 
 @interface UIApplicationIcon : UIView {
 @package
