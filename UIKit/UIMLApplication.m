@@ -142,7 +142,7 @@ void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
     _launcherView.hidden = YES;
     _UIApplicationEnterBackground();
     if (coldStart) {
-        DLog(@"%@", maApp->_name);
+        //DLog(@"%@", maApp->_name);
         //UIMLApplicationCheckMemory();
         [_maAppView addSubview:maApp.defaultScreenView];
         long freeMemory = CFGetFreeMemory();
