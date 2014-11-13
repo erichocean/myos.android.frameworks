@@ -34,6 +34,7 @@ static UIMAApplication *_uiMAApplication = nil;
 static UIView *_launcherView = nil;
 static UIView *_maAppView = nil;
 static long _freeMemory = NSIntegerMax;
+static int _freeMemoryCount = 0;
 
 #pragma mark - Static functions
 
@@ -98,7 +99,6 @@ void UIMLApplicationSetChildAppIsRunning(BOOL isRunning)
     _startTime = CACurrentMediaTime();
     //DLog(@"_startTime: %f", _startTime);
     _childAppRunning = isRunning;
-    //[[[_maAppView subviews] objectAtIndex:0] removeFromSuperview];
 #ifdef NA
     EAGLMLSetChildAppIsRunning(isRunning);
 #endif
@@ -108,6 +108,7 @@ void UIMLApplicationTerminateSomeApps()
 {
     //DLog(@"_openedApplications 1: %@", _openedApplications);
     //NSMutableArray *openedApplications = CFArrayCreateCopy(kCFAllocatorDefault, _openedApplications);
+    _freeMemoryCount++;
     int count = _openedApplications.count;
     for (int i=0; i<=count; i++) {
         UIMAApplication *maApp = CFArrayGetValueAtIndex(_openedApplications, 0);
@@ -120,17 +121,6 @@ void UIMLApplicationTerminateSomeApps()
         }
     }
 }
-/*
-void UIMLApplicationCheckMemory()
-{
-    long freeMemory = CFGetFreeMemory();
-    DLog(@"Free memory: %ld KB", freeMemory);
-    if (freeMemory < 10000) {
-        DLog(@"Low memory");
-        UIMLApplicationTerminateSomeApps();
-        DLog(@"Free memory 2: %ld KB", CFGetFreeMemory());
-    }
-}*/
 
 void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
 {
@@ -147,7 +137,8 @@ void UIMLApplicationPresentAppScreen(UIMAApplication *maApp, BOOL coldStart)
         [_maAppView addSubview:maApp.defaultScreenView];
         long freeMemory = CFGetFreeMemory();
         DLog(@"%@ Free memory: %ld KB", maApp->_name, freeMemory);
-        if (freeMemory > _freeMemory || freeMemory < 5000) {
+        if (freeMemory > _freeMemory && (_freeMemoryCount % 2 == 0) ||
+            freeMemory < 5000 && (_freeMemoryCount % 2 == 1)) {
             DLog(@"Low memory");
             UIMLApplicationTerminateSomeApps();
             freeMemory = CFGetFreeMemory();
